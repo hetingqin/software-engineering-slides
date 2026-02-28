@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>软件工程与架构 - 课程幻灯片合集</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f172a;
+            --navy-light: #1e293b;
+            --accent: #3b82f6;
+            --accent-dark: #2563eb;
+            --accent-light: #60a5fa;
+            --text: #334155;
+            --text2: #64748b;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --font: 'Inter', 'Noto Sans SC', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            color: var(--white);
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -10%;
+            width: 50%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            transform: rotate(-15deg);
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 20px;
+            color: #cbd5e1;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: -40px auto 40px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-week {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: var(--text2);
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        .card-footer svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-footer {
+            color: var(--accent);
+        }
+
+        .card:hover .card-footer svg {
+            transform: translateX(4px);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text2);
+            font-size: 14px;
+        }
+
+        /* Titles for Weeks */
+        .w1 .card-title::after {
+            content: "软件工程概述 \A 与现代架构";
+            white-space: pre-wrap;
+        }
+
+        .w2 .card-title::after {
+            content: "软件过程模型 \A 与生命周期";
+            white-space: pre-wrap;
+        }
+
+        .w3 .card-title::after {
+            content: "敏捷开发 \A 与质量管理";
+            white-space: pre-wrap;
+        }
+
+        .w4 .card-title::after {
+            content: "需求工程基础 \A 与获取技术";
+            white-space: pre-wrap;
+        }
+
+        .w5 .card-title::after {
+            content: "系统分析 \A 模型与规格设计";
+            white-space: pre-wrap;
+        }
+
+        .w6 .card-title::after {
+            content: "软件架构概述 \A 与经典风格";
+            white-space: pre-wrap;
+        }
+
+        .w7 .card-title::after {
+            content: "现代应用架构 \A （微服务与云原生）";
+            white-space: pre-wrap;
+        }
+
+        .w8 .card-title::after {
+            content: "面向对象 \A 设计原则（SOLID）";
+            white-space: pre-wrap;
+        }
+
+        .w9 .card-title::after {
+            content: "测试策略 \A 与单元测试";
+            white-space: pre-wrap;
+        }
+
+        .w10 .card-title::after {
+            content: "高阶测试 \A 与持续交付(CI/CD)";
+            white-space: pre-wrap;
+        }
+
+        .w11 .card-title::after {
+            content: "软件维护 \A 与重构基础";
+            white-space: pre-wrap;
+        }
+
+        .w12 .card-title::after {
+            content: "演进式架构 \A 与代码重构实战";
+            white-space: pre-wrap;
+        }
+
+        .w13 .card-title::after {
+            content: "AI赋能 \A 的现代软件工程";
+            white-space: pre-wrap;
+        }
+
+        .w14 .card-title::after {
+            content: "工程伦理 \A 与数据隐私规范";
+            white-space: pre-wrap;
+        }
+
+        .w15 .card-title::after {
+            content: "期末综合实践 \A 冲刺与辅导";
+            white-space: pre-wrap;
+        }
+
+        .w16 .card-title::after {
+            content: "项目答辩 \A 与课程总结复盘";
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 60px 20px;
+            }
+
+            .header h1 {
+                font-size: 36px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin-top: -20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <h1>软件工程与架构</h1>
+        <p>电子信息工程专业硕士课程 · 在线互动幻灯片合集</p>
+    </header>
+
+    <main class="container">
+        <div class="grid">
+            <!-- 幻灯片卡片将由 JavaScript 自动生成 -->
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 软件工程与架构 - 课程在线资源站</p>
+    </footer>
+
+    <script>
+        const grid = document.querySelector('.grid');
+        const totalWeeks = 16;
+
+        let html = '';
+        for (let i = 1; i <= totalWeeks; i++) {
+            // 这里将动态加载链接，确保与生成的 html 文件对应，例如 week1_v2.html
+            html += `
+                <a href="se-week${i}/week${i}_v2.html" class="card w${i}">
+                    <div class="card-week">Week ${String(i).padStart(2, '0')}</div>
+                    <div class="card-title"></div>
+                    <div class="card-footer">
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        在线播放演示
+                    </div>
+                </a>
+            `;
+        }
+        grid.innerHTML = html;
+    </script>
+</body>
+
+</html>

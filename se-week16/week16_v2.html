@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>软件工程及体系结构 · 第16周</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --blk: #111;
+            --gr: #333;
+            --lgr: #F5F5F7;
+            --wht: #FFF;
+            --acc: #0066CC;
+            --accl: #E5F0FA;
+            --acc2: #E8F5E9;
+            --grn: #2E7D32;
+            --red: #D32F2F;
+            --bg: var(--blk);
+            --text: var(--blk);
+            --text2: #666;
+            --font: 'Inter', 'Noto Sans SC', sans-serif
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            background: #444;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            padding: 24px;
+            font-family: var(--font);
+            font-size: 22px;
+            color: var(--text)
+        }
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: var(--wht);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column
+        }
+
+        .page-num {
+            position: absolute;
+            bottom: 20px;
+            right: 24px;
+            font-size: 16px;
+            color: var(--text2);
+            font-weight: 600;
+            z-index: 5
+        }
+
+        .slide.cover .page-num,
+        .slide.section .page-num {
+            color: rgba(255, 255, 255, 0.4)
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--acc);
+            z-index: 10
+        }
+
+        .slide.cover {
+            background: var(--blk);
+            color: var(--wht);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px
+        }
+
+        .slide.cover::before {
+            display: none
+        }
+
+        .cover .badge {
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            padding: 10px 28px;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.8)
+        }
+
+        .cover h1 {
+            font-size: 68px;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -1px
+        }
+
+        .cover .sub {
+            font-size: 28px;
+            font-weight: 300;
+            margin-top: 24px;
+            opacity: 0.8;
+            color: #A1A1A6
+        }
+
+        .cover .meta {
+            position: absolute;
+            bottom: 40px;
+            font-size: 20px;
+            opacity: 0.5;
+            line-height: 1.8;
+            letter-spacing: 1px
+        }
+
+        .cover .bg-dec {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 120%, rgba(0, 102, 204, 0.15) 0%, transparent 60%);
+            bottom: 0;
+            left: 0;
+            pointer-events: none
+        }
+
+        .slide.section {
+            background: var(--wht);
+            color: var(--blk);
+            justify-content: center;
+            align-items: center;
+            padding: 60px 80px;
+            text-align: center
+        }
+
+        .slide.section::before {
+            height: 8px;
+            background: var(--blk)
+        }
+
+        .section h2 {
+            font-size: 64px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 16px
+        }
+
+        .section .ssub {
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--text2)
+        }
+
+        .slide.content {
+            padding: 48px 64px 32px
+        }
+
+        .hdr {
+            margin-bottom: 32px
+        }
+
+        .hdr h2 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blk);
+            letter-spacing: -0.5px;
+            line-height: 1.2
+        }
+
+        .hdr .sub {
+            font-size: 22px;
+            color: var(--text2);
+            margin-top: 8px;
+            font-weight: 400
+        }
+
+        .bl {
+            list-style: none
+        }
+
+        .bl li {
+            font-size: 24px;
+            color: var(--gr);
+            padding: 10px 0 10px 36px;
+            position: relative;
+            line-height: 1.6
+        }
+
+        .bl li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20px;
+            width: 14px;
+            height: 2px;
+            background: var(--acc)
+        }
+
+        .bl li strong {
+            color: var(--blk);
+            font-weight: 700
+        }
+
+        .cr {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            align-content: center
+        }
+
+        .cd {
+            flex: 1;
+            min-width: 280px;
+            background: var(--lgr);
+            border-radius: 16px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column
+        }
+
+        .cd .ct {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--blk);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px
+        }
+
+        .cd .cx {
+            font-size: 20px;
+            color: var(--gr);
+            line-height: 1.7;
+            flex: 1
+        }
+
+        .tc {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+            margin-top: 10px;
+            align-items: flex-start
+        }
+
+        .tc .c {
+            flex: 1
+        }
+
+        /* 苹果风格的大字体排版 */
+        .big-text {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.3;
+            letter-spacing: -1px;
+            text-align: center;
+            margin: auto;
+            max-width: 900px
+        }
+
+        .big-text span {
+            background: linear-gradient(90deg, var(--acc), #00C9FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        /* 体系图谱 */
+        .map-ctn {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            margin-top: 10px
+        }
+
+        .map-row {
+            display: flex;
+            align-items: center;
+            background: var(--lgr);
+            border-radius: 16px;
+            padding: 24px 32px;
+            border-left: 8px solid var(--gr)
+        }
+
+        .map-row.dao {
+            border-left-color: #333
+        }
+
+        .map-row.shu {
+            border-left-color: var(--acc)
+        }
+
+        .map-row.qi {
+            border-left-color: var(--grn)
+        }
+
+        .map-lvl {
+            width: 120px;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 6px
+        }
+
+        .map-desc {
+            flex: 1;
+            padding-left: 32px;
+            border-left: 1px solid #CCC
+        }
+
+        .map-desc h4 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px
+        }
+
+        .map-desc p {
+            font-size: 20px;
+            color: var(--text2);
+            line-height: 1.6
+        }
+
+        /* 对比框 */
+        .vs-card {
+            background: var(--wht);
+            border: 1px solid #EBEBEB;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            padding: 32px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 24px
+        }
+
+        .vs-side {
+            flex: 1
+        }
+
+        .vs-side.stu {
+            border-right: 1px solid #EBEBEB;
+            padding-right: 24px
+        }
+
+        .vs-side.eng {
+            padding-left: 24px
+        }
+
+        .vs-side h4 {
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text2);
+            margin-bottom: 16px
+        }
+
+        .vs-side.eng h4 {
+            color: var(--acc)
+        }
+
+        .vs-side p {
+            font-size: 22px;
+            line-height: 1.6;
+            font-weight: 500;
+            color: var(--blk)
+        }
+
+        .slide [data-click-reveal] {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)
+        }
+
+        .slide [data-click-reveal].visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .slide [data-click-reveal="fade"] {
+            transform: none
+        }
+
+        .slide [data-click-reveal="scale"] {
+            transform: scale(0.95)
+        }
+
+        .po {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #111;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: none
+        }
+
+        .po.active {
+            display: flex
+        }
+
+        .po .pw {
+            width: 1280px;
+            height: 720px;
+            transform-origin: center center
+        }
+
+        .pi {
+            position: fixed;
+            bottom: 24px;
+            right: 32px;
+            z-index: 10000;
+            color: rgba(255, 255, 255, 0.3);
+            font-family: var(--font);
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px
+        }
+
+        .ph {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            background: rgba(255, 255, 255, 0.9);
+            color: #111;
+            padding: 40px 64px;
+            border-radius: 24px;
+            text-align: center;
+            font-size: 20px;
+            line-height: 2.4;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2)
+        }
+
+        .ph.show {
+            opacity: 1
+        }
+
+        .ph kbd {
+            background: var(--lgr);
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            border: 1px solid #DFDFDF;
+            font-family: monospace;
+            box-shadow: 0 2px 0 #DFDFDF
+        }
+
+        .pb {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 100;
+            background: var(--blk);
+            color: var(--wht);
+            border: none;
+            border-radius: 30px;
+            padding: 16px 32px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1)
+        }
+
+        .pb:hover {
+            background: var(--acc);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.3)
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- COVER -->
+    <div class="slide cover">
+        <div class="bg-dec"></div>
+        <div class="badge">Software Engineering · Final Week</div>
+        <h1>课程总结与项目答辩</h1>
+        <div class="sub">蜕变：从写代码机器到系统架构工程师</div>
+        <div class="meta">电子信息工程专业硕士 | 16 周旅程圆满收官<br>主讲人 | 何庭钦</div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="slide section"><span class="num">01</span>
+        <h2>三层重构</h2>
+        <div class="ssub">16周知识体系全景图回顾</div>
+    </div>
+
+    <!-- 1.1 道术器 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>知识体系收网：道、术、器</h2>
+            <div class="sub">我们到底学了些什么？能带走什么？</div>
+        </div>
+        <div class="map-ctn">
+            <div class="map-row dao" data-click-reveal="left">
+                <div class="map-lvl">【道】</div>
+                <div class="map-desc">
+                    <h4>工程思维与核心理念（最难被AI替代）</h4>
+                    <p>万事皆项目（时间、成本、质量铁三角协约）；以终为始地满足业务价值；拥抱迭代变化，抛弃盲目堆砌。永远以全局视角解决问题。</p>
+                </div>
+            </div>
+            <div class="map-row shu" data-click-reveal="left">
+                <div class="map-lvl" style="color:var(--acc)">【术】</div>
+                <div class="map-desc">
+                    <h4>方法论与协作规约（防止崩盘的红线）</h4>
+                    <p>需求画原型；KISS构架选型；WBS敏捷拆分计划。用 CodeReview、CI自动化测试筑起城墙，用5-Whys彻查引发线上血案的真凶。</p>
+                </div>
+            </div>
+            <div class="map-row qi" data-click-reveal="left">
+                <div class="map-lvl" style="color:var(--grn)">【器】</div>
+                <div class="map-desc">
+                    <h4>工具生态与外挂杠杆（战力倍增引擎）</h4>
+                    <p>横向操作 Git / GitHub看板；纵向驾驭自然语言 AI Agent (Copilot / Cursor)。把底层的脏活包出去，专注于高级技能的调用。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.2 核心巨型引语 -->
+    <div class="slide content" style="justify-content:center;align-items:center;padding:0">
+        <div class="big-text" data-click-reveal="fade">
+            计算机技术日新月异，<br>但系统工程的本质 <br><span>从未变过。</span>
+        </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="slide section"><span class="num">02</span>
+        <h2>核心公式巡礼</h2>
+        <div class="ssub">浓缩 16 周的 14 条工程定律</div>
+    </div>
+
+    <!-- 2.1 公式 1-7 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>工程基石与方法论公式</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="margin-top:20px;gap:16px">
+            <div class="cd" style="padding:20px;border-left:4px solid var(--acc)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">1. 软件工程</div>
+                <div class="cx" style="font-size:18px">过程 + 方法 + 工具</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--acc)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">2. 模型选型</div>
+                <div class="cx" style="font-size:18px">项目特点 × 模型特点</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--acc)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">3. 敏捷</div>
+                <div class="cx" style="font-size:18px">价值观 + 原则 + 实践</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--acc)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">4. 项目管理</div>
+                <div class="cx" style="font-size:18px">计划 + 执行 + 监控</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--acc)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">5. 需求工程</div>
+                <div class="cx" style="font-size:18px">获取 + 分析 + 规格 + 管理</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--acc)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">6. 好架构</div>
+                <div class="cx" style="font-size:18px">满足当前 + 留空间 + 团队能驾驭</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--acc)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">7. 持续交付</div>
+                <div class="cx" style="font-size:18px">版控 + 自动构建 + 自动测试 + 部署</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.2 公式 8-14 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>质量、DevOps 与 AI 时代的新公式</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="margin-top:20px;gap:16px">
+            <div class="cd" style="padding:20px;border-left:4px solid var(--grn)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">8. 竞争力</div>
+                <div class="cx" style="font-size:18px">学习能力 + 解决问题能力 + 影响力</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--grn)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">9. 软件质量</div>
+                <div class="cx" style="font-size:18px">测试 + Review + CI + 监控</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--grn)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">10. DevOps</div>
+                <div class="cx" style="font-size:18px">文化 + 自动化 + 度量 + 共享</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--grn)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">11. 可靠性</div>
+                <div class="cx" style="font-size:18px">告警 + 预案 + 止血 + 复盘</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--grn)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">12. 优秀实践</div>
+                <div class="cx" style="font-size:18px">自动化 + 规范化 + 透明化 + 改进</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--red)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">13. AI 赋能</div>
+                <div class="cx" style="font-size:18px">传统工程方法 + AI工具 + 新协作</div>
+            </div>
+            <div class="cd" style="padding:20px;border-left:4px solid var(--red)">
+                <div class="ct" style="font-size:20px;margin-bottom:4px">14. 新时代工程师</div>
+                <div class="cx" style="font-size:18px">架构判断力 + 领域知识 + AI审查 + Prompt</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="slide section"><span class="num">03</span>
+        <h2>思维蜕变</h2>
+        <div class="ssub">从学生到工程师的临门一脚</div>
+    </div>
+
+    <!-- 3.1 对比项 1 & 2 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>正式告别“课设心态”</h2>
+            <div class="sub">这是商业与校园最大的两道鸿沟</div>
+        </div>
+
+        <div class="vs-card" data-click-reveal="fade">
+            <div class="vs-side stu">
+                <h4>【学生对目标的认知】</h4>
+                <p>“只要在验收那天，在我的笔记本电脑上跑起 Demo 不报错，任务就完美结束了。”</p>
+            </div>
+            <div class="vs-side eng">
+                <h4>【工程师对目标的承载】</h4>
+                <p>“代码发布上线，生命周期才刚走完 1%。它必须在生产集群受住冲击、留存清晰的侦错日志，并能让三年后的接盘兄弟看得懂。”</p>
+            </div>
+        </div>
+
+        <div class="vs-card" data-click-reveal="fade">
+            <div class="vs-side stu">
+                <h4>【学生面对需求的反应】</h4>
+                <p>拿到题目，立刻狂开 IDE 盲打代码，从表结构写起，写到哪算哪，跑不通再硬堆逻辑。</p>
+            </div>
+            <div class="vs-side eng">
+                <h4>【工程师执行需求的刻板】</h4>
+                <p><strong>“代码未动，计划先行。”</strong> 强制画清楚时序图、API契约和容灾方案并过审后，才敲下第一行。追求谋定而后动。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.2 对比项 3 & 书单 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>少即是多，人胜于神</h2>
+            <div class="bar"></div>
+        </div>
+
+        <div class="vs-card" data-click-reveal="fade">
+            <div class="vs-side stu">
+                <h4>【学生崇拜的新技术】</h4>
+                <p>什么火用什么。在一个百人访问量的全家桶里死命塞入 Kafka 和微服务集群，以炫技为荣。</p>
+            </div>
+            <div class="vs-side eng">
+                <h4>【工程师对新技术的克制】</h4>
+                <p>技术永远只为商业解题。信奉 <strong>KISS（Keep It Simple, Stupid）</strong>原则。<br>“没有历史技术债务包袱的系统，才是好系统。”</p>
+            </div>
+        </div>
+
+        <div class="cr" style="margin-top:24px" data-click-reveal="fade">
+            <div class="cd" style="background:var(--blk);color:var(--wht)">
+                <div class="ct" style="color:var(--wht);font-size:20px;letter-spacing:1px;text-transform:uppercase">📚
+                    毕业工程师必读书柜</div>
+                <ul class="bl" style="margin-top:16px">
+                    <li style="color:#CCC;font-size:20px;padding-top:6px;padding-bottom:6px">《人月神话》<span
+                            style="display:block;font-size:16px;color:#888">工程管理界的惨痛圣经</span></li>
+                    <li style="color:#CCC;font-size:20px;padding-top:6px;padding-bottom:6px">《构建之法》(邹欣)<span
+                            style="display:block;font-size:16px;color:#888">中国本土最接地气指南</span></li>
+                    <li style="color:#CCC;font-size:20px;padding-top:6px;padding-bottom:6px">《架构整洁之道》<span
+                            style="display:block;font-size:16px;color:#888">高级编码武功秘籍</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 终极寄语过度页 -->
+    <div class="slide cover">
+        <div class="bg-dec"></div>
+        <h1 style="font-size:64px;margin-bottom:24px">“万事皆项目”</h1>
+        <div class="sub" style="font-size:32px;line-height:1.6;color:rgba(255,255,255,0.9)">
+            愿各位在不确定的AI浪潮里，<br>用坚定的工程原则，构建自己的星辰大海。</div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="slide section"><span class="num">04</span>
+        <h2>满载而归</h2>
+        <div class="ssub">团队项目终期答辩及颁奖</div>
+    </div>
+
+    <!-- 4.1 答辩展示 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>直面商业与技术的拷问：期末答辩</h2>
+            <div class="sub">检验过去 16 周的心血结晶</div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <ul class="bl">
+                    <li><strong>轮流登场 🏆：</strong><br>展示项目真机 Demo、讲解技术架构蓝图、剖析软件工程看板及排障纪实。</li>
+                    <li data-click-reveal="fade" style="margin-top:20px"><strong>现场防御
+                            🛡️：</strong><br>评委将针对高并发安全、可维护性代码分支策略以及 AI 协助真实比例进行极限提问。</li>
+                </ul>
+            </div>
+            <div class="c" data-click-reveal="scale">
+                <div
+                    style="background:var(--blk);color:var(--wht);border-radius:24px;padding:40px;height:100%;display:flex;flex-direction:column;justify-content:center;text-align:center">
+                    <div style="font-size:80px;margin-bottom:20px">🧑‍💻👩‍💻</div>
+                    <h3 style="font-size:28px;font-weight:800;margin-bottom:16px">展现你们这 16 周<br>踩过的坑与流过的汗</h3>
+                    <p style="color:#A1A1A6;font-size:20px;line-height:1.6">不仅要是代码的搬运工<br>更是系统的设计师</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.2 奖项预留 -->
+    <div class="slide content">
+        <div class="hdr" style="text-align:center">
+            <h2>🌟 最终高光归属 🌟</h2>
+        </div>
+        <div class="cr" style="margin-top:40px">
+            <div class="cd" data-click-reveal="fade"
+                style="text-align:center;background:var(--wht);border:2px solid #EBEBEB">
+                <div style="font-size:60px;margin-bottom:16px">💡</div>
+                <div class="ct">最佳业务直觉奖</div>
+                <div class="cx">精准切中业务痛点<br>原型与MVP自恰度满分</div>
+                <div
+                    style="margin-top:24px;height:4px;background:#EBEBEB;border-radius:2px;width:60px;margin-left:auto;margin-right:auto">
+                </div>
+            </div>
+            <div class="cd" data-click-reveal="fade"
+                style="text-align:center;background:var(--wht);border:2px solid #EBEBEB">
+                <div style="font-size:60px;margin-bottom:16px">⚙️</div>
+                <div class="ct">最佳工程实践奖</div>
+                <div class="cx">代码规范洁癖<br>高内聚与CI/CD部署最完整</div>
+                <div
+                    style="margin-top:24px;height:4px;background:#EBEBEB;border-radius:2px;width:60px;margin-left:auto;margin-right:auto">
+                </div>
+            </div>
+            <div class="cd" data-click-reveal="fade"
+                style="text-align:center;background:var(--wht);border:2px solid #EBEBEB">
+                <div style="font-size:60px;margin-bottom:16px">🤖</div>
+                <div class="ct">最佳 AI 先锋奖</div>
+                <div class="cx">将 Agent与Prompt工程<br>无缝嵌入全研发周期的典范</div>
+                <div
+                    style="margin-top:24px;height:4px;background:#EBEBEB;border-radius:2px;width:60px;margin-left:auto;margin-right:auto">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- END -->
+    <div class="slide cover">
+        <div class="bg-dec"></div>
+        <h1 style="font-size:56px">祝答辩顺利！全剧终。</h1>
+        <div class="sub" style="font-size:28px;line-height:1.6;color:rgba(255,255,255,0.9)">感谢这 16 周的陪伴，期待在技术的顶峰再会。
+        </div>
+        <div class="meta" style="color:var(--acc);font-weight:700"><span
+                style="color:#666;font-weight:400;font-size:16px">何庭钦 | 电子信息工程专业硕士</span></div>
+    </div>
+
+    <button class="pb" onclick="startPresentation(0)">▶ 播放演示</button>
+    <div class="po" id="po">
+        <div class="pw" id="pw"></div>
+    </div>
+    <div class="pi" id="pi"></div>
+    <div class="ph" id="ph"><kbd>→</kbd> <kbd>Space</kbd> 推进 &nbsp; <kbd>←</kbd> 回退<br><kbd>Home</kbd> 始 &nbsp;
+        <kbd>End</kbd> 终<br><kbd>Esc</kbd> 退出 &nbsp; <kbd>F</kbd> 全屏演示
+    </div>
+    <script>
+        (function () { const SS = document.querySelectorAll('.slide'), O = document.getElementById('po'), W = document.getElementById('pw'), I = document.getElementById('pi'), H = document.getElementById('ph'); SS.forEach((s, i) => { const pn = document.createElement('span'); pn.className = 'page-num'; pn.textContent = i + 1; s.appendChild(pn) }); let cur = 0, on = false, ht = null, animItems = [], animIdx = 0; function show(n, revealAll) { if (n < 0) n = 0; if (n >= SS.length) n = SS.length - 1; cur = n; W.innerHTML = ''; const cl = SS[cur].cloneNode(true); cl.style.boxShadow = 'none'; W.appendChild(cl); scale(); animItems = Array.from(cl.querySelectorAll('[data-click-reveal]')); if (revealAll) { animItems.forEach(it => it.classList.add('visible')); animIdx = animItems.length } else { animItems.forEach(it => it.classList.remove('visible')); animIdx = 0 } updateIndicator() } function updateIndicator() { const t = animItems.length; I.textContent = t > 0 && animIdx < t ? `${cur + 1} / ${SS.length}  ·  步骤 ${animIdx}/${t}` : `${cur + 1} / ${SS.length}` } function forward() { if (animIdx < animItems.length) { animItems[animIdx].classList.add('visible'); animIdx++; updateIndicator() } else if (cur < SS.length - 1) show(cur + 1, false) } function backward() { if (animIdx > 0) { animIdx--; animItems[animIdx].classList.remove('visible'); updateIndicator() } else if (cur > 0) show(cur - 1, true) } function scale() { const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720); W.style.transform = `scale(${s})` } window.startPresentation = function (si) { cur = si || 0; on = true; O.classList.add('active'); document.body.style.overflow = 'hidden'; show(cur, false); H.classList.add('show'); clearTimeout(ht); ht = setTimeout(() => H.classList.remove('show'), 2500); if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => { }) }; function stop() { on = false; O.classList.remove('active'); document.body.style.overflow = ''; H.classList.remove('show'); if (document.fullscreenElement) document.exitFullscreen().catch(() => { }); SS[cur].scrollIntoView({ behavior: 'smooth', block: 'center' }) } document.addEventListener('keydown', function (e) { if (!on && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); startPresentation(0); return } if (!on) return; switch (e.key) { case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': e.preventDefault(); forward(); break; case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); backward(); break; case 'Home': e.preventDefault(); show(0, false); break; case 'End': e.preventDefault(); show(SS.length - 1, true); break; case 'Escape': e.preventDefault(); stop(); break } }); O.addEventListener('click', function () { forward() }); O.addEventListener('contextmenu', function (e) { e.preventDefault(); backward() }); window.addEventListener('resize', function () { if (on) scale() }); document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && on) stop() }); const obs = new IntersectionObserver(entries => { if (on) return; entries.forEach(en => { if (en.isIntersecting) { en.target.querySelectorAll('[data-click-reveal]').forEach((it, i) => setTimeout(() => it.classList.add('visible'), 150 + i * 150)) } }) }, { threshold: 0.3 }); SS.forEach(s => obs.observe(s)) })();
+    </script>
+</body>
+
+</html>

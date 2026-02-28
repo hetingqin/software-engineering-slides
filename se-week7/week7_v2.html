@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>软件工程及体系结构 · 第7周</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --navy: #1B2A4A;
+            --navy-light: #2C3E6B;
+            --accent: #3B82F6;
+            --accent-dark: #2563EB;
+            --accent-light: #DBEAFE;
+            --orange: #F59E0B;
+            --orange-light: #FEF3C7;
+            --red: #EF4444;
+            --red-light: #FEE2E2;
+            --green: #10B981;
+            --green-light: #D1FAE5;
+            --purple: #8B5CF6;
+            --bg: #FFF;
+            --bg-alt: #F8FAFC;
+            --text: #1E293B;
+            --text2: #475569;
+            --border: #E2E8F0;
+            --font: 'Inter', 'Noto Sans SC', -apple-system, sans-serif
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            background: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            padding: 24px;
+            font-family: var(--font);
+            font-size: 22px
+        }
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
+            display: flex;
+            flex-direction: column
+        }
+
+        .page-num {
+            position: absolute;
+            bottom: 12px;
+            right: 20px;
+            font-size: 16px;
+            color: rgba(0, 0, 0, .25);
+            font-weight: 600;
+            z-index: 5
+        }
+
+        .slide.cover .page-num,
+        .slide.section .page-num {
+            color: rgba(255, 255, 255, .3)
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--navy), var(--accent));
+            z-index: 10
+        }
+
+        .slide.cover {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light), #1e3a6e);
+            color: #fff;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px
+        }
+
+        .slide.cover::before {
+            display: none
+        }
+
+        .cover .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, .15);
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px
+        }
+
+        .cover h1 {
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1.15
+        }
+
+        .cover .sub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 18px;
+            opacity: .85
+        }
+
+        .cover .meta {
+            position: absolute;
+            bottom: 36px;
+            font-size: 20px;
+            opacity: .5;
+            line-height: 1.6
+        }
+
+        .cover .decor {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, .08);
+            right: -80px;
+            top: -80px
+        }
+
+        .cover .decor2 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, .06);
+            left: -60px;
+            bottom: -60px
+        }
+
+        .slide.section {
+            background: var(--navy);
+            color: #fff;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 80px
+        }
+
+        .slide.section::before {
+            display: none
+        }
+
+        .section .num {
+            font-size: 160px;
+            font-weight: 900;
+            opacity: .1;
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%)
+        }
+
+        .section h2 {
+            font-size: 60px;
+            font-weight: 700
+        }
+
+        .section .ssub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 14px;
+            opacity: .7;
+            border-left: 4px solid var(--accent);
+            padding-left: 18px
+        }
+
+        .slide.content {
+            padding: 40px 60px 32px
+        }
+
+        .hdr {
+            margin-bottom: 16px
+        }
+
+        .hdr h2 {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.2
+        }
+
+        .hdr .sub {
+            font-size: 20px;
+            color: var(--text2);
+            margin-top: 6px
+        }
+
+        .hdr .bar {
+            width: 56px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 3px;
+            margin-top: 10px
+        }
+
+        .bl {
+            list-style: none
+        }
+
+        .bl li {
+            font-size: 22px;
+            color: var(--text);
+            padding: 7px 0 7px 28px;
+            position: relative;
+            line-height: 1.5
+        }
+
+        .bl li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent)
+        }
+
+        .bl li strong {
+            color: var(--navy)
+        }
+
+        .cr {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            align-content: center
+        }
+
+        .cd {
+            flex: 1;
+            min-width: 180px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px
+        }
+
+        .cd .ci {
+            font-size: 32px;
+            margin-bottom: 10px
+        }
+
+        .cd .ct {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 6px
+        }
+
+        .cd .cx {
+            font-size: 20px;
+            color: var(--text2);
+            line-height: 1.5
+        }
+
+        .cd.a {
+            border-top: 4px solid var(--accent)
+        }
+
+        .cd.o {
+            border-top: 4px solid var(--orange)
+        }
+
+        .cd.r {
+            border-top: 4px solid var(--red)
+        }
+
+        .cd.g {
+            border-top: 4px solid var(--green)
+        }
+
+        .cd.p {
+            border-top: 4px solid var(--purple)
+        }
+
+        .tc {
+            display: flex;
+            gap: 36px;
+            flex: 1;
+            margin-top: 20px;
+            align-items: flex-start
+        }
+
+        .tc .c {
+            flex: 1
+        }
+
+        .qt {
+            background: var(--bg-alt);
+            border-left: 5px solid var(--accent);
+            padding: 20px 28px;
+            border-radius: 0 12px 12px 0;
+            margin: 16px 0;
+            font-size: 22px;
+            line-height: 1.6;
+            color: var(--text);
+            font-style: italic
+        }
+
+        .fb {
+            text-align: center;
+            padding: 28px;
+            margin: 16px 0;
+            background: var(--navy);
+            border-radius: 12px;
+            color: #fff
+        }
+
+        .slide [data-click-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .5s ease, transform .5s ease
+        }
+
+        .slide [data-click-reveal].visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .slide [data-click-reveal="fade"] {
+            transform: none
+        }
+
+        .slide [data-click-reveal="left"] {
+            transform: translateX(-30px)
+        }
+
+        .slide [data-click-reveal="right"] {
+            transform: translateX(30px)
+        }
+
+        .po {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: none
+        }
+
+        .po.active {
+            display: flex
+        }
+
+        .po .pw {
+            width: 1280px;
+            height: 720px;
+            transform-origin: center center
+        }
+
+        .pi {
+            position: fixed;
+            bottom: 20px;
+            right: 32px;
+            z-index: 10000;
+            color: rgba(255, 255, 255, .4);
+            font-family: var(--font);
+            font-size: 20px;
+            font-weight: 500
+        }
+
+        .ph {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            background: rgba(0, 0, 0, .85);
+            color: #fff;
+            padding: 36px 56px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 22px;
+            line-height: 2.2;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .4s
+        }
+
+        .ph.show {
+            opacity: 1
+        }
+
+        .ph kbd {
+            background: rgba(255, 255, 255, .15);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, .25);
+            font-family: monospace
+        }
+
+        .pb {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 100;
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 22px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+            transition: transform .2s, background .2s
+        }
+
+        .pb:hover {
+            background: var(--accent);
+            transform: translateY(-2px)
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- COVER -->
+    <div class="slide cover">
+        <div class="decor"></div>
+        <div class="decor2"></div>
+        <div class="badge">Software Engineering · Week 7</div>
+        <h1>软件工程及体系结构</h1>
+        <div class="sub">核心开发技能与持续交付：消除低效，打造自动化流水线</div>
+        <div class="meta">电子信息工程专业硕士 | 3 学时<br>主讲人 | 何庭钦 | 271880026@qq.com</div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="slide section"><span class="num">01</span>
+        <h2>第一讲</h2>
+        <div class="ssub">技术债务——代码中的隐形负债</div>
+    </div>
+
+    <!-- 1.1 什么是技术债务 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>什么是技术债务？</h2>
+            <div class="sub">为赶进度而积累的代码质量问题</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <ul class="bl">
+                    <li>单元测试"以后再补"</li>
+                    <li>需求变了但不改架构，打补丁绕道走</li>
+                    <li>接手的旧系统没文档没注释，谁也不敢动</li>
+                </ul>
+                <div class="qt" data-click-reveal="fade" style="font-style:normal;margin-top:16px">
+                    <strong>利息效应：</strong>原本 4 天的功能现在需要 5 天——多出的 1 天就是利息。随着债务积累，利息越来越高。
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="fb">
+                    <p style="font-size:22px">技术债务 ≈ 金融债务<br><br>有利息、会滚雪球<br>但有时候也是合理的策略</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.2 良性负债 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>良性负债 vs 恶性负债</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd g" style="flex:1">
+                <div class="ci">✅</div>
+                <div class="ct">良性负债（战略性欠债）</div>
+                <div class="cx">清楚知道债务代价和收益<br>为抢占市场先机有意为之<br>已制定重构计划<br><br>"先发布，后续安排两个 Sprint 还债"</div>
+            </div>
+            <div class="cd r" data-click-reveal="fade" style="flex:1">
+                <div class="ci">❌</div>
+                <div class="ct">恶性负债（无意识欠债）</div>
+                <div class="cx">团队对好的编码习惯一无所知<br>根本不知道自己在欠债<br>既没收益又要被利息拖垮<br><br>"什么是分层架构？"</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.3 四象限 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>技术债务四象限分类</h2>
+            <div class="sub">Martin Fowler 的分类框架</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="cr" style="margin-top:0;gap:12px;flex-direction:column">
+                    <div class="cd r" style="min-width:auto">
+                        <div class="ct">轻率 × 有意</div>
+                        <div class="cx">"没时间做设计"→短期快但利息累积</div>
+                    </div>
+                    <div class="cd g" data-click-reveal="fade" style="min-width:auto">
+                        <div class="ct">谨慎 × 有意（最可控）</div>
+                        <div class="cx">"先发布，后续两个Sprint还债"→有计划的战略负债</div>
+                    </div>
+                    <div class="cd r" data-click-reveal="fade" style="min-width:auto">
+                        <div class="ct">轻率 × 无意（最危险）</div>
+                        <div class="cx">"什么是分层？"→不知道在欠债，无声拖垮</div>
+                    </div>
+                    <div class="cd o" data-click-reveal="fade" style="min-width:auto">
+                        <div class="ct">谨慎 × 无意</div>
+                        <div class="cx">"当时确实无法预见业务这样发展"→难以避免</div>
+                    </div>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right" style="display:flex;align-items:center;justify-content:center">
+                <img src="../../assets/9ee240f45ed039399819232419bb3088.png" alt="技术债务四象限"
+                    style="max-height:480px;max-width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.4 识别信号 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>识别技术债务的 5 个信号</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd a">
+                <div class="ci">📉</div>
+                <div class="ct">开发速度下降</div>
+                <div class="cx">同样复杂度的功能<br>之前一周，现在两周<br>Sprint 故事点持续下滑</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ci">🧪</div>
+                <div class="ct">测试覆盖率低</div>
+                <div class="cx">覆盖率检测工具<br>显示持续下降</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ci">⚠️</div>
+                <div class="ct">Lint 错误率高</div>
+                <div class="cx">eslint/pylint<br>报出大量警告</div>
+            </div>
+            <div class="cd r" data-click-reveal="fade">
+                <div class="ci">🐛</div>
+                <div class="ct">Bug 不降反升</div>
+                <div class="cx">即使没有新功能<br>Bug 数量居高不下</div>
+            </div>
+            <div class="cd p" data-click-reveal="fade">
+                <div class="ci">📦</div>
+                <div class="ct">技术栈过时</div>
+                <div class="cx">框架/语言版本<br>已不再维护更新</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.5 三种还债策略 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>三种还债策略</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="cr" style="margin-top:0;flex-direction:column;gap:12px">
+                    <div class="cd r" style="min-width:auto">
+                        <div class="ct">🔄 重写（一次还清）</div>
+                        <div class="cx">推翻重来，基于当前需求重新设计。工作量大，风险高。适合有成熟开源方案可替代的场景。</div>
+                    </div>
+                    <div class="cd o" data-click-reveal="fade" style="min-width:auto">
+                        <div class="ct">🔧 维持（只还利息）</div>
+                        <div class="cx">修修补补维持运转。成本最低，适用于即将下线的系统。但如果系统还在发展，成本只会越来越高。</div>
+                    </div>
+                    <div class="cd g" data-click-reveal="fade" style="min-width:auto">
+                        <div class="ct">♻️ 重构（分期付款）✨ 推荐</div>
+                        <div class="cx">不改变外部行为，逐步改善内部结构。风险可控、对业务影响最小。纠结不决时选这个。</div>
+                    </div>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right" style="display:flex;align-items:center;justify-content:center">
+                <img src="../../assets/7951ea8fb6d669260055ab07c624fb16.png" alt="设计质量与速度"
+                    style="max-height:480px;max-width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="slide section"><span class="num">02</span>
+        <h2>第二讲</h2>
+        <div class="ssub">高效开发的三大原则</div>
+    </div>
+
+    <!-- 2.1 积极主动 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>原则一：积极主动</h2>
+            <div class="sub">扩大你的影响圈</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <ul class="bl">
+                    <li><strong>关注圈：</strong>你关注的所有事（天气、政策、他人行为）</li>
+                    <li><strong>影响圈：</strong>你能改变的事（技能提升、工作方式）</li>
+                </ul>
+                <div class="qt" data-click-reveal="fade" style="font-style:normal;margin-top:14px">
+                    <strong>练习：</strong>第一反应从"不可能""没用"→ 暂停几秒 → "我试试""我再想想"
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="fb">
+                    <p style="font-size:22px">产品经理需求不完善？<br><br>与其等做完后抱怨<br>不如在接到需求时就用极端场景验证：<br>"文字超长？网络断开？数据为空？"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.2 以终为始 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>原则二：以终为始</h2>
+            <div class="sub">先想清楚目标再动手</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="qt" style="font-style:normal;border-left-color:var(--red)">
+                    <strong>反面案例：</strong>新人被分配开发 CMS，觉得手写映射代码太枯燥，开始写代码生成工具——为此又学 Winform……几个月过去，CMS 还停留在最初几行代码。
+                </div>
+                <div class="fb" data-click-reveal="fade" style="margin-top:16px">
+                    <p style="font-size:22px">经常停下来问自己：<br>我的原始目标是什么？<br>我正在做的事是我的目标吗？</p>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="cr" style="flex-direction:column;gap:12px;margin-top:0">
+                    <div class="cd a" style="min-width:auto">
+                        <div class="ct">🎯 目标</div>
+                        <div class="cx">定期审视是否偏离</div>
+                    </div>
+                    <div class="cd o" style="min-width:auto">
+                        <div class="ct">📏 原则</div>
+                        <div class="cx">"先跑通再优化"、"DRY"、"PR 尽量小"</div>
+                    </div>
+                    <div class="cd g" style="min-width:auto">
+                        <div class="ct">📋 计划</div>
+                        <div class="cx">细化任务、给出时间点<br>用进度压力倒逼专注</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.3 要事第一 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>原则三：要事第一</h2>
+            <div class="sub">时间四象限法</div>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd r">
+                <div class="ct">🔴 重要且紧急</div>
+                <div class="cx">立即处理<br>生产故障、关键 Bug</div>
+            </div>
+            <div class="cd a" data-click-reveal="fade">
+                <div class="ct">🔵 重要不紧急 ⭐</div>
+                <div class="cx">分配最多时间<br>重构、测试、需求评审<br><strong>忽视它 → 变成紧急</strong></div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ct">🟡 紧急不重要</div>
+                <div class="cx">集中批量处理<br>专注时关闭通知<br>完成一阶段后统一回复</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ct">🟢 不重要不紧急</div>
+                <div class="cx">能不做就不做<br>非必要更新<br>无关紧要的技术讨论</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="slide section"><span class="num">03</span>
+        <h2>第三讲</h2>
+        <div class="ssub">持续集成与持续交付</div>
+    </div>
+
+    <!-- 3.1 集成的痛苦 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>集成的痛苦与解法</h2>
+            <div class="sub">Martin Fowler: "如果一件事很痛苦，那就更频繁地做"</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="cr" style="margin-top:0;flex-direction:column;gap:12px">
+                    <div class="cd r" style="min-width:auto">
+                        <div class="ct">😱 瀑布时代的集成</div>
+                        <div class="cx">各开发者长期独立工作<br>最后同时合并——编译失败！接口不一致！配置冲突！<br>可能持续数天甚至数周</div>
+                    </div>
+                    <div class="cd g" data-click-reveal="fade" style="min-width:auto">
+                        <div class="ct">✅ 持续集成（CI）</div>
+                        <div class="cx">每次代码提交自动触发编译和全量测试<br>一个测试失败就不允许合并<br>主干代码始终可用</div>
+                    </div>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right" style="display:flex;align-items:center;justify-content:center">
+                <img src="../../assets/8de10a3d3b2e46e2f8b945bdf4d37fbf.png" alt="CI流水线"
+                    style="max-height:480px;max-width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.2 部署演进 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>部署方式的三代演进</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd r">
+                <div class="ci">😓</div>
+                <div class="ct">手动部署</div>
+                <div class="cx">熬夜改配置、编译打包<br>改错一个符号→全国宕机<br>繁琐、易错、耗时长</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ci">🕐</div>
+                <div class="ct">每日构建</div>
+                <div class="cx">下班后自动获取代码<br>编译、部署到测试环境<br>初步自动化但不保证质量</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ci">🚀</div>
+                <div class="ct">持续交付 / 持续部署</div>
+                <div class="cx">CI通过后自动打包部署<br>生产发布只需"点一个按钮"<br>人为失误几乎消除</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.3 持续部署 + Feature Flag -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>持续部署与功能开关</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <p style="font-size:22px;line-height:1.6;margin-bottom:14px">
+                    <strong>持续部署</strong>：取消人工确认环节，代码通过所有自动化测试后直接发布到生产环境。</p>
+                <ul class="bl">
+                    <li>对测试覆盖率要求极高（通常 90%+）</li>
+                    <li>需要完善的监控和报警机制</li>
+                </ul>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="cd a" style="min-width:auto">
+                    <div class="ci">🏳️</div>
+                    <div class="ct">功能开关（Feature Flag）</div>
+                    <div class="cx">新功能上线时默认关闭<br>通过配置逐步对部分用户开放<br>发现问题→关闭开关即可<br>无需回滚代码</div>
+                </div>
+            </div>
+        </div>
+        <div class="tc" data-click-reveal="fade" style="margin-top:12px;flex:0">
+            <div class="c" style="display:flex;align-items:center;justify-content:center">
+                <img src="../../assets/a2e354c88a3bf0df871174980ef3a900.png" alt="持续部署流程"
+                    style="max-height:200px;max-width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.4 工具与准备 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>搭建持续交付的准备工作</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd a">
+                <div class="ci">📂</div>
+                <div class="ct">源码管理</div>
+                <div class="cx">Git 是标配<br>所有代码纳入版本管理</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ci">🧪</div>
+                <div class="ct">自动化测试</div>
+                <div class="cx">编写单元测试和集成测试<br>覆盖率可以逐步提升</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ci">📦</div>
+                <div class="ct">自动化打包部署</div>
+                <div class="cx">脚本化编译、打包<br>自动部署到目标环境</div>
+            </div>
+            <div class="cd p" data-click-reveal="fade">
+                <div class="ci">🛠️</div>
+                <div class="ct">CI 工具选择</div>
+                <div class="cx">Jenkins（开源强大）<br>GitHub Actions（集成好）<br>GitLab CI（性价比高）</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 课后任务 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>📋 课后研讨任务</h2>
+            <div class="sub">技术债务与自动化的抉择</div>
+            <div class="bar"></div>
+        </div>
+        <div class="qt" style="font-style:normal"><strong>场景：</strong>接管遗留项目，无任何自动化测试。距上线还有 1 周，要在旧系统上新增大型促销功能。</div>
+        <div class="cr" data-click-reveal="fade">
+            <div class="cd a" style="flex:1">
+                <div class="ct">任务一</div>
+                <div class="cx">硬加功能 3 天（引入严重耦合） vs 顺便重构 6 天。用技术债务四象限模型分析你的决策逻辑。</div>
+            </div>
+            <div class="cd o" style="flex:1">
+                <div class="ct">任务二</div>
+                <div class="cx">上线后获得 2 个月缓冲期，设计一份持续集成推行方案：工具选择、团队规范、第一周目标？</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- END -->
+    <div class="slide cover">
+        <div class="decor"></div>
+        <div class="decor2"></div>
+        <h1 style="font-size:56px">Thanks</h1>
+        <div class="sub">核心开发技能与持续交付</div>
+        <div class="meta">何庭钦 | 271880026@qq.com</div>
+    </div>
+
+    <button class="pb" onclick="startPresentation(0)">▶ 演示模式</button>
+    <div class="po" id="po">
+        <div class="pw" id="pw"></div>
+    </div>
+    <div class="pi" id="pi"></div>
+    <div class="ph" id="ph"><kbd>→</kbd> <kbd>Space</kbd> 下一步 &nbsp; <kbd>←</kbd> 上一步<br><kbd>Home</kbd> 第一页 &nbsp;
+        <kbd>End</kbd> 最后一页<br><kbd>Esc</kbd> 退出 &nbsp; <kbd>F</kbd> 进入演示</div>
+
+    <script>
+        (function () { const SS = document.querySelectorAll('.slide'), O = document.getElementById('po'), W = document.getElementById('pw'), I = document.getElementById('pi'), H = document.getElementById('ph'); SS.forEach((s, i) => { const pn = document.createElement('span'); pn.className = 'page-num'; pn.textContent = i + 1; s.appendChild(pn) }); let cur = 0, on = false, ht = null, animItems = [], animIdx = 0; function show(n, revealAll) { if (n < 0) n = 0; if (n >= SS.length) n = SS.length - 1; cur = n; W.innerHTML = ''; const cl = SS[cur].cloneNode(true); cl.style.boxShadow = 'none'; W.appendChild(cl); scale(); animItems = Array.from(cl.querySelectorAll('[data-click-reveal]')); if (revealAll) { animItems.forEach(it => it.classList.add('visible')); animIdx = animItems.length } else { animItems.forEach(it => it.classList.remove('visible')); animIdx = 0 } updateIndicator() } function updateIndicator() { const t = animItems.length; I.textContent = t > 0 && animIdx < t ? `${cur + 1} / ${SS.length}  ·  步骤 ${animIdx}/${t}` : `${cur + 1} / ${SS.length}` } function forward() { if (animIdx < animItems.length) { animItems[animIdx].classList.add('visible'); animIdx++; updateIndicator() } else if (cur < SS.length - 1) show(cur + 1, false) } function backward() { if (animIdx > 0) { animIdx--; animItems[animIdx].classList.remove('visible'); updateIndicator() } else if (cur > 0) show(cur - 1, true) } function scale() { const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720); W.style.transform = `scale(${s})` } window.startPresentation = function (si) { cur = si || 0; on = true; O.classList.add('active'); document.body.style.overflow = 'hidden'; show(cur, false); H.classList.add('show'); clearTimeout(ht); ht = setTimeout(() => H.classList.remove('show'), 2500); if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => { }) }; function stop() { on = false; O.classList.remove('active'); document.body.style.overflow = ''; H.classList.remove('show'); if (document.fullscreenElement) document.exitFullscreen().catch(() => { }); SS[cur].scrollIntoView({ behavior: 'smooth', block: 'center' }) } document.addEventListener('keydown', function (e) { if (!on && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); startPresentation(0); return } if (!on) return; switch (e.key) { case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': e.preventDefault(); forward(); break; case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); backward(); break; case 'Home': e.preventDefault(); show(0, false); break; case 'End': e.preventDefault(); show(SS.length - 1, true); break; case 'Escape': e.preventDefault(); stop(); break } }); O.addEventListener('click', function () { forward() }); O.addEventListener('contextmenu', function (e) { e.preventDefault(); backward() }); window.addEventListener('resize', function () { if (on) scale() }); document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && on) stop() }); const obs = new IntersectionObserver(entries => { if (on) return; entries.forEach(en => { if (en.isIntersecting) { en.target.querySelectorAll('[data-click-reveal]').forEach((it, i) => setTimeout(() => it.classList.add('visible'), 200 + i * 200)) } }) }, { threshold: 0.3 }); SS.forEach(s => obs.observe(s)) })();
+    </script>
+</body>
+
+</html>

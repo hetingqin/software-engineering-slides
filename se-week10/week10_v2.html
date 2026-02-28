@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>软件工程及体系结构 · 第10周</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --navy: #1B2A4A;
+            --navy-light: #2C3E6B;
+            --accent: #3B82F6;
+            --accent-dark: #2563EB;
+            --accent-light: #DBEAFE;
+            --orange: #F59E0B;
+            --orange-light: #FEF3C7;
+            --red: #EF4444;
+            --red-light: #FEE2E2;
+            --green: #10B981;
+            --green-light: #D1FAE5;
+            --purple: #8B5CF6;
+            --bg: #FFF;
+            --bg-alt: #F8FAFC;
+            --text: #1E293B;
+            --text2: #475569;
+            --border: #E2E8F0;
+            --font: 'Inter', 'Noto Sans SC', -apple-system, sans-serif
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            background: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            padding: 24px;
+            font-family: var(--font);
+            font-size: 22px
+        }
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
+            display: flex;
+            flex-direction: column
+        }
+
+        .page-num {
+            position: absolute;
+            bottom: 12px;
+            right: 20px;
+            font-size: 16px;
+            color: rgba(0, 0, 0, .25);
+            font-weight: 600;
+            z-index: 5
+        }
+
+        .slide.cover .page-num,
+        .slide.section .page-num {
+            color: rgba(255, 255, 255, .3)
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--navy), var(--accent));
+            z-index: 10
+        }
+
+        .slide.cover {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light), #1e3a6e);
+            color: #fff;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px
+        }
+
+        .slide.cover::before {
+            display: none
+        }
+
+        .cover .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, .15);
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px
+        }
+
+        .cover h1 {
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1.15
+        }
+
+        .cover .sub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 18px;
+            opacity: .85
+        }
+
+        .cover .meta {
+            position: absolute;
+            bottom: 36px;
+            font-size: 20px;
+            opacity: .5;
+            line-height: 1.6
+        }
+
+        .cover .decor {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, .08);
+            right: -80px;
+            top: -80px
+        }
+
+        .cover .decor2 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, .06);
+            left: -60px;
+            bottom: -60px
+        }
+
+        .slide.section {
+            background: var(--navy);
+            color: #fff;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 80px
+        }
+
+        .slide.section::before {
+            display: none
+        }
+
+        .section .num {
+            font-size: 160px;
+            font-weight: 900;
+            opacity: .1;
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%)
+        }
+
+        .section h2 {
+            font-size: 60px;
+            font-weight: 700
+        }
+
+        .section .ssub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 14px;
+            opacity: .7;
+            border-left: 4px solid var(--accent);
+            padding-left: 18px
+        }
+
+        .slide.content {
+            padding: 40px 60px 32px
+        }
+
+        .hdr {
+            margin-bottom: 16px
+        }
+
+        .hdr h2 {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.2
+        }
+
+        .hdr .sub {
+            font-size: 20px;
+            color: var(--text2);
+            margin-top: 6px
+        }
+
+        .hdr .bar {
+            width: 56px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 3px;
+            margin-top: 10px
+        }
+
+        .bl {
+            list-style: none
+        }
+
+        .bl li {
+            font-size: 22px;
+            color: var(--text);
+            padding: 7px 0 7px 28px;
+            position: relative;
+            line-height: 1.5
+        }
+
+        .bl li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent)
+        }
+
+        .bl li strong {
+            color: var(--navy)
+        }
+
+        .cr {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            align-content: center
+        }
+
+        .cd {
+            flex: 1;
+            min-width: 180px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px
+        }
+
+        .cd .ci {
+            font-size: 32px;
+            margin-bottom: 10px
+        }
+
+        .cd .ct {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 6px
+        }
+
+        .cd .cx {
+            font-size: 20px;
+            color: var(--text2);
+            line-height: 1.5
+        }
+
+        .cd.a {
+            border-top: 4px solid var(--accent)
+        }
+
+        .cd.o {
+            border-top: 4px solid var(--orange)
+        }
+
+        .cd.r {
+            border-top: 4px solid var(--red)
+        }
+
+        .cd.g {
+            border-top: 4px solid var(--green)
+        }
+
+        .cd.p {
+            border-top: 4px solid var(--purple)
+        }
+
+        .tc {
+            display: flex;
+            gap: 36px;
+            flex: 1;
+            margin-top: 20px;
+            align-items: flex-start
+        }
+
+        .tc .c {
+            flex: 1
+        }
+
+        .qt {
+            background: var(--bg-alt);
+            border-left: 5px solid var(--accent);
+            padding: 20px 28px;
+            border-radius: 0 12px 12px 0;
+            margin: 16px 0;
+            font-size: 22px;
+            line-height: 1.6;
+            color: var(--text);
+            font-style: italic
+        }
+
+        .fb {
+            text-align: center;
+            padding: 28px;
+            margin: 16px 0;
+            background: var(--navy);
+            border-radius: 12px;
+            color: #fff
+        }
+
+        .slide [data-click-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .5s ease, transform .5s ease
+        }
+
+        .slide [data-click-reveal].visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .slide [data-click-reveal="fade"] {
+            transform: none
+        }
+
+        .slide [data-click-reveal="left"] {
+            transform: translateX(-30px)
+        }
+
+        .slide [data-click-reveal="right"] {
+            transform: translateX(30px)
+        }
+
+        .po {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: none
+        }
+
+        .po.active {
+            display: flex
+        }
+
+        .po .pw {
+            width: 1280px;
+            height: 720px;
+            transform-origin: center center
+        }
+
+        .pi {
+            position: fixed;
+            bottom: 20px;
+            right: 32px;
+            z-index: 10000;
+            color: rgba(255, 255, 255, .4);
+            font-family: var(--font);
+            font-size: 20px;
+            font-weight: 500
+        }
+
+        .ph {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            background: rgba(0, 0, 0, .85);
+            color: #fff;
+            padding: 36px 56px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 22px;
+            line-height: 2.2;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .4s
+        }
+
+        .ph.show {
+            opacity: 1
+        }
+
+        .ph kbd {
+            background: rgba(255, 255, 255, .15);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, .25);
+            font-family: monospace
+        }
+
+        .pb {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 100;
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 22px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+            transition: transform .2s, background .2s
+        }
+
+        .pb:hover {
+            background: var(--accent);
+            transform: translateY(-2px)
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="slide cover">
+        <div class="decor"></div>
+        <div class="decor2"></div>
+        <div class="badge">Software Engineering · Week 10</div>
+        <h1>软件工程及体系结构</h1>
+        <div class="sub">安全、发布与 DevOps：从代码到生产的最后一公里</div>
+        <div class="meta">电子信息工程专业硕士 | 3 学时<br>主讲人 | 何庭钦 | 271880026@qq.com</div>
+    </div>
+
+    <div class="slide section"><span class="num">01</span>
+        <h2>第一讲</h2>
+        <div class="ssub">软件安全——开发者第一道防线</div>
+    </div>
+
+    <!-- 1.1 安全的重要性 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>安全为什么是架构问题？</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <ul class="bl">
+                    <li>Facebook 5000 万用户数据泄露 → 市值蒸发百亿美元</li>
+                    <li>Equifax 漏洞未修复 → 1.47 亿用户社保号泄露</li>
+                    <li>安全问题不是出事后才想起的"附加项"</li>
+                </ul>
+                <div class="fb" data-click-reveal="fade" style="margin-top:16px">
+                    <p style="font-size:22px">安全必须在设计阶段就融入架构</p>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="qt" style="font-style:normal">
+                    <strong>OWASP：</strong>Open Web Application Security Project，开放Web应用安全项目。每年发布 Top 10 最常见安全漏洞榜单。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.2 SQL注入 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>OWASP #1：注入攻击（SQL Injection）</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="qt" style="font-style:normal;border-left-color:var(--red)">
+                    <strong>攻击方式：</strong><br>
+                    在输入框中填写：<code
+                        style="background:#FEE2E2;padding:2px 8px;border-radius:4px">admin' OR '1'='1</code><br><br>
+                    服务端拼接后：<br>
+                    <code
+                        style="background:#FEE2E2;padding:2px 8px;border-radius:4px">WHERE name='admin' OR '1'='1'</code><br><br>
+                    条件恒真 → 绕过认证！
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="cd g" style="min-width:auto">
+                    <div class="ci">🛡️</div>
+                    <div class="ct">防御方式</div>
+                    <div class="cx">① 使用参数化查询（Prepared Statement）<br>② 永远不用字符串拼接 SQL<br>③ 限制数据库账户权限<br>④ 输入验证——白名单优于黑名单
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.3 XSS + CSRF -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>XSS 跨站脚本 & CSRF 跨站请求伪造</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd r" style="flex:1">
+                <div class="ci">💉</div>
+                <div class="ct">XSS 攻击</div>
+                <div class="cx">在页面中注入恶意 JS 脚本<br><br>
+                    <code
+                        style="font-size:16px;background:#FEE2E2;padding:2px 4px;border-radius:4px">&lt;script&gt;alert('你被攻击了')&lt;/script&gt;</code><br><br>
+                    <strong>防御：</strong>对所有用户输入做 HTML 编码<br>使用 CSP（Content Security Policy）
+                </div>
+            </div>
+            <div class="cd o" data-click-reveal="fade" style="flex:1">
+                <div class="ci">🎭</div>
+                <div class="ct">CSRF 攻击</div>
+                <div class="cx">诱骗已登录用户点击恶意链接<br>浏览器自动携带 Cookie 访问<br>经典场景：收到邮件→银行自动转账<br><br>
+                    <strong>防御：</strong>使用 CSRF Token<br>检查 Referer/Origin
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.4 安全开发习惯 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>安全开发的四个好习惯</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd a">
+                <div class="ci">🔑</div>
+                <div class="ct">密码安全</div>
+                <div class="cx">不存明文密码<br>加盐哈希（bcrypt）<br>不在代码中硬编码密钥</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ci">📋</div>
+                <div class="ct">最小权限</div>
+                <div class="cx">数据库用户只给必要权限<br>API 按角色控制访问<br>服务间也用最小权限</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ci">🔄</div>
+                <div class="ct">依赖更新</div>
+                <div class="cx">及时修复第三方库漏洞<br>启用 Dependabot<br>定期审计依赖清单</div>
+            </div>
+            <div class="cd r" data-click-reveal="fade">
+                <div class="ci">📊</div>
+                <div class="ct">日志与监控</div>
+                <div class="cx">记录所有安全相关事件<br>异常登录 → 实时告警<br>事后可追溯</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide section"><span class="num">02</span>
+        <h2>第二讲</h2>
+        <div class="ssub">软件发布策略——安全上线的艺术</div>
+    </div>
+
+    <!-- 2.1 语义化版本号 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>语义化版本号（SemVer）</h2>
+            <div class="sub">版本号承载的是一种契约</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="fb" style="margin-bottom:16px">
+                    <p style="font-size:36px;font-weight:800">主版本 . 次版本 . 修订号</p>
+                    <p style="font-size:24px;margin-top:8px">MAJOR . MINOR . PATCH</p>
+                </div>
+                <ul class="bl">
+                    <li><strong>主版本（MAJOR）：</strong>1.x→2.0，不兼容的 API 变更</li>
+                    <li><strong>次版本（MINOR）：</strong>新增功能，向下兼容</li>
+                    <li><strong>修订号（PATCH）：</strong>Bug 修复，向下兼容</li>
+                </ul>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="qt" style="font-style:normal">
+                    <strong>示例：</strong>jQuery 3.6.0
+                    <br>MAJOR=3（有破坏性变更）
+                    <br>MINOR=6（新增6轮功能）
+                    <br>PATCH=0（本轮尚无修复）
+                </div>
+                <div class="qt" data-click-reveal="fade" style="font-style:normal;border-left-color:var(--orange)">
+                    <strong>⚠️ 0.x 版本：</strong>主版本号为 0 表示 API 尚未稳定，任何版本都可能有破坏性变更。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.2 五种发布策略 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>五种发布策略对比</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd r">
+                <div class="ct">🛑 停机发布</div>
+                <div class="cx">停服维护<br>全量替换<br>最简单但用户影响最大</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ct">🔄 滚动发布</div>
+                <div class="cx">逐台替换实例<br>服务不中断<br>风险渐进式暴露</div>
+            </div>
+            <div class="cd a" data-click-reveal="fade">
+                <div class="ct">🐦 金丝雀发布</div>
+                <div class="cx">先给 5% 用户升级<br>监控无异常→逐步扩大<br>观测数据做决策</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ct">🔵🟢 蓝绿部署</div>
+                <div class="cx">两套完整环境同时运行<br>切换入口即完成发布<br>回滚极快但成本翻倍</div>
+            </div>
+            <div class="cd p" data-click-reveal="fade">
+                <div class="ct">🏳️ Feature Flag</div>
+                <div class="cx">代码已上线但功能开关关闭<br>配置开启即"发布"<br>发现问题即关闭</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.3 发布清单 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>发布前检查清单</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd a">
+                <div class="ci">✅</div>
+                <div class="ct">上线前</div>
+                <div class="cx">代码审查 完成 ✓<br>自动化测试 全部通过 ✓<br>数据库迁移脚本 已验证 ✓<br>监控和告警 已就位 ✓</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ci">📋</div>
+                <div class="ct">上线中</div>
+                <div class="cx">按发布策略分步执行<br>实时关注关键指标<br>错误率、延迟、CPU、内存<br>准备好回滚方案</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ci">🔍</div>
+                <div class="ct">上线后</div>
+                <div class="cx">持续观察至少 30 分钟<br>确认无异常后关闭告警升级<br>撰写发布邮件通知团队<br>更新版本文档</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide section"><span class="num">03</span>
+        <h2>第三讲</h2>
+        <div class="ssub">DevOps——打通开发与运维的壁垒</div>
+    </div>
+
+    <!-- 3.1 传统困境 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>开发与运维的"甩锅困境"</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd a" style="flex:1">
+                <div class="ci">👨‍💻</div>
+                <div class="ct">开发团队（Dev）</div>
+                <div class="cx">追求快速迭代<br>频繁发布新功能<br>KPI：交付速度、功能数量<br><br>"赶紧上线！"</div>
+            </div>
+            <div class="cd r" data-click-reveal="fade" style="flex:1">
+                <div class="ci">🔧</div>
+                <div class="ct">运维团队（Ops）</div>
+                <div class="cx">追求系统稳定<br>害怕每次发布带来故障<br>KPI：系统可用性、事故数<br><br>"别再上线了！"</div>
+            </div>
+        </div>
+        <div class="fb" data-click-reveal="fade" style="margin-top:16px">
+            <p style="font-size:22px">DevOps = Development + Operations<br>通过文化和工具打破两个团队之间的壁垒</p>
+        </div>
+    </div>
+
+    <!-- 3.2 DevOps 核心实践 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>DevOps 核心实践</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd a">
+                <div class="ci">🔄</div>
+                <div class="ct">CI/CD 流水线</div>
+                <div class="cx">代码→构建→测试→部署<br>全程自动化<br>减少人为失误</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ci">📝</div>
+                <div class="ct">基础设施即代码（IaC）</div>
+                <div class="cx">Terraform / Ansible<br>服务器配置写成代码<br>可版本管理、可复现</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ci">📊</div>
+                <div class="ct">监控与可观测性</div>
+                <div class="cx">日志 + 指标 + 链路追踪<br>三大支柱确保系统透明<br>出问题秒级定位</div>
+            </div>
+            <div class="cd p" data-click-reveal="fade">
+                <div class="ci">🐳</div>
+                <div class="ct">容器化（Docker/K8s）</div>
+                <div class="cx">"在我电脑上没问题"<br>容器确保环境一致<br>Kubernetes 自动编排</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.3 DevOps 文化 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>DevOps 的文化内核</h2>
+            <div class="sub">工具只是表象，文化才是根本</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <ul class="bl">
+                    <li><strong>"谁构建，谁运行"（You Build It, You Run It）：</strong>开发者对线上质量负责到底，而不是甩给运维</li>
+                    <li data-click-reveal="fade"><strong>自动化一切可自动化的：</strong>手动操作是故障温床</li>
+                    <li data-click-reveal="fade"><strong>心理安全下的复盘文化：</strong>出了事故不追责个人，而是分析系统性原因、改进流程和工具</li>
+                    <li data-click-reveal="fade"><strong>小批量交付：</strong>持续小步发布，每次变更范围小→影响可控→回滚容易</li>
+                </ul>
+            </div>
+            <div class="c" data-click-reveal="right" style="display:flex;align-items:center;justify-content:center">
+                <img src="../../assets/e27f29979cbef29bd3b6bede72268c03.jpg" alt="DevOps文化"
+                    style="max-height:480px;max-width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+            </div>
+        </div>
+    </div>
+
+    <!-- 课后任务 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>📋 课后研讨任务</h2>
+            <div class="sub">安全 × 发布 × DevOps 综合演练</div>
+            <div class="bar"></div>
+        </div>
+        <div class="qt" style="font-style:normal"><strong>场景：</strong>你的电商平台将在两周后举办首次大促，预期流量为日常的 10 倍。</div>
+        <div class="cr" data-click-reveal="fade">
+            <div class="cd a" style="flex:1">
+                <div class="ct">任务一（安全审计）</div>
+                <div class="cx">对促销活动模块做一次 OWASP Top 3 安全自查（注入、XSS、CSRF），每项列出检查点和防御措施。</div>
+            </div>
+            <div class="cd o" style="flex:1">
+                <div class="ct">任务二（发布计划）</div>
+                <div class="cx">选择合适的发布策略并说明理由。设计发布-监控-回滚方案，包含具体的监控指标和触发回滚的阈值。</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide cover">
+        <div class="decor"></div>
+        <div class="decor2"></div>
+        <h1 style="font-size:56px">Thanks</h1>
+        <div class="sub">安全、发布与 DevOps</div>
+        <div class="meta">何庭钦 | 271880026@qq.com</div>
+    </div>
+
+    <button class="pb" onclick="startPresentation(0)">▶ 演示模式</button>
+    <div class="po" id="po">
+        <div class="pw" id="pw"></div>
+    </div>
+    <div class="pi" id="pi"></div>
+    <div class="ph" id="ph"><kbd>→</kbd> <kbd>Space</kbd> 下一步 &nbsp; <kbd>←</kbd> 上一步<br><kbd>Home</kbd> 第一页 &nbsp;
+        <kbd>End</kbd> 最后一页<br><kbd>Esc</kbd> 退出 &nbsp; <kbd>F</kbd> 进入演示</div>
+    <script>
+        (function () { const SS = document.querySelectorAll('.slide'), O = document.getElementById('po'), W = document.getElementById('pw'), I = document.getElementById('pi'), H = document.getElementById('ph'); SS.forEach((s, i) => { const pn = document.createElement('span'); pn.className = 'page-num'; pn.textContent = i + 1; s.appendChild(pn) }); let cur = 0, on = false, ht = null, animItems = [], animIdx = 0; function show(n, revealAll) { if (n < 0) n = 0; if (n >= SS.length) n = SS.length - 1; cur = n; W.innerHTML = ''; const cl = SS[cur].cloneNode(true); cl.style.boxShadow = 'none'; W.appendChild(cl); scale(); animItems = Array.from(cl.querySelectorAll('[data-click-reveal]')); if (revealAll) { animItems.forEach(it => it.classList.add('visible')); animIdx = animItems.length } else { animItems.forEach(it => it.classList.remove('visible')); animIdx = 0 } updateIndicator() } function updateIndicator() { const t = animItems.length; I.textContent = t > 0 && animIdx < t ? `${cur + 1} / ${SS.length}  ·  步骤 ${animIdx}/${t}` : `${cur + 1} / ${SS.length}` } function forward() { if (animIdx < animItems.length) { animItems[animIdx].classList.add('visible'); animIdx++; updateIndicator() } else if (cur < SS.length - 1) show(cur + 1, false) } function backward() { if (animIdx > 0) { animIdx--; animItems[animIdx].classList.remove('visible'); updateIndicator() } else if (cur > 0) show(cur - 1, true) } function scale() { const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720); W.style.transform = `scale(${s})` } window.startPresentation = function (si) { cur = si || 0; on = true; O.classList.add('active'); document.body.style.overflow = 'hidden'; show(cur, false); H.classList.add('show'); clearTimeout(ht); ht = setTimeout(() => H.classList.remove('show'), 2500); if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => { }) }; function stop() { on = false; O.classList.remove('active'); document.body.style.overflow = ''; H.classList.remove('show'); if (document.fullscreenElement) document.exitFullscreen().catch(() => { }); SS[cur].scrollIntoView({ behavior: 'smooth', block: 'center' }) } document.addEventListener('keydown', function (e) { if (!on && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); startPresentation(0); return } if (!on) return; switch (e.key) { case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': e.preventDefault(); forward(); break; case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); backward(); break; case 'Home': e.preventDefault(); show(0, false); break; case 'End': e.preventDefault(); show(SS.length - 1, true); break; case 'Escape': e.preventDefault(); stop(); break } }); O.addEventListener('click', function () { forward() }); O.addEventListener('contextmenu', function (e) { e.preventDefault(); backward() }); window.addEventListener('resize', function () { if (on) scale() }); document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && on) stop() }); const obs = new IntersectionObserver(entries => { if (on) return; entries.forEach(en => { if (en.isIntersecting) { en.target.querySelectorAll('[data-click-reveal]').forEach((it, i) => setTimeout(() => it.classList.add('visible'), 200 + i * 200)) } }) }, { threshold: 0.3 }); SS.forEach(s => obs.observe(s)) })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>软件工程及体系结构 · 第1周</title>
+<link rel="stylesheet" href="academic.css">
+</head>
+<body>
+
+<!-- S01: COVER -->
+<div class="slide cover">
+  <div class="cover-decor"></div><div class="cover-decor2"></div>
+  <div class="cover-badge">Software Engineering &amp; Architecture</div>
+  <h1>软件工程及体系结构</h1>
+  <div class="cover-sub">第 1 周 · 课程导论 &amp; 软件工程概述 &amp; 工程思维</div>
+  <div class="cover-meta">面向计算机相关专业本科 / 硕士 &nbsp;|&nbsp; 3 课时 · 共 48 课时</div>
+</div>
+
+<!-- S02 -->
+<div class="slide content">
+  <div class="slide-header"><h2>软件无处不在</h2><div class="subtitle">你的每一天，都在和软件打交道</div><div class="accent-line"></div></div>
+  <div class="timeline">
+    <div class="t-item"><div class="t-year">AM</div><div class="t-dot"></div><div class="t-label">🌅 起床</div><div class="t-desc">手机闹钟<br>iOS / Android</div></div>
+    <div class="t-item"><div class="t-year">AM</div><div class="t-dot"></div><div class="t-label">🚇 通勤</div><div class="t-desc">微信 · 微博<br>地图导航</div></div>
+    <div class="t-item"><div class="t-year">PM</div><div class="t-dot"></div><div class="t-label">💻 工作</div><div class="t-desc">VS Code · Chrome<br>Git 提交</div></div>
+    <div class="t-item"><div class="t-year">PM</div><div class="t-dot"></div><div class="t-label">🎮 休闲</div><div class="t-desc">游戏 · 短视频<br>在线购物</div></div>
+  </div>
+  <div style="text-align:center;margin-top:32px;font-size:20px;color:var(--navy);font-weight:600">每一个 App 的背后，都是一个<span style="color:var(--accent)">软件工程项目</span></div>
+</div>
+
+<!-- S03 -->
+<div class="slide content">
+  <div class="slide-header"><h2>程序员的五大痛点</h2><div class="subtitle">这些场景，你是否似曾相识？</div><div class="accent-line"></div></div>
+  <div class="card-row">
+    <div class="card red"><div class="card-icon">😫</div><div class="card-title">上手就写</div><div class="card-desc">后期填"坑"，加班成常态</div></div>
+    <div class="card orange"><div class="card-icon">🧭</div><div class="card-title">缺少方法论</div><div class="card-desc">经验不能举一反三</div></div>
+    <div class="card red"><div class="card-icon">🔄</div><div class="card-title">需求变更</div><div class="card-desc">只能闷头改，无力反抗</div></div>
+    <div class="card orange"><div class="card-icon">📅</div><div class="card-title">没有计划</div><div class="card-desc">项目总是延期</div></div>
+    <div class="card red"><div class="card-icon">🚧</div><div class="card-title">不懂协作</div><div class="card-desc">职业发展遇瓶颈</div></div>
+  </div>
+  <div style="text-align:center;margin-top:24px;font-size:17px;color:var(--text-secondary)">💡 这些问题的根源：缺乏<strong style="color:var(--navy)">软件工程</strong>的系统知识</div>
+</div>
+
+<!-- S04 -->
+<div class="slide content">
+  <div class="slide-header"><h2>十年后，什么不会变？</h2><div class="subtitle">Jeff Bezos 的洞察</div><div class="accent-line"></div></div>
+  <div class="quote">"我常被问到：未来十年什么会发生变化？但很少有人问我——<strong>未来十年什么不会变？</strong>第二个问题才更重要。"<div class="q-attr">—— Jeff Bezos</div></div>
+  <div class="card-row" style="margin-top:20px">
+    <div class="card accent"><div class="card-icon">🧮</div><div class="card-title">数据结构与算法</div><div class="card-desc">计算机科学的基石</div></div>
+    <div class="card accent"><div class="card-icon">🎯</div><div class="card-title">面向对象与设计模式</div><div class="card-desc">软件设计的核心范式</div></div>
+    <div class="card" style="border-left:4px solid var(--navy);background:var(--navy);color:white"><div class="card-icon">⚙️</div><div class="card-title" style="color:white">软件工程</div><div class="card-desc" style="color:rgba(255,255,255,0.7)">贯穿始终的工程方法</div></div>
+  </div>
+</div>
+
+<!-- S05 -->
+<div class="slide content">
+  <div class="slide-header"><h2>软件工程的三大价值</h2><div class="subtitle">从无序到有序，从个人到团队</div><div class="accent-line"></div></div>
+  <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px">
+    <div style="display:flex;align-items:center;gap:16px;background:var(--green-light);padding:20px 28px;border-radius:10px;border:1px solid #A7F3D0"><span style="font-size:32px">👥</span><div><div style="font-size:19px;font-weight:700;color:var(--navy)">组织化</div><div style="font-size:15px;color:var(--text-secondary)">项目开发是一个可以有效组织的工程</div></div></div>
+    <div style="display:flex;align-items:center;gap:16px;background:var(--accent-light);padding:20px 28px;border-radius:10px;border:1px solid #93C5FD"><span style="font-size:32px">📖</span><div><div style="font-size:19px;font-weight:700;color:var(--navy)">方法论</div><div style="font-size:15px;color:var(--text-secondary)">各阶段已有大量最佳实践和解决方案</div></div></div>
+    <div style="display:flex;align-items:center;gap:16px;background:var(--orange-light);padding:20px 28px;border-radius:10px;border:1px solid #FDE68A"><span style="font-size:32px">🔧</span><div><div style="font-size:19px;font-weight:700;color:var(--navy)">工具化</div><div style="font-size:15px;color:var(--text-secondary)">借助工具来管理和提升效率</div></div></div>
+  </div>
+</div>
+
+<!-- S06 -->
+<div class="slide content">
+  <div class="slide-header"><h2>道 · 术 · 器</h2><div class="subtitle">本课程的三维教学框架</div><div class="accent-line"></div></div>
+  <div class="pyramid" style="margin-top:16px">
+    <div class="pyramid-layer" style="background:linear-gradient(135deg,#1B2A4A,#2C3E6B);width:45%"><span class="p-label">☀️ 道 — Why</span><span class="p-desc">核心思想与本质规律</span></div>
+    <div class="pyramid-layer" style="background:linear-gradient(135deg,var(--accent),#2563EB);width:65%"><span class="p-label">🧭 术 — How</span><span class="p-desc">方法论与实践方法</span></div>
+    <div class="pyramid-layer" style="background:linear-gradient(135deg,#10B981,#059669);width:85%"><span class="p-label">🔧 器 — What</span><span class="p-desc">Jira · Git · CI/CD Pipeline</span></div>
+  </div>
+  <div style="text-align:center;margin-top:20px;font-size:16px;color:var(--text-secondary)">从"器"入手 → 掌握"术" → 领悟"道" → 最终"传道"</div>
+</div>
+
+<!-- S07 -->
+<div class="slide content">
+  <div class="slide-header"><h2>课程结构总览</h2><div class="subtitle">16 周 · 48 课时 · 四大模块</div><div class="accent-line"></div></div>
+  <div class="flow" style="margin-top:24px">
+    <div class="flow-item" style="border-color:var(--accent)"><div class="f-icon">📚</div><div class="f-label">模块一</div><div style="font-size:12px;color:var(--text-secondary)">基础理论<br>第1-3周</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item" style="border-color:var(--orange)"><div class="f-icon">⚙️</div><div class="f-label">模块二</div><div style="font-size:12px;color:var(--text-secondary)">项目过程<br>第4-11周</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item" style="border-color:var(--green)"><div class="f-icon">🚀</div><div class="f-label">模块三</div><div style="font-size:12px;color:var(--text-secondary)">案例与前沿<br>第12-15周</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item" style="border-color:var(--red)"><div class="f-icon">🏆</div><div class="f-label">模块四</div><div style="font-size:12px;color:var(--text-secondary)">综合实践<br>第16周</div></div>
+  </div>
+  <div style="display:flex;gap:12px;margin-top:24px;font-size:14px">
+    <div style="flex:1;background:var(--accent-light);padding:12px 16px;border-radius:8px"><strong>需求 → 设计 → 编码 → 测试 → 运维</strong>，按软件生命周期深入</div>
+    <div style="flex:1;background:var(--orange-light);padding:12px 16px;border-radius:8px"><strong>大厂案例 + AI 赋能新范式</strong>，紧跟技术前沿</div>
+  </div>
+</div>
+
+<!-- S08 -->
+<div class="slide content">
+  <div class="slide-header"><h2>考核方式</h2><div class="subtitle">平时 + 团队项目 + 期末考试</div><div class="accent-line"></div></div>
+  <div class="pie-row" style="margin-top:24px;justify-content:center">
+    <div class="pie-chart"></div>
+    <ul class="pie-legend">
+      <li><span class="dot" style="background:var(--red)"></span><strong>平时成绩 20%</strong> — 出勤 + 讨论 + 作业</li>
+      <li><span class="dot" style="background:var(--accent)"></span><strong>团队项目 50%</strong> — 三次检查点，贯穿全程</li>
+      <li><span class="dot" style="background:var(--orange)"></span><strong>期末考试 30%</strong> — 开卷笔试</li>
+    </ul>
+  </div>
+</div>
+
+<!-- S09 -->
+<div class="slide content">
+  <div class="slide-header"><h2>推荐参考书</h2><div class="subtitle">这几本书，值得反复阅读</div><div class="accent-line"></div></div>
+  <div class="book-row" style="margin-top:28px">
+    <div class="book-item"><div class="book-icon">📘</div><div class="book-title">软件工程——<br>实践者的研究方法</div><div class="book-author">Pressman</div></div>
+    <div class="book-item"><div class="book-icon">📗</div><div class="book-title">构建之法</div><div class="book-author">邹欣</div></div>
+    <div class="book-item" style="border:2px solid var(--accent)"><div class="book-icon">📕</div><div class="book-title">人月神话 ★</div><div class="book-author">Fred Brooks</div></div>
+    <div class="book-item"><div class="book-icon">📙</div><div class="book-title">架构整洁之道</div><div class="book-author">Robert C. Martin</div></div>
+  </div>
+</div>
+
+<!-- S10: SECTION -->
+<div class="slide section">
+  <div class="section-num">01</div>
+  <h2>第一讲</h2>
+  <div class="section-sub">到底应该怎样理解软件工程？</div>
+</div>
+
+<!-- S11 -->
+<div class="slide content">
+  <div class="slide-header"><h2>软件是怎么被创造出来的？</h2><div class="subtitle">以守望先锋为例</div><div class="accent-line"></div></div>
+  <div class="timeline" style="margin-top:32px">
+    <div class="t-item"><div class="t-year">2013</div><div class="t-dot"></div><div class="t-label">💡 立项</div><div class="t-desc">计划做基于<br>职业的 MMO</div></div>
+    <div class="t-item"><div class="t-year">数月后</div><div class="t-dot"></div><div class="t-label">🎮 Demo</div><div class="t-desc">4 英雄<br>1 地图</div></div>
+    <div class="t-item"><div class="t-year">2014</div><div class="t-dot"></div><div class="t-label">🎪 嘉年华</div><div class="t-desc">12 英雄<br>4 地图</div></div>
+    <div class="t-item"><div class="t-year">2016.5</div><div class="t-dot"></div><div class="t-label">🚀 正式发布</div><div class="t-desc">全球上线<br>历时三年</div></div>
+  </div>
+  <div style="text-align:center;margin-top:36px;font-size:20px;color:var(--navy);font-weight:600">"有人参与、有计划、有步骤地造一件产品" = <span style="color:var(--accent)">工程</span></div>
+</div>
+
+<!-- S12 -->
+<div class="slide content">
+  <div class="slide-header"><h2>什么是"工程"？</h2><div class="subtitle">有人参与 · 有计划 · 有步骤 · 造产品</div><div class="accent-line"></div></div>
+  <div class="card-row" style="margin-top:20px">
+    <div class="card accent" style="text-align:center"><div class="card-icon" style="font-size:48px">🏠</div><div class="card-title" style="font-size:20px">建筑工程</div><div class="card-desc">造房子</div></div>
+    <div class="card accent" style="text-align:center"><div class="card-icon" style="font-size:48px">🚀</div><div class="card-title" style="font-size:20px">航天工程</div><div class="card-desc">造火箭</div></div>
+    <div class="card" style="text-align:center;border-left:4px solid var(--navy);background:var(--navy);color:white"><div class="card-icon" style="font-size:48px">💻</div><div class="card-title" style="font-size:20px;color:white">软件工程</div><div class="card-desc" style="color:rgba(255,255,255,0.7)">造软件</div></div>
+  </div>
+  <div style="text-align:center;margin-top:28px;font-size:20px;color:var(--navy)">核心共性 → <strong style="color:var(--accent)">有组织地</strong>创造<strong style="color:var(--accent)">有用的</strong>产品</div>
+</div>
+
+<!-- S13 -->
+<div class="slide content">
+  <div class="slide-header"><h2>软件危机：代价惨重的教训</h2><div class="subtitle">没有工程方法的软件开发，后果严重</div><div class="accent-line"></div></div>
+  <div class="comparison" style="margin-top:8px">
+    <div class="comp-panel negative">
+      <h3>❌ 危机表现</h3>
+      <ul class="bullets small">
+        <li>软件质量低劣，Bug 满天飞</li>
+        <li>维护工作量大、成本失控</li>
+        <li>进度不可控、反复延期</li>
+        <li>人员无限增加却无法解决问题</li>
+      </ul>
+    </div>
+    <div class="comp-panel positive">
+      <h3>✅ 工程化之后</h3>
+      <ul class="bullets small">
+        <li>系统化方法保证质量</li>
+        <li>可量化的成本管理</li>
+        <li>可预测的项目进度</li>
+        <li>合理的人员分工与协作</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- S14 -->
+<div class="slide content">
+  <div class="slide-header"><h2>OS/360：人月神话的由来</h2><div class="accent-line"></div></div>
+  <div class="two-col" style="margin-top:8px">
+    <div class="col" style="display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <div class="stat-box"><div class="stat-num red">1,000</div><div class="stat-label">名程序员参与</div></div>
+      <div class="stat-box" style="margin-top:16px"><div class="stat-num red" style="font-size:56px">5,000 人年</div><div class="stat-label">总投入 → 最终无法运行</div></div>
+    </div>
+    <div class="col">
+      <ul class="bullets" style="margin-top:12px">
+        <li>1960s 最复杂的操作系统项目之一</li>
+        <li>投入 <strong>1000 名程序员</strong></li>
+        <li>花费 <strong>5000 个人年</strong></li>
+        <li>损失 <strong>数百万美元</strong></li>
+        <li>项目负责人 Brooks 写出了经典著作 <em>《人月神话》</em></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- S15 -->
+<div class="slide content">
+  <div class="slide-header"><h2>Therac-25：程序 Bug 致人死亡</h2><div class="subtitle">软件质量不是可选项，它关乎生命安全</div><div class="accent-line"></div></div>
+  <div class="two-col" style="margin-top:8px">
+    <div class="col" style="display:flex;align-items:center;justify-content:center">
+      <div class="stat-box"><div class="stat-num red">100×</div><div class="stat-label">患者受到正常剂量 100 倍的辐射</div></div>
+    </div>
+    <div class="col">
+      <ul class="bullets">
+        <li>放射线疗法机器的<strong>程序 Bug</strong></li>
+        <li>1985-1987 年间至少 <strong>6 起</strong>医疗事故</li>
+        <li>造成患者<strong>重伤甚至死亡</strong></li>
+        <li style="color:var(--red);font-weight:700">⚠️ 软件质量关乎人的生命</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- S16 -->
+<div class="slide content">
+  <div class="slide-header"><h2>1968：软件工程的诞生</h2><div class="subtitle">北约会议，50 名顶尖专家的共识</div><div class="accent-line"></div></div>
+  <div class="two-col">
+    <div class="col">
+      <ul class="bullets">
+        <li><strong>1968 年秋</strong>，北约科技委员会会议</li>
+        <li><strong>50 名</strong>一流程序员、科学家、工业巨头</li>
+        <li>首次提出 <em>"软件工程"</em> 概念</li>
+        <li>目标：用<strong>工程化方法</strong>解决软件危机</li>
+      </ul>
+    </div>
+    <div class="col" style="display:flex;align-items:center;justify-content:center">
+      <div style="background:var(--navy);color:white;padding:32px;border-radius:12px;text-align:center;width:280px">
+        <div style="font-size:44px;margin-bottom:12px">🏛️</div>
+        <div style="font-size:20px;font-weight:700">NATO Conference</div>
+        <div style="font-size:14px;opacity:0.6;margin-top:4px">Garmisch, Germany · 1968</div>
+        <div style="font-size:13px;margin-top:14px;border-top:1px solid rgba(255,255,255,0.15);padding-top:12px;opacity:0.8">"Software Engineering"<br>概念首次被正式提出</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S17 -->
+<div class="slide content">
+  <div class="slide-header"><h2>软件工程的定义</h2><div class="subtitle">IEEE 标准定义 (1993)</div><div class="accent-line"></div></div>
+  <div class="quote" style="margin-top:16px">将<strong>系统化</strong>的、<strong>规范</strong>的、<strong>可度量</strong>的方法用于软件的开发、运行和维护的过程，即将工程化应用于软件开发中。<div class="q-attr">—— IEEE Standard 610.12, 1993</div></div>
+  <div class="card-row" style="margin-top:20px">
+    <div class="card green" style="text-align:center"><div class="card-icon">⏰</div><div class="card-title">按时完成</div></div>
+    <div class="card green" style="text-align:center"><div class="card-icon">💰</div><div class="card-title">成本可控</div></div>
+    <div class="card green" style="text-align:center"><div class="card-icon">⭐</div><div class="card-title">质量有保证</div></div>
+  </div>
+</div>
+
+<!-- S18 -->
+<div class="slide content">
+  <div class="slide-header"><h2>软件工程演化史</h2><div class="subtitle">从瀑布到 AI，半个世纪的进化</div><div class="accent-line"></div></div>
+  <div class="timeline" style="margin-top:16px">
+    <div class="t-item"><div class="t-year">1960s</div><div class="t-dot"></div><div class="t-label">⚠️ 软件危机</div></div>
+    <div class="t-item"><div class="t-year">1970s</div><div class="t-dot"></div><div class="t-label">🌊 瀑布模型</div></div>
+    <div class="t-item"><div class="t-year">1980s</div><div class="t-dot"></div><div class="t-label">🌀 V/螺旋</div></div>
+    <div class="t-item"><div class="t-year">1990s</div><div class="t-dot"></div><div class="t-label">🏃 Scrum/XP</div></div>
+    <div class="t-item"><div class="t-year">2001</div><div class="t-dot"></div><div class="t-label">🔥 敏捷宣言</div></div>
+    <div class="t-item"><div class="t-year">2010s</div><div class="t-dot"></div><div class="t-label">☁️ 微服务/云</div></div>
+    <div class="t-item"><div class="t-year">2020s</div><div class="t-dot"></div><div class="t-label">🤖 AI 编程</div></div>
+  </div>
+</div>
+
+<!-- S19 -->
+<div class="slide content" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header" style="text-align:center"><h2>记住这个公式</h2><div class="accent-line" style="margin:10px auto"></div></div>
+  <div class="formula-box" style="margin-top:8px;width:80%">
+    <div class="formula-text">软件工程 ＝ 过程 ＋ 方法 ＋ 工具</div>
+    <div class="formula-sub">SOFTWARE ENGINEERING = PROCESS + METHOD + TOOLS</div>
+  </div>
+  <div class="card-row" style="margin-top:24px;width:80%;justify-content:center">
+    <div class="card accent" style="text-align:center"><div class="card-icon">🔄</div><div class="card-title">过程 Process</div><div class="card-desc">软件生命周期中的开发步骤</div></div>
+    <div class="card accent" style="text-align:center"><div class="card-icon">🧭</div><div class="card-title">方法 Method</div><div class="card-desc">如何完成每个阶段的方法学</div></div>
+    <div class="card accent" style="text-align:center"><div class="card-icon">🔧</div><div class="card-title">工具 Tools</div><div class="card-desc">辅助执行、提升效率</div></div>
+  </div>
+</div>
+
+<!-- S20: SECTION -->
+<div class="slide section">
+  <div class="section-num">02</div>
+  <h2>第二讲</h2>
+  <div class="section-sub">工程思维：把每件事都当作一个项目来推进</div>
+</div>
+
+<!-- S21 -->
+<div class="slide content">
+  <div class="slide-header"><h2>Everything is a Project</h2><div class="subtitle">万事皆项目 —— 从软件工程到日常生活</div><div class="accent-line"></div></div>
+  <div class="quote" style="margin-top:12px">软件工程是一门用工程化方法解决软件项目问题的学科，不仅可以应用在软件项目中，还可以应用于日常生活中遇到的问题。<strong>Everything is a project.</strong><div class="q-attr">—— 一位影响深远的老师</div></div>
+  <div class="card-row" style="margin-top:16px">
+    <div class="card accent"><div class="card-icon">📝</div><div class="card-title">做作业</div></div>
+    <div class="card accent"><div class="card-icon">✈️</div><div class="card-title">旅行计划</div></div>
+    <div class="card accent"><div class="card-icon">🏠</div><div class="card-title">装修房子</div></div>
+    <div class="card accent"><div class="card-icon">💻</div><div class="card-title">开发项目</div></div>
+  </div>
+</div>
+
+<!-- S22 -->
+<div class="slide content">
+  <div class="slide-header"><h2>工程方法的六个阶段</h2><div class="subtitle">有目的 · 有计划 · 有步骤</div><div class="accent-line"></div></div>
+  <div class="flow" style="margin-top:24px">
+    <div class="flow-item" style="border-color:var(--accent)"><div class="f-icon">💡</div><div class="f-label">想法</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item" style="border-color:var(--accent)"><div class="f-icon">✏️</div><div class="f-label">概念</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item" style="border-color:var(--orange)"><div class="f-icon">📅</div><div class="f-label">计划</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item" style="border-color:var(--orange)"><div class="f-icon">📐</div><div class="f-label">设计</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item" style="border-color:var(--green)"><div class="f-icon">🔨</div><div class="f-label">开发</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item" style="border-color:var(--green)"><div class="f-icon">🚀</div><div class="f-label">发布</div></div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:20px;font-size:14px;color:var(--text-secondary)">
+    <div style="flex:1;background:var(--accent-light);padding:10px 14px;border-radius:6px"><strong>想法：</strong>清晰定义问题，研究可行性</div>
+    <div style="flex:1;background:var(--orange-light);padding:10px 14px;border-radius:6px"><strong>计划：</strong>人员、任务、时间、预算</div>
+    <div style="flex:1;background:var(--green-light);padding:10px 14px;border-radius:6px"><strong>开发：</strong>构建 → 测试 → 调试 → 迭代</div>
+  </div>
+</div>
+
+<!-- S23 -->
+<div class="slide content">
+  <div class="slide-header"><h2>案例：30 分钟设计一部老年手机</h2><div class="subtitle">运用工程思维，轻松夺冠</div><div class="accent-line"></div></div>
+  <div class="comparison" style="margin-top:8px">
+    <div class="comp-panel negative">
+      <h3>❌ 其他组</h3>
+      <ul class="bullets small">
+        <li>沉浸于讨论各种想法</li>
+        <li>没有意识到时间有限</li>
+        <li>来不及把方案画出来</li>
+        <li>甚至还没确定选哪个方案</li>
+      </ul>
+    </div>
+    <div class="comp-panel positive">
+      <h3>✅ 我们组</h3>
+      <ul class="bullets small">
+        <li>第一反应：把它当项目</li>
+        <li>快速拟定分阶段计划</li>
+        <li>严格按计划执行</li>
+        <li>设计完整，<strong>毫无争议第一</strong></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- S24 -->
+<div class="slide content">
+  <div class="slide-header"><h2>获胜秘诀：把 30 分钟当作一个项目</h2><div class="subtitle">严格按计划执行</div><div class="accent-line"></div></div>
+  <div class="gantt" style="margin-top:28px">
+    <div class="gantt-row"><div class="gantt-label">分析</div><div class="gantt-bar" style="background:var(--accent);width:33%">0-10 min · 头脑风暴</div></div>
+    <div class="gantt-row"><div class="gantt-label">设计</div><div class="gantt-bar" style="background:var(--green);width:17%">11-15 min</div></div>
+    <div class="gantt-row"><div class="gantt-label">开发</div><div class="gantt-bar" style="background:var(--orange);width:33%">16-25 min · 画出方案</div></div>
+    <div class="gantt-row"><div class="gantt-label">发布</div><div class="gantt-bar" style="background:var(--red);width:17%">26-30 min ✓</div></div>
+  </div>
+  <div style="text-align:center;margin-top:24px;font-size:18px;color:var(--navy);font-weight:600">因为有计划、有步骤，设计完整 → <span style="color:var(--accent)">毫无争议获胜</span></div>
+</div>
+
+<!-- S25 -->
+<div class="slide content">
+  <div class="slide-header"><h2>站在整体，而非局部</h2><div class="subtitle">工程思维的核心态度</div><div class="accent-line"></div></div>
+  <div class="comparison" style="margin-top:12px">
+    <div class="comp-panel negative" style="text-align:center">
+      <h3>🔍 局部视角</h3>
+      <div style="font-size:56px;margin:12px 0">🧩</div>
+      <p style="font-size:16px;color:var(--text)">只看到自己负责的那一块<br>忽视整体协作与目标</p>
+    </div>
+    <div class="comp-panel positive" style="text-align:center">
+      <h3>🌍 整体视角</h3>
+      <div style="font-size:56px;margin:12px 0">🗺️</div>
+      <p style="font-size:16px;color:var(--text)">看到项目全貌<br>关注质量、进度、成本、用户</p>
+    </div>
+  </div>
+</div>
+
+<!-- S26 -->
+<div class="slide content">
+  <div class="slide-header"><h2>局部思维的常见反模式</h2><div class="accent-line"></div></div>
+  <div class="grid-2x2" style="margin-top:8px">
+    <div class="card red"><div class="card-icon">🎨</div><div class="card-title">产品经理</div><div class="card-desc">天马行空的需求，不管技术可行性 → 返工</div></div>
+    <div class="card orange"><div class="card-icon">🔩</div><div class="card-title">架构师</div><div class="card-desc">热衷"造轮子"，不愿用成熟方案 → 浪费</div></div>
+    <div class="card red"><div class="card-icon">💻</div><div class="card-title">开发者</div><div class="card-desc">追新技术、过度设计 → 延期</div></div>
+    <div class="card orange"><div class="card-icon">🐛</div><div class="card-title">测试</div><div class="card-desc">不学自动化测试 → 效率低下</div></div>
+  </div>
+</div>
+
+<!-- S27 -->
+<div class="slide content">
+  <div class="slide-header"><h2>站在项目整体的四个关注点</h2><div class="subtitle">质量 · 进度 · 成本 · 用户</div><div class="accent-line"></div></div>
+  <div class="four-cards" style="margin-top:16px">
+    <div class="fc" style="background:var(--green-light);border-color:var(--green)"><div class="fc-icon">⭐</div><div class="fc-title">质量</div><div class="fc-desc">每个人都关注<br>用户体验和产品品质</div></div>
+    <div class="fc" style="background:var(--accent-light);border-color:var(--accent)"><div class="fc-icon">⏰</div><div class="fc-title">进度</div><div class="fc-desc">采用成熟技术<br>确保按时交付</div></div>
+    <div class="fc" style="background:var(--orange-light);border-color:var(--orange)"><div class="fc-icon">💰</div><div class="fc-title">成本</div><div class="fc-desc">选择成熟方案<br>节约开发资源</div></div>
+    <div class="fc" style="background:var(--red-light);border-color:var(--red)"><div class="fc-icon">👥</div><div class="fc-title">用户</div><div class="fc-desc">以用户价值<br>为最终导向</div></div>
+  </div>
+</div>
+
+<!-- S28 -->
+<div class="slide content" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header" style="text-align:center"><h2>什么是工程思维？</h2><div class="subtitle">一种思考问题的方式</div><div class="accent-line" style="margin:10px auto"></div></div>
+  <div class="card-row" style="margin-top:16px;width:85%;justify-content:center">
+    <div class="card" style="text-align:center;background:var(--navy);color:white;border:none"><div class="card-icon">🔭</div><div class="card-title" style="color:white;font-size:18px">项目视角</div><div class="card-desc" style="color:rgba(255,255,255,0.7)">从项目的角度<br>看待问题</div></div>
+    <div class="card" style="text-align:center;background:var(--accent);color:white;border:none"><div class="card-icon">🧭</div><div class="card-title" style="color:white;font-size:18px">工程方法</div><div class="card-desc" style="color:rgba(255,255,255,0.7)">有目的、有计划<br>有步骤地解决</div></div>
+    <div class="card" style="text-align:center;background:var(--green);color:white;border:none"><div class="card-icon">🌍</div><div class="card-title" style="color:white;font-size:18px">整体思维</div><div class="card-desc" style="color:rgba(255,255,255,0.7)">站在整体<br>而非局部</div></div>
+  </div>
+  <div style="margin-top:20px;font-size:17px;color:var(--text-secondary)">💡 你不需要是项目经理，也可以用工程思维来解决问题</div>
+</div>
+
+<!-- S29 -->
+<div class="slide content">
+  <div class="slide-header"><h2>课堂练习：把活动当项目</h2><div class="subtitle">用六阶段工程方法来规划</div><div class="accent-line"></div></div>
+  <div style="background:var(--bg-alt);border:2px solid var(--border);border-radius:10px;padding:24px;margin-top:8px">
+    <div style="font-size:19px;font-weight:700;color:var(--navy);margin-bottom:14px">📋 场景：你要组织一个 50 人参加的技术沙龙活动</div>
+    <div style="display:flex;gap:20px">
+      <div style="flex:1;font-size:16px;line-height:2">
+        <div>1️⃣ <strong>想法</strong>阶段做什么？</div>
+        <div>2️⃣ <strong>概念</strong>阶段做什么？</div>
+        <div>3️⃣ <strong>计划</strong>阶段做什么？</div>
+      </div>
+      <div style="flex:1;font-size:16px;line-height:2">
+        <div>4️⃣ <strong>设计</strong>阶段做什么？</div>
+        <div>5️⃣ <strong>执行</strong>阶段做什么？</div>
+        <div>6️⃣ <strong>总结</strong>阶段做什么？</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:10px 16px;background:var(--accent-light);border-radius:6px;font-size:15px;font-weight:500">⏱️ 分组讨论 <strong>5 分钟</strong> → 每组选一人上台分享 <strong>3 分钟/组</strong></div>
+  </div>
+</div>
+
+<!-- S30: BACK COVER -->
+<div class="slide back" style="background:linear-gradient(180deg,#fff 0%,var(--bg-alt) 100%)">
+  <div class="slide-header" style="text-align:center"><h2>本周要点回顾 &amp; 下周预告</h2><div class="accent-line" style="margin:10px auto"></div></div>
+  <div class="summary-box">
+    <h3>📌 核心公式</h3>
+    <div class="formula-box" style="margin:8px 0"><div class="formula-text" style="font-size:26px">软件工程 ＝ 过程 ＋ 方法 ＋ 工具</div></div>
+    <div class="formula-box" style="margin:8px 0;background:var(--accent)"><div class="formula-text" style="font-size:26px">工程思维 ＝ 项目视角 ＋ 工程方法 ＋ 整体思维</div></div>
+  </div>
+  <div class="next-box">
+    <h3>📅 下周预告</h3>
+    <p>🌊 瀑布模型 → 🏃 敏捷开发的进化之路 → 💬 分组讨论：为不同项目选择合适的开发模型</p>
+  </div>
+  <div style="text-align:center;margin-top:12px;font-size:15px;color:var(--text-secondary)">✏️ 课后思考：学习本课程，你会制定什么样的学习计划？</div>
+</div>
+
+<!-- Presentation Mode -->
+<style>
+  /* Presentation overlay */
+  .pres-overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #000; z-index: 9999; justify-content: center; align-items: center;
+    cursor: none;
+  }
+  .pres-overlay.active { display: flex; }
+  .pres-overlay .pres-slide-wrap {
+    width: 1280px; height: 720px;
+    transform-origin: center center;
+  }
+  /* Page indicator */
+  .pres-indicator {
+    position: fixed; bottom: 16px; right: 24px; z-index: 10000;
+    color: rgba(255,255,255,0.5); font-family: var(--font-sans);
+    font-size: 16px; font-weight: 500;
+  }
+  /* Help hint */
+  .pres-hint {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 10001; background: rgba(0,0,0,0.85); color: white;
+    padding: 32px 48px; border-radius: 16px; text-align: center;
+    font-family: var(--font-sans); font-size: 15px; line-height: 2;
+    pointer-events: none; opacity: 0; transition: opacity 0.3s;
+  }
+  .pres-hint.show { opacity: 1; }
+  .pres-hint kbd {
+    background: rgba(255,255,255,0.15); padding: 2px 10px; border-radius: 4px;
+    font-family: var(--font-sans); font-weight: 600; border: 1px solid rgba(255,255,255,0.25);
+  }
+  /* Start button in normal mode */
+  .pres-start-btn {
+    position: fixed; bottom: 24px; right: 24px; z-index: 100;
+    background: var(--navy); color: white; border: none; border-radius: 10px;
+    padding: 12px 24px; font-size: 16px; font-weight: 600; cursor: pointer;
+    font-family: var(--font-sans); box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+  }
+  .pres-start-btn:hover { background: var(--accent); }
+</style>
+
+<button class="pres-start-btn" onclick="startPresentation()">▶ 演示模式 (F)</button>
+
+<div class="pres-overlay" id="presOverlay">
+  <div class="pres-slide-wrap" id="presSlideWrap"></div>
+  <div class="pres-indicator" id="presIndicator"></div>
+  <div class="pres-hint" id="presHint">
+    <div style="font-size:20px;font-weight:700;margin-bottom:12px">📽 演示模式</div>
+    <kbd>→</kbd> <kbd>↓</kbd> <kbd>Space</kbd> <kbd>点击</kbd> 下一页<br>
+    <kbd>←</kbd> <kbd>↑</kbd> 上一页<br>
+    <kbd>Home</kbd> 第一页 &nbsp; <kbd>End</kbd> 最后一页<br>
+    <kbd>Esc</kbd> 退出演示
+  </div>
+</div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const overlay = document.getElementById('presOverlay');
+  const wrap = document.getElementById('presSlideWrap');
+  const indicator = document.getElementById('presIndicator');
+  const hint = document.getElementById('presHint');
+  let current = 0;
+  let active = false;
+  let hintTimer = null;
+
+  function showSlide(index) {
+    if (index < 0) index = 0;
+    if (index >= slides.length) index = slides.length - 1;
+    current = index;
+
+    // Clone slide into overlay
+    wrap.innerHTML = '';
+    const clone = slides[current].cloneNode(true);
+    clone.style.boxShadow = 'none';
+    wrap.appendChild(clone);
+
+    // Scale to fit viewport
+    scaleSlide();
+
+    // Update indicator
+    indicator.textContent = `${current + 1} / ${slides.length}`;
+  }
+
+  function scaleSlide() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const sw = 1280, sh = 720;
+    const scale = Math.min(vw / sw, vh / sh);
+    wrap.style.transform = `scale(${scale})`;
+  }
+
+  window.startPresentation = function(slideIndex) {
+    current = slideIndex || 0;
+    active = true;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    showSlide(current);
+
+    // Show hint briefly
+    hint.classList.add('show');
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(() => hint.classList.remove('show'), 2500);
+
+    // Try fullscreen
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  };
+
+  function stopPresentation() {
+    active = false;
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    hint.classList.remove('show');
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+    // Scroll to current slide
+    slides[current].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    // F key to start
+    if (!active && e.key === 'f' || !active && e.key === 'F') {
+      e.preventDefault();
+      startPresentation(0);
+      return;
+    }
+    if (!active) return;
+
+    switch(e.key) {
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown':
+        e.preventDefault(); showSlide(current + 1); break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+        e.preventDefault(); showSlide(current - 1); break;
+      case 'Home':
+        e.preventDefault(); showSlide(0); break;
+      case 'End':
+        e.preventDefault(); showSlide(slides.length - 1); break;
+      case 'Escape':
+        e.preventDefault(); stopPresentation(); break;
+    }
+  });
+
+  // Click to next
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay || wrap.contains(e.target)) {
+      showSlide(current + 1);
+    }
+  });
+
+  // Right-click to previous
+  overlay.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    showSlide(current - 1);
+  });
+
+  // Handle resize
+  window.addEventListener('resize', function() {
+    if (active) scaleSlide();
+  });
+
+  // Handle fullscreen exit
+  document.addEventListener('fullscreenchange', function() {
+    if (!document.fullscreenElement && active) {
+      stopPresentation();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

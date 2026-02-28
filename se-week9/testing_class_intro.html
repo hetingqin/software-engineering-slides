@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>软件测试技术导论 · (AI时代视角)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --navy: #0A192F;
+            --navy-light: #112240;
+            --accent: #64FFDA;
+            --accent-dark: #14b8a6;
+            --accent-light: #ccfbf1;
+            --purple: #A855F7;
+            --blue: #3B82F6;
+            --cyan: #06B6D4;
+            --red: #F43F5E;
+            --bg: #FFF;
+            --bg-alt: #F8FAFC;
+            --text: #334155;
+            --text2: #64748B;
+            --border: #E2E8F0;
+            --font: 'Inter', 'Noto Sans SC', sans-serif
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            background: #334155;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            padding: 24px;
+            font-family: var(--font);
+            font-size: 22px;
+            color: var(--text)
+        }
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
+            display: flex;
+            flex-direction: column
+        }
+
+        .page-num {
+            position: absolute;
+            bottom: 12px;
+            right: 20px;
+            font-size: 16px;
+            color: rgba(0, 0, 0, .25);
+            font-weight: 600;
+            z-index: 5
+        }
+
+        .slide.cover .page-num,
+        .slide.section .page-num {
+            color: rgba(255, 255, 255, .3)
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent), var(--blue));
+            z-index: 10
+        }
+
+        .slide.cover {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            color: #fff;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px
+        }
+
+        .slide.cover::before {
+            display: none
+        }
+
+        .cover .badge {
+            display: inline-block;
+            background: rgba(100, 255, 218, .1);
+            border: 1px solid rgba(100, 255, 218, .4);
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            color: var(--accent)
+        }
+
+        .cover h1 {
+            font-size: 62px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 20px
+        }
+
+        .cover .sub {
+            font-size: 28px;
+            font-weight: 300;
+            opacity: .9;
+            color: var(--accent-light)
+        }
+
+        .cover .meta {
+            position: absolute;
+            bottom: 36px;
+            font-size: 20px;
+            opacity: .7;
+            line-height: 1.6
+        }
+
+        .cover .bg-dec {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(100, 255, 218, .05) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            border-radius: 50%
+        }
+
+        .slide.section {
+            background: var(--navy);
+            color: #fff;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 80px
+        }
+
+        .slide.section::before {
+            height: 4px;
+            background: var(--accent)
+        }
+
+        .section .num {
+            font-size: 160px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, .05);
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%)
+        }
+
+        .section h2 {
+            font-size: 56px;
+            font-weight: 800
+        }
+
+        .section .ssub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 16px;
+            opacity: .8;
+            border-left: 4px solid var(--accent);
+            padding-left: 20px
+        }
+
+        .slide.content {
+            padding: 40px 60px 32px
+        }
+
+        .hdr {
+            margin-bottom: 24px
+        }
+
+        .hdr h2 {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.2
+        }
+
+        .hdr .sub {
+            font-size: 22px;
+            color: var(--text2);
+            margin-top: 8px
+        }
+
+        .hdr .bar {
+            width: 60px;
+            height: 6px;
+            background: var(--accent-dark);
+            border-radius: 3px;
+            margin-top: 12px
+        }
+
+        .bl {
+            list-style: none
+        }
+
+        .bl li {
+            font-size: 22px;
+            color: var(--text);
+            padding: 10px 0 10px 32px;
+            position: relative;
+            line-height: 1.6
+        }
+
+        .bl li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20px;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            background: var(--accent-dark);
+            transform: rotate(45deg)
+        }
+
+        .bl li strong {
+            color: var(--navy);
+            font-weight: 700
+        }
+
+        .cr {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            align-content: center
+        }
+
+        .cd {
+            flex: 1;
+            min-width: 200px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .05);
+            display: flex;
+            flex-direction: column
+        }
+
+        .cd .ci {
+            font-size: 40px;
+            margin-bottom: 16px;
+            display: inline-block
+        }
+
+        .cd .ct {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 12px
+        }
+
+        .cd .cx {
+            font-size: 18px;
+            color: var(--text2);
+            line-height: 1.7;
+            flex: 1
+        }
+
+        .cd.ora {
+            border-top: 4px solid #F59E0B
+        }
+
+        .cd.red {
+            border-top: 4px solid var(--red)
+        }
+
+        .cd.pur {
+            border-top: 4px solid var(--purple)
+        }
+
+        .cd.gre {
+            border-top: 4px solid #10B981
+        }
+
+        .cd.blu {
+            border-top: 4px solid var(--blue)
+        }
+
+        .tc {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+            margin-top: 10px;
+            align-items: flex-start
+        }
+
+        .tc .c {
+            flex: 1
+        }
+
+        .qt {
+            background: rgba(100, 255, 218, .05);
+            border-left: 5px solid var(--accent-dark);
+            padding: 20px 24px;
+            border-radius: 0 12px 12px 0;
+            margin: 16px 0;
+            font-size: 24px;
+            line-height: 1.6;
+            color: var(--navy);
+            font-style: italic;
+            font-weight: 500
+        }
+
+        .vs {
+            display: flex;
+            align-items: stretch;
+            background: var(--bg-alt);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin: 24px 0;
+            height: 240px
+        }
+
+        .vs-item {
+            flex: 1;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center
+        }
+
+        .vs-item h3 {
+            color: var(--text2);
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px
+        }
+
+        .vs-item p {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--navy);
+            line-height: 1.6
+        }
+
+        .vs-div {
+            width: 56px;
+            height: 56px;
+            background: var(--navy);
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 20px;
+            margin: auto -28px;
+            z-index: 2;
+            position: relative;
+            box-shadow: 0 0 0 6px var(--bg-alt)
+        }
+
+        /* 路线卡片特化 */
+        .path-box {
+            border: 1px solid #EBEBEB;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            display: flex;
+            gap: 20px
+        }
+
+        .path-icon {
+            font-size: 40px
+        }
+
+        .path-content h4 {
+            color: var(--navy);
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 8px
+        }
+
+        .path-content p {
+            font-size: 18px;
+            color: var(--text2);
+            line-height: 1.6;
+            margin-bottom: 6px
+        }
+
+        .path-content strong {
+            color: #333
+        }
+
+        .slide [data-click-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .5s ease, transform .5s ease
+        }
+
+        .slide [data-click-reveal].visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .slide [data-click-reveal="fade"] {
+            transform: none
+        }
+
+        .slide [data-click-reveal="left"] {
+            transform: translateX(-30px)
+        }
+
+        .slide [data-click-reveal="right"] {
+            transform: translateX(30px)
+        }
+
+        .slide [data-click-reveal="scale"] {
+            transform: scale(0.95)
+        }
+
+        .po {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: none
+        }
+
+        .po.active {
+            display: flex
+        }
+
+        .po .pw {
+            width: 1280px;
+            height: 720px;
+            transform-origin: center center
+        }
+
+        .pi {
+            position: fixed;
+            bottom: 20px;
+            right: 32px;
+            z-index: 10000;
+            color: rgba(255, 255, 255, .4);
+            font-family: var(--font);
+            font-size: 20px;
+            font-weight: 500
+        }
+
+        .ph {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            background: rgba(0, 0, 0, .85);
+            color: #fff;
+            padding: 36px 56px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 22px;
+            line-height: 2.2;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .4s
+        }
+
+        .ph.show {
+            opacity: 1
+        }
+
+        .ph kbd {
+            background: rgba(255, 255, 255, .15);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, .25);
+            font-family: monospace
+        }
+
+        .pb {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 100;
+            background: var(--accent);
+            color: var(--navy);
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--font);
+            box-shadow: 0 6px 20px rgba(100, 255, 218, .3);
+            transition: transform .2s, background .2s
+        }
+
+        .pb:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px)
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- COVER -->
+    <div class="slide cover">
+        <div class="bg-dec"></div>
+        <div class="badge">软件测试技术 · 导论</div>
+        <h1>软件测试 (AI时代全新视野)</h1>
+        <div class="sub">从手工点工到全自动质量防线架构师的蜕变</div>
+        <div class="meta">教学对象：本科生 | 课程时长：90 分钟</div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="slide section"><span class="num">01</span>
+        <h2>不可磨灭的血泪史</h2>
+        <div class="ssub">当“质量防线”失控的恐怖代价</div>
+    </div>
+
+    <div class="slide content">
+        <div class="hdr">
+            <h2>三场市值千亿的技术灾难</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="margin-top:32px;gap:24px">
+            <div class="cd red" data-click-reveal="fade">
+                <div class="ci">💸</div>
+                <div class="ct">骑士资本 4.6 亿美元白驹过隙</div>
+                <div class="cx">2012年，高频交易系统因一行遗留死逻辑被激活。45
+                    分钟内发出数百万狂暴交易单，直接导致公司破产宣告。<br><br><strong>缺位：自动化回归测试与灰度发布防线。</strong></div>
+            </div>
+            <div class="cd ora" data-click-reveal="fade">
+                <div class="ci">💥</div>
+                <div class="ct">12306 与初代秒杀的白屏洪峰</div>
+                <div class="cx">并发洪峰到来时瞬间宕机。只验证了单人“能不能点通”，却忽略了百万并发下底层数据库连接池的锁死。<br><br><strong>缺位：极限性能与灾难混沌测试。</strong>
+                </div>
+            </div>
+            <div class="cd pur" data-click-reveal="fade">
+                <div class="ci">☢️</div>
+                <div class="ct">Log4j2 0Day 史诗级海啸</div>
+                <div class="cx">一个基础构建库中的字符解析引发整个 Java 世界核弹级漏洞（CVSS
+                    10.0），只需发一条消息就能接管大厂内网服务器。<br><br><strong>缺位：流水线深度安全成分测试拦截。</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="slide section"><span class="num">02</span>
+        <h2>危机与机遇的拐点</h2>
+        <div class="ssub">AI 写代码狂飙时代下的“刹车盘”</div>
+    </div>
+
+    <div class="slide content">
+        <div class="hdr">
+            <h2>当产能绝对过剩，我们该做什么？</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <h3 style="color:var(--navy);font-size:24px;margin-bottom:16px">大前提：大模型带来的 Vibe Coding</h3>
+                <p style="color:var(--text);line-height:1.7;font-size:20px;margin-bottom:24px">AI
+                    极度富余地产出“看起来能跑”的增删改查代码。<br>人类手搓业务逻辑代码变得不值钱。<br><strong style="color:var(--red)">但... AI 生成的代码带有 29%
+                        的高潜隐患率与深度幻觉！</strong></p>
+
+                <div class="qt" data-click-reveal="fade">
+                    “既然 AI 变成了无限的产出生成器（Generator），那么产业最奇缺的职位，就变成了最高级的判别器（Discriminator）。”
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="vs">
+                    <div class="vs-item">
+                        <h3>昨天的被鄙视链</h3>
+                        <p style="color:var(--text2)">照着落后的 Excel 表格要求，在屏幕前做机械重复的人肉沙包点击工。</p>
+                    </div>
+                    <div class="vs-div">VS</div>
+                    <div class="vs-item" style="background:rgba(100,255,218,.1)">
+                        <h3 style="color:var(--accent-dark)">明天的黄金高地</h3>
+                        <p>利用代码抽象树锁死代码边界，操控自动化测试框架去抵挡 AI 幻觉渗透的<strong style="color:var(--navy)">质量防线构架师</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="slide section"><span class="num">03</span>
+        <h2>灵魂拷问重塑道统</h2>
+        <div class="ssub">软件测试到底应不应该为质量担死责？</div>
+    </div>
+
+    <div class="slide content">
+        <div class="hdr">
+            <h2>破解千古扯皮难题：“测试不背这口黑锅”</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c" data-click-reveal="fade">
+                <ul class="bl"
+                    style="background:#FFF;padding:32px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.05)">
+                    <li style="color:var(--red)"><strong style="color:var(--red)">数学谬误</strong>：测试只能证明
+                        Defect（缺陷）存在，永远无法穷举证明缺陷不存在。</li>
+                    <li style="color:var(--red)"><strong
+                            style="color:var(--red)">根源错位</strong>：质量是设计和构建出来的，不是测出炉的。如果架构烂透了，测试只能在外层涂脂抹粉。</li>
+                </ul>
+            </div>
+            <div class="c" data-click-reveal="fade">
+                <div style="background:var(--navy);color:#fff;border-radius:12px;padding:32px;height:100%">
+                    <h3 style="color:var(--accent);font-size:24px;margin-bottom:16px">✅ 现代 DevOps 赋予测试的真面目</h3>
+                    <p style="font-size:22px;line-height:1.7">测试提供客观、多维度、高频度且极度自动化的<strong
+                            style="color:var(--accent-light)">“系统当前健康体检评估数据”</strong>。</p>
+                    <div
+                        style="margin-top:20px;border-top:1px solid rgba(255,255,255,.2);padding-top:20px;font-size:20px;color:rgba(255,255,255,.7)">
+                        测试是拿着体检仪指出高危红线的主刀医生，但究竟推不推向手术台，并为此担责的，是项目的整体联合决策委员会。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="slide section"><span class="num">04</span>
+        <h2>重磅大图</h2>
+        <div class="ssub">测试的职业远景与发展密码</div>
+    </div>
+
+    <div class="slide content">
+        <div class="hdr">
+            <h2>粉碎谣言：测试岗位的真实生态位</h2>
+            <div class="sub">薪资倒挂？为什么高级测试开发如此稀缺？</div>
+            <div class="bar"></div>
+        </div>
+        <p style="font-size:20px;color:var(--text);margin-bottom:24px">
+            在头部互联网大厂（鹅厂/菊厂/字节），一个能搭建全要素隔离测试矩阵的<strong>测试开发架构师</strong>，其议价权与薪资甚至持平或高于研发系统线架构师。</p>
+
+        <div class="tc" style="gap:24px">
+            <div class="c">
+                <div class="path-box" data-click-reveal="fade">
+                    <div class="path-icon">🛠️</div>
+                    <div class="path-content">
+                        <h4>A 技术专家：测开路线 (SDET)</h4>
+                        <p><strong>不测别人的代码，为测试写平台。</strong> 精通底座开发，造出自动化压测数据炮弹与闭环流水线工具。</p>
+                    </div>
+                </div>
+                <div class="path-box" data-click-reveal="fade">
+                    <div class="path-icon">🕵️</div>
+                    <div class="path-content">
+                        <h4>B 极客战狼：安全渗透测试</h4>
+                        <p><strong>合法入侵自己公司的白帽子。</strong> 拿极高溢价，专门找寻零日漏洞、XSS 跨站脚本和底层脱壳弱点。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="c">
+                <div class="path-box" data-click-reveal="fade">
+                    <div class="path-icon">🌋</div>
+                    <div class="path-content">
+                        <h4>C 救火尖兵：性能/混沌工程测试</h4>
+                        <p><strong>专啃大促秒杀洪峰。</strong> 敢于在线上系统随意“断水电拔网线”实验，逼迫架构自愈的高阶架构测试。</p>
+                    </div>
+                </div>
+                <div class="path-box" data-click-reveal="fade">
+                    <div class="path-icon">👑</div>
+                    <div class="path-content">
+                        <h4>D 掌舵领主：质量效能管理 QA</h4>
+                        <p><strong>把控整个产研发车班次及生杀大权。</strong> 以看板和 DevOps 度量工具推进敏捷项目运转的管理灵魂。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="slide section"><span class="num">05</span>
+        <h2>武器库大观与深水破冰</h2>
+        <div class="ssub">不仅是边界值，我们将要在这门课学什么？</div>
+    </div>
+
+    <div class="slide content">
+        <div class="hdr">
+            <h2>课程六大技术地图预览 (左移防线)</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="margin-top:10px;gap:12px">
+            <div class="cd blu" style="padding:16px;min-width:260px">
+                <div class="ct" style="font-size:20px">1. 逻辑基础 (双剑)</div>
+                <div class="cx" style="font-size:16px">等价类/边界值算法<br>代码圈复杂度降维压制</div>
+            </div>
+            <div class="cd pur" style="padding:16px;min-width:260px">
+                <div class="ct" style="font-size:20px">2. 单元与TDD (命门)</div>
+                <div class="cx" style="font-size:16px">Jest / JUnit<br>从测试驱动开发反向逼停极速膨胀的代码</div>
+            </div>
+            <div class="cd gre" style="padding:16px;min-width:260px">
+                <div class="ct" style="font-size:20px">3. UI 自动化 (替身)</div>
+                <div class="cx" style="font-size:16px">Selenium / Playwright<br>控制机器手眼执行万次回归大扫除</div>
+            </div>
+            <div class="cd ora" style="padding:16px;min-width:260px">
+                <div class="ct" style="font-size:20px">4. 接口 Mock (契约)</div>
+                <div class="cx" style="font-size:16px">Postman / 代码桩<br>在混沌微服务间做切面白盒抓包</div>
+            </div>
+            <div class="cd red" style="padding:16px;min-width:260px">
+                <div class="ct" style="font-size:20px">5/6. 性能容灾与安全</div>
+                <div class="cx" style="font-size:16px">JMeter 洪峰模拟<br>依赖劫持阻断测试矩阵</div>
+            </div>
+        </div>
+
+        <div class="qt"
+            style="margin-top:32px;font-size:20px;border-left-color:var(--red);background:rgba(244,63,94,.05)"
+            data-click-reveal="fade">
+            <strong>🔥 破冰讨论（小组互辩）：</strong><br>
+            一款买菜 App 周更迭代。3个业务开发用 Copilot 疯狂写生成代码，但<strong>全组只有你 1 个专职软件测试把守上线闸门。</strong><br>
+            面对即将溢出的带毒生成代码，你是坚持人手去点手机屏幕验收？还是要求开发搭建拦截红线？这套能让你晚上睡得着觉的“自动化防守系统”，究竟应该长啥样？
+        </div>
+    </div>
+
+    <!-- END -->
+    <div class="slide cover">
+        <div class="bg-dec"></div>
+        <h1 style="font-size:64px">“成为傲视群雄的究极判别者”</h1>
+        <div class="sub">在这个疯狂产出的前夜，建立属于你的质量护城河。</div>
+        <div class="meta" style="color:var(--accent)">第一课·完</div>
+    </div>
+
+    <button class="pb" onclick="startPresentation(0)">▶ 播放讲义</button>
+    <div class="po" id="po">
+        <div class="pw" id="pw"></div>
+    </div>
+    <div class="pi" id="pi"></div>
+    <div class="ph" id="ph"><kbd>→</kbd> <kbd>Space</kbd> 推进 &nbsp; <kbd>←</kbd> 回退<br><kbd>Home</kbd> 始 &nbsp;
+        <kbd>End</kbd> 终<br><kbd>Esc</kbd> 退出 &nbsp; <kbd>F</kbd> 全屏演示</div>
+    <script>
+        (function () { const SS = document.querySelectorAll('.slide'), O = document.getElementById('po'), W = document.getElementById('pw'), I = document.getElementById('pi'), H = document.getElementById('ph'); SS.forEach((s, i) => { const pn = document.createElement('span'); pn.className = 'page-num'; pn.textContent = i + 1; s.appendChild(pn) }); let cur = 0, on = false, ht = null, animItems = [], animIdx = 0; function show(n, revealAll) { if (n < 0) n = 0; if (n >= SS.length) n = SS.length - 1; cur = n; W.innerHTML = ''; const cl = SS[cur].cloneNode(true); cl.style.boxShadow = 'none'; W.appendChild(cl); scale(); animItems = Array.from(cl.querySelectorAll('[data-click-reveal]')); if (revealAll) { animItems.forEach(it => it.classList.add('visible')); animIdx = animItems.length } else { animItems.forEach(it => it.classList.remove('visible')); animIdx = 0 } updateIndicator() } function updateIndicator() { const t = animItems.length; I.textContent = t > 0 && animIdx < t ? `${cur + 1} / ${SS.length}  ·  步骤 ${animIdx}/${t}` : `${cur + 1} / ${SS.length}` } function forward() { if (animIdx < animItems.length) { animItems[animIdx].classList.add('visible'); animIdx++; updateIndicator() } else if (cur < SS.length - 1) show(cur + 1, false) } function backward() { if (animIdx > 0) { animIdx--; animItems[animIdx].classList.remove('visible'); updateIndicator() } else if (cur > 0) show(cur - 1, true) } function scale() { const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720); W.style.transform = `scale(${s})` } window.startPresentation = function (si) { cur = si || 0; on = true; O.classList.add('active'); document.body.style.overflow = 'hidden'; show(cur, false); H.classList.add('show'); clearTimeout(ht); ht = setTimeout(() => H.classList.remove('show'), 2500); if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => { }) }; function stop() { on = false; O.classList.remove('active'); document.body.style.overflow = ''; H.classList.remove('show'); if (document.fullscreenElement) document.exitFullscreen().catch(() => { }); SS[cur].scrollIntoView({ behavior: 'smooth', block: 'center' }) } document.addEventListener('keydown', function (e) { if (!on && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); startPresentation(0); return } if (!on) return; switch (e.key) { case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': e.preventDefault(); forward(); break; case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); backward(); break; case 'Home': e.preventDefault(); show(0, false); break; case 'End': e.preventDefault(); show(SS.length - 1, true); break; case 'Escape': e.preventDefault(); stop(); break } }); O.addEventListener('click', function () { forward() }); O.addEventListener('contextmenu', function (e) { e.preventDefault(); backward() }); window.addEventListener('resize', function () { if (on) scale() }); document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && on) stop() }); const obs = new IntersectionObserver(entries => { if (on) return; entries.forEach(en => { if (en.isIntersecting) { en.target.querySelectorAll('[data-click-reveal]').forEach((it, i) => setTimeout(() => it.classList.add('visible'), 150 + i * 150)) } }) }, { threshold: 0.3 }); SS.forEach(s => obs.observe(s)) })();
+    </script>
+</body>
+
+</html>

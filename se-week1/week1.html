@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>软件工程及体系结构 · 第1周</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+:root{--navy:#1B2A4A;--navy-light:#2C3E6B;--accent:#3B82F6;--accent-dark:#2563EB;--accent-light:#DBEAFE;--orange:#F59E0B;--orange-light:#FEF3C7;--red:#EF4444;--red-light:#FEE2E2;--green:#10B981;--green-light:#D1FAE5;--bg:#FFF;--bg-alt:#F8FAFC;--text:#1E293B;--text2:#475569;--border:#E2E8F0;--fs:22px;--font:'Inter','Noto Sans SC',-apple-system,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#94a3b8;display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px;font-family:var(--font);font-size:var(--fs)}
+.slide{width:1280px;height:720px;background:var(--bg);position:relative;overflow:hidden;flex-shrink:0;box-shadow:0 8px 32px rgba(0,0,0,.2);display:flex;flex-direction:column}
+.slide::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--navy),var(--accent));z-index:10}
+.slide.cover{background:linear-gradient(135deg,var(--navy),var(--navy-light),#1e3a6e);color:#fff;justify-content:center;align-items:center;text-align:center;padding:60px}
+.slide.cover::before{display:none}
+.cover .badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:8px 24px;font-size:22px;font-weight:500;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px}
+.cover h1{font-size:68px;font-weight:900;line-height:1.15}
+.cover .sub{font-size:28px;font-weight:300;margin-top:18px;opacity:.85}
+.cover .meta{position:absolute;bottom:36px;font-size:22px;opacity:.5}
+.cover .decor{position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(59,130,246,.08);right:-80px;top:-80px}
+.cover .decor2{position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(59,130,246,.06);left:-60px;bottom:-60px}
+.slide.section{background:var(--navy);color:#fff;justify-content:center;align-items:flex-start;padding:60px 80px}
+.slide.section::before{display:none}
+.section .num{font-size:160px;font-weight:900;opacity:.1;position:absolute;right:60px;top:50%;transform:translateY(-50%)}
+.section h2{font-size:64px;font-weight:700}
+.section .ssub{font-size:28px;font-weight:300;margin-top:14px;opacity:.7;border-left:4px solid var(--accent);padding-left:18px}
+.slide.content{padding:36px 56px 28px}
+.hdr{margin-bottom:16px}
+.hdr h2{font-size:42px;font-weight:800;color:var(--navy);line-height:1.2}
+.hdr .sub{font-size:22px;color:var(--text2);margin-top:4px}
+.hdr .bar{width:56px;height:5px;background:var(--accent);border-radius:3px;margin-top:8px}
+.bl{list-style:none}
+.bl li{font-size:26px;color:var(--text);padding:8px 0 8px 32px;position:relative;line-height:1.5}
+.bl li::before{content:'';position:absolute;left:0;top:16px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.bl li strong{color:var(--navy)}.bl li em{color:var(--accent-dark);font-style:normal;font-weight:700}
+.bl.sm li{font-size:22px;padding:6px 0 6px 28px}
+.bl.sm li::before{width:8px;height:8px;top:13px}
+.cr{display:flex;gap:14px;flex-wrap:wrap}
+.cd{flex:1;min-width:160px;background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;padding:18px}
+.cd .ci{font-size:34px;margin-bottom:6px}
+.cd .ct{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.cd .cx{font-size:22px;color:var(--text2);line-height:1.4}
+.cd.a{border-left:4px solid var(--accent)}.cd.o{border-left:4px solid var(--orange)}.cd.r{border-left:4px solid var(--red)}.cd.g{border-left:4px solid var(--green)}
+.qt{background:var(--bg-alt);border-left:5px solid var(--accent);padding:22px 28px;border-radius:0 10px 10px 0;margin:10px 0;font-size:24px;line-height:1.6;color:var(--text);font-style:italic}
+.qt .qa{font-size:22px;color:var(--text2);margin-top:10px;font-style:normal;font-weight:600}
+.fb{text-align:center;padding:24px 28px;margin:10px 0;background:var(--navy);border-radius:12px;color:#fff}
+.fb .ft{font-size:42px;font-weight:900;letter-spacing:3px}
+.fb .fs{font-size:22px;margin-top:8px;opacity:.7;font-weight:300}
+.cmp{display:flex;gap:18px;flex:1}
+.cp{flex:1;border-radius:10px;padding:22px}
+.cp.neg{background:var(--red-light);border:1px solid #FECACA}
+.cp.pos{background:var(--green-light);border:1px solid #A7F3D0}
+.cp h3{font-size:24px;font-weight:700;margin-bottom:10px}
+.cp.neg h3{color:var(--red)}.cp.pos h3{color:var(--green)}
+.tc{display:flex;gap:32px;flex:1}.tc .c{flex:1}
+.g22{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stb{width:100%;border-collapse:collapse;font-size:22px}
+.stb th{background:var(--navy);color:#fff;padding:12px 16px;text-align:left;font-weight:700}
+.stb td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text);line-height:1.4}
+.stb tr:nth-child(even) td{background:var(--bg-alt)}
+.stb td strong{color:var(--navy)}
+.img-full{text-align:center;flex:1;display:flex;align-items:center;justify-content:center}
+.img-full img{max-width:100%;max-height:100%;object-fit:contain}
+.img-side{display:flex;gap:28px;flex:1;align-items:center}
+.img-side img{max-width:50%;max-height:100%;object-fit:contain;border-radius:8px}
+.img-side .desc{flex:1}
+.img-cap{font-size:22px;color:var(--text2);text-align:center;margin-top:8px;font-style:italic}
+.slide [data-anim]{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+.slide [data-anim].visible{opacity:1;transform:translateY(0)}
+.slide [data-anim="fade"]{transform:none}
+.slide [data-anim="left"]{transform:translateX(-30px)}
+.slide [data-anim="left"].visible{transform:translateX(0)}
+.slide [data-anim="right"]{transform:translateX(30px)}
+.slide [data-anim="right"].visible{transform:translateX(0)}
+.slide [data-anim="scale"]{transform:scale(.9)}
+.slide [data-anim="scale"].visible{transform:scale(1)}
+.po{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;z-index:9999;justify-content:center;align-items:center;cursor:none}
+.po.active{display:flex}
+.po .pw{width:1280px;height:720px;transform-origin:center center}
+.pi{position:fixed;bottom:16px;right:24px;z-index:10000;color:rgba(255,255,255,.5);font-family:var(--font);font-size:22px;font-weight:500}
+.ph{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10001;background:rgba(0,0,0,.85);color:#fff;padding:32px 48px;border-radius:16px;text-align:center;font-size:22px;line-height:2;pointer-events:none;opacity:0;transition:opacity .3s}
+.ph.show{opacity:1}
+.ph kbd{background:rgba(255,255,255,.15);padding:2px 10px;border-radius:4px;font-weight:600;border:1px solid rgba(255,255,255,.25)}
+.pb{position:fixed;bottom:24px;right:24px;z-index:100;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:22px;font-weight:600;cursor:pointer;font-family:var(--font);box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.pb:hover{background:var(--accent)}
+@media print{body{background:none;padding:0;gap:0}.slide{box-shadow:none;page-break-after:always}}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: COVER -->
+<div class="slide cover">
+  <div class="decor"></div><div class="decor2"></div>
+  <div class="badge" data-anim="fade">Software Engineering &amp; Architecture</div>
+  <h1 data-anim="up">基础理论与工程思维</h1>
+  <div class="sub" data-anim="up">Software Engineering Core · Everything is a Project</div>
+  <div class="meta">软件工程及体系结构 · 第 1 周 · 3 学时</div>
+</div>
+
+<!-- SLIDE 2: SECTION 1 -->
+<div class="slide section">
+  <span class="num">01</span>
+  <h2 data-anim="left">为什么学好<br>软件工程？</h2>
+  <div class="ssub" data-anim="left">跨越自学陷阱：从“野路子”到系统化工程的降维打击</div>
+</div>
+
+<!-- SLIDE 3: 野路子之困 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>从“野路子”到系统化工程的蜕变</h2><div class="bar"></div></div>
+  <p style="font-size:24px;color:var(--text);margin-bottom:12px" data-anim="fade">很多程序员最初通过自学语法踏入编程世界，但面对复杂商业项目时，往往痛点爆发：</p>
+  <div class="cr" data-anim="up">
+    <div class="cd r"><div class="ci">坑</div><div class="ct">无设计上手</div><div class="cx">开发前无分析设计，上手就写代码，后期全是坑，只能无休止地加班。</div></div>
+    <div class="cd o"><div class="ci">盲</div><div class="ct">缺乏复用指导</div><div class="cx">缺乏成熟方法论指导，换个新项目不知所措，难以融会贯通。</div></div>
+    <div class="cd a"><div class="ci">乱</div><div class="ct">需求与进度失控</div><div class="cx">被迫接受朝令夕改的需求，项目无排期意识，频繁延期挨骂。</div></div>
+  </div>
+  <div class="qt" data-anim="up">
+    <strong>软件工程的降维打击：</strong>开发不再是码农孤独地敲键盘，而被重铸成了拥有规范、最佳实践与顶级协作工具加持的正规军工程体系！
+  </div>
+</div>
+
+<!-- SLIDE 4: 什么不会变 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>技术瞬息万变，什么是不变的法则？</h2><div class="sub">杰夫·贝索斯：“从来没有人问我，未来十年什么不会变？”</div><div class="bar"></div></div>
+  <p style="font-size:24px;color:var(--navy);font-weight:600;margin-bottom:12px" data-anim="fade">不管十年后是用什么前卫语言还是用 AI 自动写，几根深海坚柱是永恒的：</p>
+  <ul class="bl" data-anim="up">
+    <li>坚如磐石：数据结构、算法、面向对象思想、设计模式、<strong>软件工程</strong>。</li>
+    <li>无死角的开发节点墙：
+      <ul class="bl sm" style="margin-top:8px">
+        <li>有了目标功能 $\rightarrow$ 必须要做先期<strong>需求分析</strong>。</li>
+        <li>接手百页重构单 $\rightarrow$ 必须要做顶层<strong>系统架构设计</strong>。</li>
+        <li>怕发版造成重大经济损失 $\rightarrow$ 必须有一套死守的<strong>软件测试网</strong>。</li>
+        <li>多人跨时区协作 $\rightarrow$ 必然依赖<strong>源码版本控制与 CI 流水线</strong>。</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="fb" data-anim="up" style="margin-top:20px"><div class="fs">掌握不变的“道”，才能对万变的“术”信手拈来。脑袋里装有软件工程战略地图的人，永远比赤手空拳的莽撞黑客拥有赢的先机。</div></div>
+</div>
+
+<!-- SLIDE 5: SECTION 2 -->
+<div class="slide section">
+  <span class="num">02</span>
+  <h2 data-anim="left">怎样学好软件工程？</h2>
+  <div class="ssub" data-anim="left">工具 · 方法 · 过程 · 学习四重境界</div>
+</div>
+
+<!-- SLIDE 6: 核心公式 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>软件工程的万水千山：万能核心公式</h2><div class="bar"></div></div>
+  <div class="img-side" data-anim="up">
+    <img src="../../assets/9926b79ecc91a4e664933c587f630199.jpg" alt="公式体系" style="max-height:450px">
+    <div class="desc">
+      <h3 style="font-size:32px;color:var(--navy);margin-bottom:16px">软件工程 = 工具 + 方法 + 过程</h3>
+      <ul class="bl sm">
+        <li><strong>基石 (质量焦点)</strong>：一切动作皆为人与机器，为了构建和长驻高可用高质量的系统而存在。</li>
+        <li><strong>过程</strong>：规范生命周期所有参与动作的框架（例如瀑布式的严谨，或敏捷式的拥抱不确定性）。</li>
+        <li><strong>方法</strong>：具体到点上怎么做？（如需求如何收集反驳，架构选型怎么平衡木）。</li>
+        <li><strong>工具</strong>：外挂和辅助的数字神兵（像Git/CI平台等，拔高了人类团队手工极光的上线）。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: 学习的四重境界 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>软件工程修炼的四重化境</h2><div class="bar"></div></div>
+  <div class="tc" data-anim="up">
+    <div class="c">
+      <div class="cd g" style="margin-bottom:20px">
+        <div class="ct">第一重：用器（最直白极简）</div>
+        <div class="cx">学拿神兵。掌握 IDE、原型轴线设计软件、如何推拉 Git，以及持续集成脚本怎么写。这能给你**立刻见效的正反馈！**</div>
+      </div>
+      <div class="cd a">
+        <div class="ct">第二重：学术（套路与章法）</div>
+        <div class="cx">开始按照标准姿势跳舞。学会了什么是 15分钟 Scrum 站会，学会了什么是黑盒白盒探针测试法。</div>
+      </div>
+    </div>
+    <div class="c">
+      <div class="cd o" style="margin-bottom:20px">
+        <div class="ct">第三重：悟道（直击本源）</div>
+        <div class="cx">扔掉所有固定套路，洞察本质规律边界。如当你知道敏捷本质是响应拥抱极速变化，就不在乎用不用电子 Jira 看板，哪怕墙面贴A4纸也是极好的。</div>
+      </div>
+      <div class="cd r">
+        <div class="ct">第四重：传道（融会贯通）</div>
+        <div class="cx">教学相长的顶级化境。当你能把重型云端分层架构如何实施这些复杂深渊的内容讲成大白话传授于组内应届生，你才算大成。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: 做中教学中学 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>一套进阶的实操秘籍：做中学 &amp; 教中学</h2><div class="bar"></div></div>
+  <div class="img-side" data-anim="up">
+    <img src="../../assets/38203f9726c63858c230e1947768f019.jpg" alt="学习金字塔" style="max-width:55%">
+    <div class="desc">
+      <p style="font-size:24px;margin-bottom:16px">单纯听枯燥的学术史必定昏睡不醒，你必须强行打造实践反馈闭环：</p>
+      <ul class="bl">
+        <li><strong>做中学（自下而上）</strong>：<br><span style="font-size:22px;color:var(--text2)">在你的学期课设Team项目中，不要靠口头通知发补丁，强行全盘引入 Kanban 看板与 CI 工具！不亲身掉坑流血填坑，绝对不能领悟其理论背后的真意。</span></li>
+        <li><strong>教中学（自上而下）</strong>：<br><span style="font-size:22px;color:var(--text2)">给团队或学弟做技术串讲！当你备课输出并面对他人的技术刁难盘问时，你会迫使自己彻底理清底层逻辑。</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: SECTION 3 -->
+<div class="slide section">
+  <span class="num">03</span>
+  <h2 data-anim="left">如何理解<br>软件工程？</h2>
+  <div class="ssub" data-anim="left">软件危机的血泪史与自救编年史</div>
+</div>
+
+<!-- SLIDE 10: 软件工程的本质像盖大厦 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>软件工程的本质：像盖大厦一样造软件</h2><div class="sub">没有任何神级系统是一个人能在一夜之间单刷出来的</div><div class="bar"></div></div>
+  <ul class="bl" data-anim="up">
+    <li>我们每天无缝依赖的国民级应用：扫码买单流转体系（微信）、全天不宕机的云计算基座、承载千万人同屏呼吸的网游。</li>
+    <li><strong>工程的终极本质特征：</strong>由庞大的“多人集群”协作、拥有极其严密的阶段计划规划轴、以及一步步被分化执行出来去达成某个**实用产品**的超级大动作。</li>
+  </ul>
+  <div class="qt" data-anim="up" style="margin-top:20px">
+    <strong>暴雪 3 年造神史《守望先锋项目纪要》：</strong><br>
+    2013年立项想做一款颠覆射击领域的 MMO $\rightarrow$ 花费几个月的时间先搞了一个只有 4英雄+1破旧地图 的简陋Demo测试团队方向 $\rightarrow$ 2014暴雪嘉年华拿出部分试玩版去试探市场反响 $\rightarrow$ 直到 2016 最终打磨包装在全球公测发布并一朝封神。
+  </div>
+</div>
+
+<!-- SLIDE 11: 危险与血泪惨案 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>没有软件工程会死人吗？</h2><div class="sub">早期手工作坊堆砌代码带来的深渊悲剧</div><div class="bar"></div></div>
+  <div class="img-side" data-anim="up">
+    <img src="../../assets/57222a73010237e5ab069351b535df52.jpg" alt="不按工程盖房子的后果" style="max-width:35%">
+    <div class="desc">
+      <h3 style="font-size:22px;color:var(--navy);margin-bottom:12px">如果你让毫无建筑学图纸基础的人去徒手盖大平层，结局必然是倒塌。</h3>
+      <ul class="bl sm">
+        <li><strong>OS/360 流血惨案（天价经济代价）</strong><br>上世纪 60 年代第一号超大项目 OS/360。一千名程序员如无头苍蝇般无序协作，填进去了震撼产业的 5000人年！依然由于无穷耦合错误导致数百万美元沉入海底。（由此惨烈教训催生了名著《人月神话》）。</li>
+        <li><strong>Therac-25 夺命事件（真实的生命死亡）</strong><br>80年代放疗仪器底层竞态代码 Bug，由于无人执行工程中的系统侧死角测试，直接释放超额百倍剂量的致命核辐射，多名病患死于非命。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12: 软件危机与发展简史 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>“软件危机”与工程自救编年演变录</h2><div class="bar"></div></div>
+  <div class="img-full" data-anim="scale">
+    <img src="../../assets/3b66yy913ee9d30676f9b81145b65a3f.jpg" alt="发展简史图" style="max-height:360px">
+  </div>
+  <div class="cr" data-anim="up" style="margin-top:16px">
+    <div class="cd bg-alt"><div class="ct">1968 NATO 自救会</div><div class="cx">软件深陷全面危机不堪重负，几十名科学巨头聚议，首次确立 <strong>"软件工程"</strong> 词汇，呼唤把开发规范化、可度量化起来防御风险。</div></div>
+    <div class="cd bg-alt"><div class="ct">古典至尊：瀑布流派</div><div class="cx">照搬盖楼步骤形成**瀑布模型**。从源头斩断了无序胡乱瞎敲代码，但在面对万变互联网水土不服。随后分裂补足了 V模、螺旋等。</div></div>
+    <div class="cd bg-alt"><div class="ct">2001 敏捷大风暴</div><div class="cx">敏捷宣言横空出世，Scrum 及 XP 站回巅峰，以轻量对抗繁重。</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 13: SECTION 4 -->
+<div class="slide section">
+  <span class="num">04</span>
+  <h2 data-anim="left">工程思维：<br>把每件事当作一个项目</h2>
+  <div class="ssub" data-anim="left">脱离局部视角，用整体去对现实问题进行降维打击</div>
+</div>
+
+<!-- SLIDE 14: 什么是工程思维 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>什么是工程方法与项目视距？</h2><div class="bar"></div></div>
+  <p style="font-size:26px;color:var(--navy);font-weight:700;margin-bottom:12px;text-align:center" data-anim="fade">Everything is a project！一切现实难题都是一个可被降解的六轴限位工程。</p>
+  <div class="img-full" data-anim="scale" style="margin:20px 0">
+    <img src="../../assets/c45b734291f8a36d4c3d7ed87e384e4e.jpg" alt="工程六部曲" style="max-height:280px">
+  </div>
+  <div class="cr" data-anim="up" style="margin-top:16px">
+    <div class="cd g" style="text-align:center">1. 想法 (定位真正问题)</div>
+    <div class="cd g" style="text-align:center">2. 概念 (搞定草图方案论证)</div>
+    <div class="cd g" style="text-align:center">3. 计划 (精打细算排期花销)</div>
+    <div class="cd g" style="text-align:center">4. 设计 (彻底敲死架构模块)</div>
+    <div class="cd g" style="text-align:center">5. 开发 (爆肝落地与迭代循环)</div>
+    <div class="cd g" style="text-align:center">6. 发布 (面相世界的成果剪彩)</div>
+  </div>
+</div>
+
+<!-- SLIDE 15: 老年机实景推演 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>实战演练：当普通人遭遇“30分钟造老年机”</h2><div class="bar"></div></div>
+  <div class="tc" data-anim="up">
+    <div class="cp neg">
+      <h3>普通参赛者的惨状 (死于沉溺微域)</h3>
+      <p style="font-size:22px">限时30分钟画一台老年人手机上台展示。</p>
+      <ul class="bl sm" style="margin-top:12px">
+        <li>浪费了整整 28 分钟在热火朝天地头脑风暴，争吵什么屏幕应该要翻盖甚至全息投影这种细节。</li>
+        <li>直到 29 分钟时惊觉大限将至，才绝望地抢下白板笔疯狂乱涂。</li>
+        <li>最后一刻连宣讲说辞都没定妥，上台胡言乱语。</li>
+      </ul>
+    </div>
+    <div class="cp pos">
+      <h3>工程思维霸主的猎杀 (降维全盘击破)</h3>
+      <ul class="bl sm" style="margin-top:12px">
+        <li><strong>00-10分 (概念阶段)：</strong>快速头脑风暴大轮廓抛玉。</li>
+        <li><strong>11-15分 (设计强收)：</strong>果断掐架收拢争议强制定板！</li>
+        <li><strong>16-25分 (集中施工)：</strong>流水线分配快速绘制完整细节交互！</li>
+        <li><strong>26-30分 (交付验证)：</strong>排练演讲闭锁走场定锤。</li>
+      </ul>
+      <p style="font-size:22px;margin-top:12px;font-weight:700">【结论】：被论证高位方法轴线，绝不让你死在无休止的细碎泥潭里延期沉底。</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 16: 突破局部局限性 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>跨越山和大海：部门之间为什么永远在扯皮？</h2><div class="bar"></div></div>
+  <p style="font-size:24px;color:var(--text);margin-bottom:12px" data-anim="fade">在这个圈子里，因为没有系统全局工程视野而导致的修罗场日常上演：</p>
+  <ul class="bl" data-anim="up">
+    <li>测试人员每天绞尽脑汁试图搞崩系统，不顾产品能不能赶上首发档口。</li>
+    <li>技术开发人员总想在系统底层塞满各种骚操作最新前卫框架以满足炫技和空虚感。</li>
+    <li>大厂高傲架构师极度偏爱自己一砖一石“造轮子”，排斥极其好用廉价但丧失其存在感的开源套件。</li>
+    <li>产品经理疯狂画饼，梦想要加毫无常理的一键登录月球功能的荒谬需求。</li>
+  </ul>
+  <div class="qt" data-anim="up" style="margin-top:16px">
+    <strong>根本原因：</strong>极度自私，死心塌地固守在自己的那一亩三分“局部领地”立场。在缺乏顶层统御视野的时候，每多一条花里胡哨的代码和越界的干涉，都是对这座摇摇欲坠工程的剧烈腐化。
+  </div>
+</div>
+
+<!-- SLIDE 17: 工程思维的好处 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>如果你强行换上工程顶层思维</h2><div class="sub">不用等到变成总监，基层员工也可运用自如破局</div><div class="bar"></div></div>
+  <div class="cr" data-anim="up">
+    <div class="cd a"><div class="ct">产品经理将觉醒</div><div class="cx">学会自我反省不可理喻的天马行空，提前跨界请求技术骨干评估水深（可行性预案前置化）。</div></div>
+    <div class="cd g"><div class="ct">架构师停止自嗨</div><div class="cx">无情砍掉盲造轮子的技术傲慢，大胆引用外采极度验证安全的开源核芯件死守安全质量生命线。</div></div>
+    <div class="cd o"><div class="ct">程序员脱胎换骨</div><div class="cx">不再沉沦高深代码特技走不归路，主动运用低开销最平稳交付的落地方式，化身系统稳定器盘石。</div></div>
+  </div>
+  <div class="fb" data-anim="up" style="margin-top:20px;padding:24px"><div class="fs">所有能够提前挣断盲目局部枷锁从而高居系统总体（进度、质量、大盘成本等）俯视的年轻人，都已预定了一张直接登顶主管与技术话事人的白金门票。</div></div>
+</div>
+
+<!-- SLIDE 18: 作业环节 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>📋 课程推演：对你的“出游方案”来次降维打击训练</h2><div class="bar"></div></div>
+  <div class="fb" style="background:#fef3c7;color:#92400e;text-align:left;padding:36px" data-anim="up">
+    <p style="font-size:24px;line-height:1.6">
+      马上将要迎来一次中型假期（如端午节三天），请你将以前那套盲目随性出发结果中途打不到车、被黄牛宰没房睡的悲惨出游方案撕碎。
+    </p>
+    <p style="font-size:24px;line-height:1.6;margin-top:16px">
+      <strong>尝试使用这节课学到的大厂生命周期统御大法（工程六步法极限框架）：</strong>
+    </p>
+    <ul class="bl" style="margin-top:12px;color:#78350f">
+      <li><strong>[想法阶段]</strong> $\rightarrow$ 出去散心避暑防晒（敲定游玩核芯诉求边界定位）。</li>
+      <li><strong>[概念阶段]</strong> $\rightarrow$ 海边冲浪 VS 名山避暑（进行两套路线的战略对碰，杀定其一）。</li>
+      <li><strong>[计划规划]</strong> $\rightarrow$ 钱够不够买几点的高铁怎么接驳（算账排工时）。</li>
+      <li><strong>[系统设计]</strong> $\rightarrow$ 谁拿防晒伞定几点房谁背火腿肠（深度无缝对接微服务分工合作）。</li>
+      <li><strong>[实施执行]</strong> $\rightarrow$ （背起包开始战斗）。</li>
+      <li><strong>[成果发布]</strong> $\rightarrow$ （拍出精修的九宫格美图发票圈进行商业吹嘘大验收）。</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Presentation mode UI -->
+<button class="pb" onclick="startPresentation(0)">▶ 开始播放</button>
+<div class="po" id="po"><div class="pw" id="pw"></div></div>
+<div class="pi" id="pi"></div>
+<div class="ph" id="ph">
+  <kbd>→</kbd> <kbd>Space</kbd> 下一步 &nbsp; <kbd>←</kbd> 上一步<br>
+  <kbd>Home</kbd> 第一页 &nbsp; <kbd>End</kbd> 最后一页<br>
+  <kbd>Esc</kbd> 退出 &nbsp; <kbd>F</kbd> 进入演示
+</div>
+
+<script>
+(function(){
+  const SS=document.querySelectorAll('.slide'),O=document.getElementById('po'),W=document.getElementById('pw'),I=document.getElementById('pi'),H=document.getElementById('ph');
+  let cur=0,on=false,ht=null,animItems=[],animIdx=0;
+  function show(n,revealAll){
+    if(n<0)n=0;if(n>=SS.length)n=SS.length-1;cur=n;
+    W.innerHTML='';const cl=SS[cur].cloneNode(true);cl.style.boxShadow='none';W.appendChild(cl);
+    scale();
+    animItems=Array.from(cl.querySelectorAll('[data-anim]'));
+    if(revealAll){
+      animItems.forEach(it=>it.classList.add('visible'));
+      animIdx=animItems.length;
+    } else {
+      animItems.forEach(it=>it.classList.remove('visible'));
+      animIdx=0;
+    }
+    updateIndicator();
+  }
+  function updateIndicator(){
+    const total=animItems.length;
+    if(total>0 && animIdx<total){
+      I.textContent=`${cur+1} / ${SS.length}  ·  ${animIdx}/${total}`;
+    } else {
+      I.textContent=`${cur+1} / ${SS.length}`;
+    }
+  }
+  function forward(){
+    if(animIdx<animItems.length){
+      animItems[animIdx].classList.add('visible');
+      animIdx++;
+      updateIndicator();
+    } else {
+      if(cur<SS.length-1) show(cur+1,false);
+    }
+  }
+  function backward(){
+    if(animIdx>0){
+      animIdx--;
+      animItems[animIdx].classList.remove('visible');
+      updateIndicator();
+    } else {
+      if(cur>0) show(cur-1,true);
+    }
+  }
+  function scale(){
+    const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    W.style.transform=`scale(${s})`;
+  }
+  window.startPresentation=function(si){
+    cur=si||0;on=true;O.classList.add('active');document.body.style.overflow='hidden';
+    show(cur,false);H.classList.add('show');clearTimeout(ht);ht=setTimeout(()=>H.classList.remove('show'),2500);
+    if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(()=>{});
+  };
+  function stop(){
+    on=false;O.classList.remove('active');document.body.style.overflow='';H.classList.remove('show');
+    if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+    SS[cur].scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  document.addEventListener('keydown',function(e){
+    if(!on&&(e.key==='f'||e.key==='F')){e.preventDefault();startPresentation(0);return}
+    if(!on)return;
+    switch(e.key){
+      case'ArrowRight':case'ArrowDown':case' ':case'PageDown':e.preventDefault();forward();break;
+      case'ArrowLeft':case'ArrowUp':case'PageUp':e.preventDefault();backward();break;
+      case'Home':e.preventDefault();show(0,false);break;
+      case'End':e.preventDefault();show(SS.length-1,true);break;
+      case'Escape':e.preventDefault();stop();break;
+    }
+  });
+  O.addEventListener('click',function(e){if(e.target===O||W.contains(e.target))forward()});
+  O.addEventListener('contextmenu',function(e){e.preventDefault();backward()});
+  window.addEventListener('resize',function(){if(on)scale()});
+  document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement&&on)stop()});
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        const items=en.target.querySelectorAll('[data-anim]');
+        items.forEach((it,i)=>setTimeout(()=>it.classList.add('visible'),200+i*200));
+      }
+    });
+  },{threshold:0.3});
+  SS.forEach(s=>obs.observe(s));
+})();
+</script>
+</body>
+</html>

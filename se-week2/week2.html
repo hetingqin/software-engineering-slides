@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>软件工程及体系结构 · 第2周</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+:root{--navy:#1B2A4A;--navy-light:#2C3E6B;--accent:#3B82F6;--accent-dark:#2563EB;--accent-light:#DBEAFE;--orange:#F59E0B;--orange-light:#FEF3C7;--red:#EF4444;--red-light:#FEE2E2;--green:#10B981;--green-light:#D1FAE5;--bg:#FFF;--bg-alt:#F8FAFC;--text:#1E293B;--text2:#475569;--border:#E2E8F0;--fs:22px;--font:'Inter','Noto Sans SC',-apple-system,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#94a3b8;display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px;font-family:var(--font);font-size:var(--fs)}
+.slide{width:1280px;height:720px;background:var(--bg);position:relative;overflow:hidden;flex-shrink:0;box-shadow:0 8px 32px rgba(0,0,0,.2);display:flex;flex-direction:column}
+.slide::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--navy),var(--accent));z-index:10}
+.slide.cover{background:linear-gradient(135deg,var(--navy),var(--navy-light),#1e3a6e);color:#fff;justify-content:center;align-items:center;text-align:center;padding:60px}
+.slide.cover::before{display:none}
+.cover .badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:8px 24px;font-size:22px;font-weight:500;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px}
+.cover h1{font-size:68px;font-weight:900;line-height:1.15}
+.cover .sub{font-size:28px;font-weight:300;margin-top:18px;opacity:.85}
+.cover .meta{position:absolute;bottom:36px;font-size:22px;opacity:.5}
+.cover .decor{position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(59,130,246,.08);right:-80px;top:-80px}
+.cover .decor2{position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(59,130,246,.06);left:-60px;bottom:-60px}
+.slide.section{background:var(--navy);color:#fff;justify-content:center;align-items:flex-start;padding:60px 80px}
+.slide.section::before{display:none}
+.section .num{font-size:160px;font-weight:900;opacity:.1;position:absolute;right:60px;top:50%;transform:translateY(-50%)}
+.section h2{font-size:64px;font-weight:700}
+.section .ssub{font-size:28px;font-weight:300;margin-top:14px;opacity:.7;border-left:4px solid var(--accent);padding-left:18px}
+.slide.content{padding:36px 56px 28px}
+.hdr{margin-bottom:16px}
+.hdr h2{font-size:42px;font-weight:800;color:var(--navy);line-height:1.2}
+.hdr .sub{font-size:22px;color:var(--text2);margin-top:4px}
+.hdr .bar{width:56px;height:5px;background:var(--accent);border-radius:3px;margin-top:8px}
+.bl{list-style:none}
+.bl li{font-size:26px;color:var(--text);padding:8px 0 8px 32px;position:relative;line-height:1.5}
+.bl li::before{content:'';position:absolute;left:0;top:16px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.bl li strong{color:var(--navy)}.bl li em{color:var(--accent-dark);font-style:normal;font-weight:700}
+.bl.sm li{font-size:22px;padding:6px 0 6px 28px}
+.bl.sm li::before{width:8px;height:8px;top:13px}
+.cr{display:flex;gap:14px;flex-wrap:wrap}
+.cd{flex:1;min-width:160px;background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;padding:18px}
+.cd .ci{font-size:34px;margin-bottom:6px}
+.cd .ct{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.cd .cx{font-size:22px;color:var(--text2);line-height:1.4}
+.cd.a{border-left:4px solid var(--accent)}.cd.o{border-left:4px solid var(--orange)}.cd.r{border-left:4px solid var(--red)}.cd.g{border-left:4px solid var(--green)}
+.qt{background:var(--bg-alt);border-left:5px solid var(--accent);padding:22px 28px;border-radius:0 10px 10px 0;margin:10px 0;font-size:24px;line-height:1.6;color:var(--text);font-style:italic}
+.qt .qa{font-size:22px;color:var(--text2);margin-top:10px;font-style:normal;font-weight:600}
+.fb{text-align:center;padding:24px 28px;margin:10px 0;background:var(--navy);border-radius:12px;color:#fff}
+.fb .ft{font-size:42px;font-weight:900;letter-spacing:3px}
+.fb .fs{font-size:22px;margin-top:8px;opacity:.7;font-weight:300}
+.cmp{display:flex;gap:18px;flex:1}
+.cp{flex:1;border-radius:10px;padding:22px}
+.cp.neg{background:var(--red-light);border:1px solid #FECACA}
+.cp.pos{background:var(--green-light);border:1px solid #A7F3D0}
+.cp h3{font-size:24px;font-weight:700;margin-bottom:10px}
+.cp.neg h3{color:var(--red)}.cp.pos h3{color:var(--green)}
+.tc{display:flex;gap:32px;flex:1}.tc .c{flex:1}
+.g22{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stb{width:100%;border-collapse:collapse;font-size:22px}
+.stb th{background:var(--navy);color:#fff;padding:12px 16px;text-align:left;font-weight:700}
+.stb td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text);line-height:1.4}
+.stb tr:nth-child(even) td{background:var(--bg-alt)}
+.stb td strong{color:var(--navy)}
+.img-full{text-align:center;flex:1;display:flex;align-items:center;justify-content:center}
+.img-full img{max-width:100%;max-height:100%;object-fit:contain}
+.img-side{display:flex;gap:28px;flex:1;align-items:center}
+.img-side img{max-width:45%;max-height:100%;object-fit:contain;border-radius:8px}
+.img-side .desc{flex:1}
+.slide [data-anim]{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+.slide [data-anim].visible{opacity:1;transform:translateY(0)}
+.slide [data-anim="fade"]{transform:none}
+.slide [data-anim="left"]{transform:translateX(-30px)}
+.slide [data-anim="left"].visible{transform:translateX(0)}
+.slide [data-anim="right"]{transform:translateX(30px)}
+.slide [data-anim="right"].visible{transform:translateX(0)}
+.slide [data-anim="scale"]{transform:scale(.9)}
+.slide [data-anim="scale"].visible{transform:scale(1)}
+.po{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;z-index:9999;justify-content:center;align-items:center;cursor:none}
+.po.active{display:flex}
+.po .pw{width:1280px;height:720px;transform-origin:center center}
+.pi{position:fixed;bottom:16px;right:24px;z-index:10000;color:rgba(255,255,255,.5);font-family:var(--font);font-size:22px;font-weight:500}
+.ph{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10001;background:rgba(0,0,0,.85);color:#fff;padding:32px 48px;border-radius:16px;text-align:center;font-size:22px;line-height:2;pointer-events:none;opacity:0;transition:opacity .3s}
+.ph.show{opacity:1}
+.ph kbd{background:rgba(255,255,255,.15);padding:2px 10px;border-radius:4px;font-weight:600;border:1px solid rgba(255,255,255,.25)}
+.pb{position:fixed;bottom:24px;right:24px;z-index:100;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:22px;font-weight:600;cursor:pointer;font-family:var(--font);box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.pb:hover{background:var(--accent)}
+@media print{body{background:none;padding:0;gap:0}.slide{box-shadow:none;page-break-after:always}}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: COVER -->
+<div class="slide cover">
+  <div class="decor"></div><div class="decor2"></div>
+  <div class="badge" data-anim="fade">Software Engineering &amp; Architecture</div>
+  <h1 data-anim="up">传统软件过程模型</h1>
+  <div class="sub" data-anim="up">瀑布流派与七十二道变种演阵</div>
+  <div class="meta">软件工程及体系结构 · 第 2 周 · 3 学时</div>
+</div>
+
+<!-- SLIDE 2: SECTION 1 -->
+<div class="slide section">
+  <span class="num">01</span>
+  <h2 data-anim="left">现代软件工程的起源：<br>瀑布模型</h2>
+  <div class="ssub" data-anim="left">跨越自学陷阱：从“手工作坊”进入工业流水线架构</div>
+</div>
+
+<!-- SLIDE 3: 边写边改时代的噩梦 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>1. 蛮荒时代的“边写边改”(Code And Fix)</h2><div class="bar"></div></div>
+  <p style="font-size:26px;color:var(--text);margin-bottom:12px" data-anim="fade">在五十年前汇编横行的年代，软件开发是绝望的手工业：</p>
+  <div class="cr" data-anim="up">
+    <div class="cd r"><div class="ci">盲</div><div class="ct">起手黑盒</div><div class="cx">接到活直接写代码。项目进度毫无规划，谁也说不清哪天交付。</div></div>
+    <div class="cd o"><div class="ci">乱</div><div class="ct">无协作章法</div><div class="cx">多人开发彻底失控。今天你改我的全局变量，明天我删你的核心表。</div></div>
+    <div class="cd a"><div class="ci">崩</div><div class="ct">随时重造</div><div class="cx">没有设计和需求探明，做出的东西离题万里，天天返工和修 Bug。</div></div>
+  </div>
+  <div class="qt" data-anim="up">
+    <strong>软件危机的终极大考：</strong> 业务急需百人军团长达几年的大兵团作战协作，但程序员只会“一把梭哈”，导致天价损失与项目大批量死亡。
+  </div>
+</div>
+
+<!-- SLIDE 4: 瀑布降临 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>2. 工厂流水线降临：瀑布模型的诞生</h2><div class="sub">1970年，Winston Royce 博士偷师重工业与建筑学</div><div class="bar"></div></div>
+  <div class="img-side" data-anim="up">
+    <img src="../../assets/043ec1b87258d3b414b4fa2c5572f20f.jpg" alt="瀑布模型图示">
+    <div class="desc">
+      <h3 style="font-size:26px;color:var(--navy);margin-bottom:14px">六大铁律切割周期：</h3>
+      <ul class="bl sm">
+        <li><strong>阶段 01：问题的定义与规划</strong> (定预算合同，可行性排查)</li>
+        <li><strong>阶段 02：需求分析</strong> (抠字眼出PRD，咬准要做啥)</li>
+        <li><strong>阶段 03：系统架构设计</strong> (划分疆域，设计数据结构)</li>
+        <li><strong>阶段 04：程序编码阶段</strong> (纯落砖块的打字工序)</li>
+        <li><strong>阶段 05：软件测试</strong> (照着文档去疯狂碰撞验证)</li>
+        <li><strong>阶段 06：发布与运行维护</strong> (正式通流，修锅)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: 瀑布实战血泪 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>3. 血淋淋的实测：老板逼我4个月上线的社交网</h2><div class="bar"></div></div>
+  <div class="tc" data-anim="up">
+    <div class="cp pos">
+      <h3>最初完美的沙盘计划</h3>
+      <p style="font-size:22px">严格套用瀑布的 16 周限期：</p>
+      <ul class="bl sm" style="margin-top:12px">
+        <li>需求分析：2 周（原型沟通）</li>
+        <li>架构设计：4 周（后端分库定结构）</li>
+        <li>写死代码：6 周（硬核突击）</li>
+        <li>验收测试：4 周（打磨上线）</li>
+      </ul>
+    </div>
+    <div class="cp neg">
+      <h3>现实残酷的市场暴击</h3>
+      <ul class="bl sm" style="margin-top:12px">
+        <li>需求期延误：老板反复加细枝末节，拖延 1 周。</li>
+        <li><strong>致命变更：</strong> 第五周老板突喊“加页游对接！”架构师崩盘，全盘推翻用户模块。</li>
+        <li>灾难编码：底层废弃重造，各人员功能僵死卡壳。</li>
+        <li><strong>崩盘结果：</strong> 测试期被极限挤压（全盘严重超时 4周 满身 Bug 勉强发布）。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: 瀑布的双刃剑 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>总结：瀑布的双刃剑效应</h2><div class="sub">成也规矩，败也规矩</div><div class="bar"></div></div>
+  <div class="cr" data-anim="up" style="margin-top:24px">
+    <div class="cd g">
+      <div class="ct" style="font-size:28px;margin-bottom:12px">✅ 秩序感的伟大胜利</div>
+      <ul class="bl sm">
+        <li><strong>开发过程有序可控：</strong> 终结了打乱仗的情况，有了分阶段验收里程碑。</li>
+        <li><strong>大兵团分工化可能：</strong> 催生出产品经理、测试、运维细分职位。</li>
+        <li><strong>核心质量托底：</strong> 强迫思考先行（架构图先行），让代码跑在安全边界里。</li>
+      </ul>
+    </div>
+    <div class="cd r">
+      <div class="ct" style="font-size:28px;margin-bottom:12px">❌ 巨轮难调头的弱点</div>
+      <ul class="bl sm">
+        <li><strong>需求变更的雪崩效应：</strong> 越到中后期，推倒重建底层根基的毁坏力呈现指数型高危暴增。</li>
+        <li><strong>黑盒空窗期太长：</strong> 打底代码一写几个月，客户从头到尾见不到真实产品，造成巨大心理落差焦虑。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: SECTION 2 -->
+<div class="slide section">
+  <span class="num">02</span>
+  <h2 data-anim="left">化解危机：<br>大瀑布之下的衍生爆改</h2>
+  <div class="ssub" data-anim="left">原型、增量与迭代阵法</div>
+</div>
+
+<!-- SLIDE 8: 原型模型 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>1. 快速开发快速改：快速原型模型</h2><div class="sub">用来探明客户根本连自己都不知道的“隐性需求”杀器</div><div class="bar"></div></div>
+  <div class="tc" data-anim="up">
+    <div class="c">
+      <p style="font-size:24px;line-height:1.6;margin-bottom:12px">
+        <strong>问题重兵区</strong>：最怕客户“想要一个轮子但不知道具体样式，等造出来再说不对”。<br>
+        <strong>终极解法</strong>：用 Axure 这种工具，2天内“粗糙糊弄”一个只有点击交互骨架的“UI面纸板房”。让客户拿着瞎按，等反馈彻底固化，再用真刀真枪做底层后台发版。
+      </p>
+    </div>
+    <div class="c">
+      <div class="cd bg-alt">
+        <h3 style="color:var(--navy);margin-bottom:8px">核心两大战术抉择：</h3>
+        <ul class="bl sm">
+          <li><strong>抛弃策略：</strong> 仅由于套取需求用。等彻底挖到了客户底牌，当场甩掉粗劣原型，全面重写代码重造根骨。（追求高质量和性能适用）。</li>
+          <li><strong>附加策略：</strong> 原型带点真代码血肉，套到一笔新需求就直接在这个垃圾骨架上打补丁，最终直接当正式品交付给低端市场。（低预算外包狂喜）。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: 增量模型 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>2. 肢解大象流派A：增量模型 (功能块横切)</h2><div class="bar"></div></div>
+  <div class="img-side" data-anim="up">
+    <img src="../../assets/20d7896e4a52e8043defff6eedb9869b.jpg" alt="增量模型" style="max-height:380px">
+    <div class="desc">
+      <ul class="bl">
+        <li>不一次性憋大招憋到年底。这周先上一个<strong>“用户登录与发帖功能”</strong>模块打穿前哨（稳定资金流）。</li>
+        <li>第二个月再加装<strong>“评论与商城模块”</strong>。</li>
+        <li><strong>造房子比喻：</strong> 先盖大门和主卧让你入住。明年年底再把旁边的游泳池别墅区一期一期盖出来连上。</li>
+        <li><strong style="color:var(--red)">命门：</strong> 这个套路要求系统大骨架解耦极限强悍，各个模块必须能插拔自如不串台。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: 迭代模型 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>3. 肢解大象流派B：迭代模型 (时间轴纵向淬火)</h2><div class="bar"></div></div>
+  <div class="img-side" data-anim="up">
+    <img src="../../assets/97a05f1bba8344f5d9e8b8734a025e70.png" alt="迭代模型" style="max-height:360px">
+    <div class="desc">
+      <ul class="bl">
+        <li>规定死“两周一冲刺”。每次给出的绝非残缺的单模块，而是一个<strong>覆盖全局架构的“半成品全貌”。</strong></li>
+        <li><strong>造房子比喻：</strong> 
+          <br>迭代V1：给你一个简陋粗暴的大茅草房（所有门窗地基全在，但全是泥土结构）。
+          <br>迭代V2：花2周时间全部升级加固成全屋结实实木框架（抗打防风）。
+          <br>迭代V3：再来一遍全部装修成顶奢大别墅（交付豪华装配版本）。
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11: SECTION 3 -->
+<div class="slide section">
+  <span class="num">03</span>
+  <h2 data-anim="left">大厂实战沙盘：<br>我该选择什么阵法？</h2>
+  <div class="ssub" data-anim="left">看菜下碟才是王道：四大典型战区模型解剖</div>
+</div>
+
+<!-- SLIDE 12: 场景1与场景2 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>战场 01 与 02 的冷血解剖</h2><div class="bar"></div></div>
+  <div class="tc" data-anim="up">
+    <div class="c cd bg-alt">
+      <h3 style="color:var(--navy);font-size:26px;margin-bottom:12px">🚩 1: 严苛军政级安全外包局</h3>
+      <p style="font-size:22px;color:var(--text2);margin-bottom:16px">项目要求绝对不能错任何一行核心代码，每一步都涉及上报签字。</p>
+      <img src="../../assets/c015252d6ae984b667499ee5b8c76ab1.jpg" style="max-width:100%;height:180px;object-fit:contain;margin-bottom:12px">
+      <p style="font-size:22px"><strong>选用兵器：V 模型。</strong>这是重型武库版瀑布。连写需求和构图都有专业的左翼测试用对应的死神验证法则盯着挑刺。</p>
+    </div>
+    <div class="c cd bg-alt">
+      <h3 style="color:var(--navy);font-size:26px;margin-bottom:12px">🚩 2: 甲方老板极其可能断贷断粮</h3>
+      <p style="font-size:22px;color:var(--text2);margin-bottom:16px">你在一个随时爆雷被腰斩的项目里。绝不允许闷头填进两年研发费。</p>
+      <img src="../../assets/5c1f2444754f3ce5ce68e0a790da2bcc.png" style="max-width:100%;height:180px;object-fit:contain;margin-bottom:12px">
+      <p style="font-size:22px"><strong>选用兵器：螺旋模型。</strong>极度病态的风控。每交付一圈微小闭环原型，马上由财务做停刀风险审计。一有不对当场砍废止血。</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13: 场景3与场景4 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>战场 03 与 04 的闪电战拆解</h2><div class="bar"></div></div>
+  <div class="tc" data-anim="up">
+    <div class="c cd bg-alt">
+      <h3 style="color:var(--navy);font-size:26px;margin-bottom:16px">🚩 3: 直接山寨神作，抢收市场流量</h3>
+      <p style="font-size:22px">对方应用神火，需求全摆在台面，一抄一个准，唯一的要求就是极速抢先上线霸屏卡位。</p>
+      <p style="font-size:22px;margin-top:16px;color:var(--text2)">
+        <strong>选用兵器：增量模型。</strong>既然不用探路底牌，直接把对方系统用钢刀斜劈成 5 大相互独立的模块，三大攻坚组并线加班狂暴推进开发，完成的模块直接就当补丁拼在网上放出去接客！
+      </p>
+    </div>
+    <div class="c cd bg-alt">
+      <h3 style="color:var(--navy);font-size:26px;margin-bottom:16px">🚩 4: 巨头的天价大单，但甲方完全没想好要什么</h3>
+      <img src="../../assets/b0091341a7fa31cd26d8a02e7d63e2fc.png" style="max-width:100%;height:100px;object-fit:contain;margin-bottom:8px">
+      <p style="font-size:22px"><strong>选用兵器：RUP (统一开发重兵阵)。</strong>
+      </p>
+      <ul class="bl sm" style="margin-top:6px;color:var(--text2)">
+        <li>【初始】：光靠嘴盾框死边界和风险底线。</li>
+        <li>【细化】：引入纸板原型法，用糙模型彻底拿死甲方变更。</li>
+        <li>【构造】：切换迭代炼狱，层层逼近精雕死磕架构与代码。</li>
+        <li>【交付】：出动测试与运维海陆强压清扫上线障碍。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 14: 作业环节 -->
+<div class="slide content">
+  <div class="hdr" data-anim="up"><h2>📋 课程推演：沙盘兵器战阵匹配</h2><div class="bar"></div></div>
+  <div class="fb" style="background:#e0f2fe;color:#0369a1;text-align:left;padding:36px;margin-top:24px" data-anim="up">
+    <p style="font-size:24px;line-height:1.6;font-weight:600">
+      假设你目前在校大四，手头拿住了三个校外的黑账项目。基于你今天学到的各路江湖法则，请指定每一方的战法（模型名称）并用极其简短的词汇解释保命法则：
+    </p>
+    <ul class="bl" style="margin-top:24px;color:#075985;">
+      <li style="margin-bottom:16px"><strong>第一场：</strong>帮学校某顶级重污染生化实验室做毒株管控记录系统。<span style="color:var(--red)">【绝对不能出现丝毫 Bug 或崩溃断档，一旦流传出事故，主程开除。】</span></li>
+      <li style="margin-bottom:16px"><strong>第二场：</strong>帮文学系的学妹开发个校园帅哥选美微信打分小程序。<span style="color:var(--orange)">【师妹急得要命，想赶在下周新生开学爆火，但连 UI 到底要啥风格全靠“随缘感觉”。】</span></li>
+      <li style="margin-bottom:16px"><strong>第三场：</strong>某个富二代出全资20万做大站。<span style="color:var(--navy)">【对方防备心极其深重，要求四期连拨，表示如果第一版的首页放出来不能亮瞎他的眼睛，立马把剩下的十几万资金全撤掉去夜店抽了。】</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Presentation mode UI -->
+<button class="pb" onclick="startPresentation(0)">▶ 开始播放</button>
+<div class="po" id="po"><div class="pw" id="pw"></div></div>
+<div class="pi" id="pi"></div>
+<div class="ph" id="ph">
+  <kbd>→</kbd> <kbd>Space</kbd> 下一步 &nbsp; <kbd>←</kbd> 上一步<br>
+  <kbd>Home</kbd> 第一页 &nbsp; <kbd>End</kbd> 最后一页<br>
+  <kbd>Esc</kbd> 退出 &nbsp; <kbd>F</kbd> 进入演示
+</div>
+
+<script>
+(function(){
+  const SS=document.querySelectorAll('.slide'),O=document.getElementById('po'),W=document.getElementById('pw'),I=document.getElementById('pi'),H=document.getElementById('ph');
+  let cur=0,on=false,ht=null,animItems=[],animIdx=0;
+  function show(n,revealAll){
+    if(n<0)n=0;if(n>=SS.length)n=SS.length-1;cur=n;
+    W.innerHTML='';const cl=SS[cur].cloneNode(true);cl.style.boxShadow='none';W.appendChild(cl);
+    scale();
+    animItems=Array.from(cl.querySelectorAll('[data-anim]'));
+    if(revealAll){
+      animItems.forEach(it=>it.classList.add('visible'));
+      animIdx=animItems.length;
+    } else {
+      animItems.forEach(it=>it.classList.remove('visible'));
+      animIdx=0;
+    }
+    updateIndicator();
+  }
+  function updateIndicator(){
+    const total=animItems.length;
+    if(total>0 && animIdx<total){
+      I.textContent=`${cur+1} / ${SS.length}  ·  ${animIdx}/${total}`;
+    } else {
+      I.textContent=`${cur+1} / ${SS.length}`;
+    }
+  }
+  function forward(){
+    if(animIdx<animItems.length){
+      animItems[animIdx].classList.add('visible');
+      animIdx++;
+      updateIndicator();
+    } else {
+      if(cur<SS.length-1) show(cur+1,false);
+    }
+  }
+  function backward(){
+    if(animIdx>0){
+      animIdx--;
+      animItems[animIdx].classList.remove('visible');
+      updateIndicator();
+    } else {
+      if(cur>0) show(cur-1,true);
+    }
+  }
+  function scale(){
+    const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    W.style.transform=`scale(${s})`;
+  }
+  window.startPresentation=function(si){
+    cur=si||0;on=true;O.classList.add('active');document.body.style.overflow='hidden';
+    show(cur,false);H.classList.add('show');clearTimeout(ht);ht=setTimeout(()=>H.classList.remove('show'),2500);
+    if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(()=>{});
+  };
+  function stop(){
+    on=false;O.classList.remove('active');document.body.style.overflow='';H.classList.remove('show');
+    if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+    SS[cur].scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  document.addEventListener('keydown',function(e){
+    if(!on&&(e.key==='f'||e.key==='F')){e.preventDefault();startPresentation(0);return}
+    if(!on)return;
+    switch(e.key){
+      case'ArrowRight':case'ArrowDown':case' ':case'PageDown':e.preventDefault();forward();break;
+      case'ArrowLeft':case'ArrowUp':case'PageUp':e.preventDefault();backward();break;
+      case'Home':e.preventDefault();show(0,false);break;
+      case'End':e.preventDefault();show(SS.length-1,true);break;
+      case'Escape':e.preventDefault();stop();break;
+    }
+  });
+  O.addEventListener('click',function(e){if(e.target===O||W.contains(e.target))forward()});
+  O.addEventListener('contextmenu',function(e){e.preventDefault();backward()});
+  window.addEventListener('resize',function(){if(on)scale()});
+  document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement&&on)stop()});
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        const items=en.target.querySelectorAll('[data-anim]');
+        items.forEach((it,i)=>setTimeout(()=>it.classList.add('visible'),200+i*200));
+      }
+    });
+  },{threshold:0.3});
+  SS.forEach(s=>obs.observe(s));
+})();
+</script>
+</body>
+</html>

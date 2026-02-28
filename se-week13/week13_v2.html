@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>软件工程及体系结构 · 第13周</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --navy: #1E293B;
+            --navy-light: #334155;
+            --accent: #8B5CF6;
+            --accent-dark: #6D28D9;
+            --accent-light: #DDD6FE;
+            --purple: #A855F7;
+            --blue: #3B82F6;
+            --cyan: #06B6D4;
+            --teal: #14B8A6;
+            --green: #10B981;
+            --red: #F43F5E;
+            --bg: #FFF;
+            --bg-alt: #F8FAFC;
+            --text: #0F172A;
+            --text2: #475569;
+            --border: #E2E8F0;
+            --font: 'Inter', 'Noto Sans SC', sans-serif
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            background: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            padding: 24px;
+            font-family: var(--font);
+            font-size: 22px
+        }
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
+            display: flex;
+            flex-direction: column
+        }
+
+        .page-num {
+            position: absolute;
+            bottom: 12px;
+            right: 20px;
+            font-size: 16px;
+            color: rgba(0, 0, 0, .25);
+            font-weight: 600;
+            z-index: 5
+        }
+
+        .slide.cover .page-num,
+        .slide.section .page-num {
+            color: rgba(255, 255, 255, .3)
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--blue), var(--purple), var(--accent));
+            z-index: 10
+        }
+
+        .slide.cover {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light), #0f172a);
+            color: #fff;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px
+        }
+
+        .slide.cover::before {
+            display: none
+        }
+
+        .cover .badge {
+            display: inline-block;
+            background: rgba(139, 92, 246, .2);
+            border: 1px solid rgba(139, 92, 246, .5);
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            color: var(--accent-light)
+        }
+
+        .cover h1 {
+            font-size: 62px;
+            font-weight: 900;
+            line-height: 1.15;
+            background: -webkit-linear-gradient(0deg, #fff, var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .cover .sub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 20px;
+            opacity: .9
+        }
+
+        .cover .meta {
+            position: absolute;
+            bottom: 36px;
+            font-size: 20px;
+            opacity: .6;
+            line-height: 1.6
+        }
+
+        .cover .bg-dec {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(139, 92, 246, .1) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            border-radius: 50%
+        }
+
+        .slide.section {
+            background: var(--navy);
+            color: #fff;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 80px
+        }
+
+        .slide.section::before {
+            height: 4px;
+            background: var(--accent)
+        }
+
+        .section .num {
+            font-size: 180px;
+            font-weight: 900;
+            color: rgba(139, 92, 246, .15);
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%)
+        }
+
+        .section h2 {
+            font-size: 56px;
+            font-weight: 800
+        }
+
+        .section .ssub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 16px;
+            opacity: .8;
+            border-left: 4px solid var(--accent);
+            padding-left: 20px
+        }
+
+        .slide.content {
+            padding: 40px 60px 32px
+        }
+
+        .hdr {
+            margin-bottom: 24px
+        }
+
+        .hdr h2 {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.2
+        }
+
+        .hdr .sub {
+            font-size: 20px;
+            color: var(--text2);
+            margin-top: 8px
+        }
+
+        .hdr .bar {
+            width: 60px;
+            height: 6px;
+            background: linear-gradient(90deg, var(--blue), var(--purple));
+            border-radius: 3px;
+            margin-top: 12px
+        }
+
+        .bl {
+            list-style: none
+        }
+
+        .bl li {
+            font-size: 22px;
+            color: var(--text);
+            padding: 8px 0 8px 32px;
+            position: relative;
+            line-height: 1.5
+        }
+
+        .bl li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 16px;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            background: var(--purple);
+            transform: rotate(45deg)
+        }
+
+        .bl li strong {
+            color: var(--navy)
+        }
+
+        .cr {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            align-content: center
+        }
+
+        .cd {
+            flex: 1;
+            min-width: 200px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .05)
+        }
+
+        .cd .ci {
+            font-size: 36px;
+            margin-bottom: 12px;
+            display: inline-block
+        }
+
+        .cd .ct {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px
+        }
+
+        .cd .cx {
+            font-size: 19px;
+            color: var(--text2);
+            line-height: 1.6
+        }
+
+        .cd.blu {
+            border-top: 4px solid var(--blue)
+        }
+
+        .cd.pur {
+            border-top: 4px solid var(--purple)
+        }
+
+        .cd.cya {
+            border-top: 4px solid var(--cyan)
+        }
+
+        .cd.tea {
+            border-top: 4px solid var(--teal)
+        }
+
+        .tc {
+            display: flex;
+            gap: 32px;
+            flex: 1;
+            margin-top: 10px;
+            align-items: flex-start
+        }
+
+        .tc .c {
+            flex: 1
+        }
+
+        .qt {
+            background: linear-gradient(to right, var(--bg-alt), rgba(255, 255, 255, 0));
+            border-left: 5px solid var(--accent);
+            padding: 20px 24px;
+            border-radius: 0 12px 12px 0;
+            margin: 16px 0;
+            font-size: 24px;
+            line-height: 1.6;
+            color: var(--navy);
+            font-style: italic;
+            font-weight: 500
+        }
+
+        .pbd {
+            background: var(--navy);
+            color: #fff;
+            padding: 24px 32px;
+            border-radius: 12px;
+            margin: 16px 0;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, .1)
+        }
+
+        .pbd .pt {
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-light);
+            margin-bottom: 8px;
+            font-weight: 600
+        }
+
+        .pbd .pc {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.4
+        }
+
+        .vs {
+            display: flex;
+            align-items: center;
+            background: var(--bg-alt);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin: 16px 0
+        }
+
+        .vs-item {
+            flex: 1;
+            padding: 24px;
+            text-align: center
+        }
+
+        .vs-item h3 {
+            color: var(--text2);
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px
+        }
+
+        .vs-item p {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--navy)
+        }
+
+        .vs-div {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            margin: 0 -24px;
+            z-index: 2;
+            position: relative;
+            box-shadow: 0 0 0 4px var(--bg-alt)
+        }
+
+        .slide [data-click-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .5s ease, transform .5s ease
+        }
+
+        .slide [data-click-reveal].visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .slide [data-click-reveal="fade"] {
+            transform: none
+        }
+
+        .slide [data-click-reveal="left"] {
+            transform: translateX(-30px)
+        }
+
+        .slide [data-click-reveal="right"] {
+            transform: translateX(30px)
+        }
+
+        .slide [data-click-reveal="scale"] {
+            transform: scale(0.95)
+        }
+
+        .po {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: none
+        }
+
+        .po.active {
+            display: flex
+        }
+
+        .po .pw {
+            width: 1280px;
+            height: 720px;
+            transform-origin: center center
+        }
+
+        .pi {
+            position: fixed;
+            bottom: 20px;
+            right: 32px;
+            z-index: 10000;
+            color: rgba(255, 255, 255, .4);
+            font-family: var(--font);
+            font-size: 20px;
+            font-weight: 500
+        }
+
+        .ph {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            background: rgba(0, 0, 0, .85);
+            color: #fff;
+            padding: 36px 56px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 22px;
+            line-height: 2.2;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .4s
+        }
+
+        .ph.show {
+            opacity: 1
+        }
+
+        .ph kbd {
+            background: rgba(255, 255, 255, .15);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, .25);
+            font-family: monospace
+        }
+
+        .pb {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 100;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 22px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, .3);
+            transition: transform .2s, background .2s
+        }
+
+        .pb:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px)
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- COVER -->
+    <div class="slide cover">
+        <div class="bg-dec"></div>
+        <div class="badge">Software Engineering · Week 13</div>
+        <h1>AI 赋能软件工程新范式 (上)</h1>
+        <div class="sub">从手写代码到自然语言驱动的纪元</div>
+        <div class="meta">电子信息工程专业硕士 | 3 学时<br>主讲人 | 何庭钦 | 271880026@qq.com</div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="slide section"><span class="num">01</span>
+        <h2>第一讲</h2>
+        <div class="ssub">新技术爆发与康威定律的底层逻辑</div>
+    </div>
+
+    <!-- 1.1 康威定律 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>康威定律 (Conway's Law) 的降维打击</h2>
+            <div class="sub">看透微服务与组织架构的本质</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="qt">
+                    “你设计的系统架构，<br>必然是你组织沟通结构的缩影。”<br>
+                    <span
+                        style="font-size:18px;color:var(--text2);font-weight:400;font-style:normal;display:block;margin-top:8px">—
+                        Melvin Conway (1967)</span>
+                </div>
+                <ul class="bl" data-click-reveal="fade">
+                    <li><strong>单体庞大系统</strong> 对应着 巨型且跨部门沟通极其困难的大型组织。</li>
+                    <li><strong>微服务架构</strong> 对应着 被打散的敏捷“两张披萨饼”特战小分队。</li>
+                </ul>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="pbd"
+                    style="margin-top:0;height:100%;display:flex;flex-direction:column;justify-content:center">
+                    <div class="pt">微服务的本质启示</div>
+                    <div class="pc" style="font-size:24px;font-weight:400">
+                        当你犹豫“服务该拆多细”时，不妨先看看你的兄弟团队有多少人。<br><br>组织结构不支持（如测试与开发水火不容），硬上微服务必然走向灾难。<br><br><strong
+                            style="color:var(--accent-light)">技术的架构拆分，<br>本质也是对组织管理权力的重新分配。</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.2 云计算的影响 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>分工革命：云计算如何重塑版图</h2>
+            <div class="sub">从全干工程师到聚焦核心业务</div>
+            <div class="bar"></div>
+        </div>
+        <div class="vs">
+            <div class="vs-item">
+                <h3>过去（造轮子时代）</h3>
+                <p>买机器、拉宽带、配防火墙、<br>手写底层查库代码、做容灾备份</p>
+            </div>
+            <div class="vs-div">VS</div>
+            <div class="vs-item" style="background:rgba(59,130,246,.05)">
+                <h3 style="color:var(--blue)">现在（云原生时代）</h3>
+                <p>IaaS → PaaS → Serverless<br>(无服务器架构 API 调用)</p>
+            </div>
+        </div>
+        <div class="cr" style="margin-top:24px">
+            <div class="cd blu" data-click-reveal="fade" style="text-align:center">
+                <div class="ci">🧱</div>
+                <div class="ct">标准化“搭积木”</div>
+                <div class="cx">基础设施变身标准插拔组件</div>
+            </div>
+            <div class="cd pur" data-click-reveal="fade" style="text-align:center">
+                <div class="ci">🎯</div>
+                <div class="ct">100% 聚焦业务</div>
+                <div class="cx">脏活累活和基建统统外包</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="slide section"><span class="num">02</span>
+        <h2>第二讲</h2>
+        <div class="ssub">范式转移与 Vibe Coding 的崛起</div>
+    </div>
+
+    <!-- 2.1 范式转换对比 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>底层逻辑的颠覆：编程范式的转移</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc" style="margin-top:20px">
+            <div class="c">
+                <div
+                    style="background:var(--bg-alt);border:1px solid var(--border);border-radius:12px;padding:24px;height:100%">
+                    <h3 style="color:var(--text2);font-size:20px;margin-bottom:16px;text-align:center">旧模型：专业层的层层堆叠</h3>
+                    <div
+                        style="background:#fff;border:1px solid var(--border);padding:12px;text-align:center;border-radius:8px;margin-bottom:8px">
+                        4. 应用层业务开发</div>
+                    <div style="text-align:center;color:var(--text2);margin-bottom:8px">↑</div>
+                    <div
+                        style="background:#fff;border:1px solid var(--border);padding:12px;text-align:center;border-radius:8px;margin-bottom:8px">
+                        3. 类库与组件封装</div>
+                    <div style="text-align:center;color:var(--text2);margin-bottom:8px">↑</div>
+                    <div
+                        style="background:#fff;border:1px solid var(--border);padding:12px;text-align:center;border-radius:8px;margin-bottom:8px">
+                        2. 工具/框架开发</div>
+                    <div style="text-align:center;color:var(--text2);margin-bottom:8px">↑</div>
+                    <div
+                        style="background:var(--navy-light);color:#fff;padding:12px;text-align:center;border-radius:8px">
+                        1. 操作系统底层 (OS)</div>
+                    <p style="margin-top:20px;font-size:18px;color:var(--red);text-align:center;font-weight:600">
+                        前提：每一行代码必须由受过严苛训练的人类手写</p>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div
+                    style="background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.2);border-radius:12px;padding:24px;height:100%">
+                    <h3 style="color:var(--purple);font-size:20px;margin-bottom:16px;text-align:center">新模型：自然语言驱动的大模型内核
+                    </h3>
+                    <div
+                        style="background:#fff;border:2px solid var(--purple);padding:16px;text-align:center;border-radius:8px;margin-bottom:12px;font-weight:700;color:var(--purple)">
+                        人类的“自然语言”需求输入</div>
+                    <div style="text-align:center;color:var(--purple);margin-bottom:12px">↓</div>
+                    <div
+                        style="background:linear-gradient(90deg,var(--blue),var(--purple));color:#fff;padding:16px;text-align:center;border-radius:8px;margin-bottom:12px;font-weight:700">
+                        AI Agent 作为中枢系统<br><span style="font-size:14px;font-weight:400">(如 Claude Code / Cursor)</span>
+                    </div>
+                    <div style="text-align:center;color:var(--purple);margin-bottom:12px">↓</div>
+                    <div
+                        style="background:#fff;border:1px solid var(--border);padding:12px;text-align:center;border-radius:8px">
+                        调用底层传统框架与类库 (被机器接管)</div>
+                    <p style="margin-top:20px;font-size:18px;color:var(--purple);text-align:center;font-weight:600">
+                        结果：自动生成、排错、并运行代码</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.2 Vibe Coding 概念 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>Andrej Karpathy 抛出的 "Vibe Coding"</h2>
+            <div class="sub">前特斯拉AI总监眼中的“氛围编程”</div>
+            <div class="bar"></div>
+        </div>
+        <div class="pbd" style="margin-bottom:24px">
+            <div class="pc" style="font-size:24px;font-style:italic;font-weight:400">“完全沉浸于氛围，拥抱指数级增长，并忘却代码本身的存在。”</div>
+        </div>
+        <ul class="bl" data-click-reveal="fade">
+            <li><strong>核心流程</strong>：看问题 → 喂提示词 (Prompt) → AI 闪电生成乱码 → 运行报错 → 把错误日志抛给 AI → 跑通。</li>
+            <li><strong>人类抽离</strong>：甚至无需逐行看懂生成的 500 行代码，只管推演和验证结果。</li>
+        </ul>
+        <div class="cr" data-click-reveal="scale" style="margin-top:20px">
+            <div class="cd cya" style="text-align:center">
+                <div class="ct">46% ~ 61%</div>
+                <div class="cx">目前大量商业代码库中<br>由 AI 生成的代码占比</div>
+            </div>
+            <div class="cd tea" style="text-align:center">
+                <div class="ct">+55% 效率飙升</div>
+                <div class="cx">开发常规 CRUD 任务<br>时间近乎腰斩</div>
+            </div>
+            <div class="cd r" style="text-align:center">
+                <div class="ct">局限性预警</div>
+                <div class="cx">极其适合快糙猛的 MVP；<br>金融航天仍需人类严密兜底</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="slide section"><span class="num">03</span>
+        <h2>第三讲</h2>
+        <div class="ssub">AI 编程工具生态全景指南：不仅是补全</div>
+    </div>
+
+    <!-- 3.1 阶梯全景图 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>AI 编程的自主性梯队：从补全到接管</h2>
+            <div class="bar"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:20px">
+            <div data-click-reveal="left"
+                style="background:#fff;border-left:6px solid var(--blue);padding:24px 32px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.05)">
+                <h3 style="font-size:24px;color:var(--navy);margin-bottom:8px">L1 级：结对编程助手（智能提示）</h3>
+                <p style="color:var(--text2);font-size:20px;margin-bottom:12px"><strong>代表：</strong> GitHub Copilot,
+                    TabNine</p>
+                <p style="font-size:20px">输入注释或开头，预测并补全后方代码块。**人类 100% 掌控**，作用于但个文件的局部。</p>
+            </div>
+
+            <div data-click-reveal="left"
+                style="background:#fff;border-left:6px solid var(--purple);padding:24px 32px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.05);margin-left:40px">
+                <h3 style="font-size:24px;color:var(--navy);margin-bottom:8px">L2 级：强上下文 IDE Agent</h3>
+                <p style="color:var(--text2);font-size:20px;margin-bottom:12px"><strong>代表：</strong> Cursor (Composer
+                    模式), Windsurf (Cascade)</p>
+                <p style="font-size:20px">能阅读本地上万行全工程代码。**一次对话自动穿越修改 5 个以上文件**实现完整连贯功能。</p>
+            </div>
+
+            <div data-click-reveal="left"
+                style="background:#fff;border-left:6px solid var(--accent-dark);padding:24px 32px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.05);margin-left:80px">
+                <h3 style="font-size:24px;color:var(--navy);margin-bottom:8px">L3 级：全自主 AI 流水线（CLI 派）</h3>
+                <p style="color:var(--text2);font-size:20px;margin-bottom:12px"><strong>代表：</strong> Claude Code, Devin
+                </p>
+                <p style="font-size:20px">丢给它终极需求，它在命令行后台**自己规划、自己写建包命令、自己看报错修复**，直至最终完工。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.2 讨论题 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>🎯 课堂碰撞：工程师的绝地反击</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="qt" style="font-style:normal;border-left-color:var(--red);background:rgba(244,63,94,.05)">
+            <strong>面试暴击现场模拟：</strong><br>
+            “同学，既然大模型花几块钱 token 就能瞬间写完这段几百行的脚本，而且写得比你快、Bug 比你少。我为什么要花高出 AI 万倍的底薪，发 Offer 给你？”
+        </div>
+        <p style="font-size:22px;color:var(--text);margin-top:24px;font-weight:600">结合《软件工程》的道与术，请小组讨论：</p>
+        <ul class="bl" data-click-reveal="fade" style="margin-top:16px">
+            <li>大学死磕的 C 语言与底层数据结构，在这套“说人话”的范式中真的变成废纸了吗？</li>
+            <li>作为碳基生物，我们相较于 L3 级全自主 Agent 引擎，最不可被稀释的核心竞争力（抽象防线）究竟在图谱的哪一块？</li>
+        </ul>
+    </div>
+
+    <!-- END -->
+    <div class="slide cover">
+        <div class="bg-dec"></div>
+        <h1 style="font-size:56px">Thanks</h1>
+        <div class="sub">范式转移：重新认识自然语言的力量</div>
+        <div class="meta">何庭钦 | 271880026@qq.com</div>
+    </div>
+
+    <button class="pb" onclick="startPresentation(0)">▶ 演示模式</button>
+    <div class="po" id="po">
+        <div class="pw" id="pw"></div>
+    </div>
+    <div class="pi" id="pi"></div>
+    <div class="ph" id="ph"><kbd>→</kbd> <kbd>Space</kbd> 下一步 &nbsp; <kbd>←</kbd> 上一步<br><kbd>Home</kbd> 第一页 &nbsp;
+        <kbd>End</kbd> 最后一页<br><kbd>Esc</kbd> 退出 &nbsp; <kbd>F</kbd> 进入演示</div>
+    <script>
+        (function () { const SS = document.querySelectorAll('.slide'), O = document.getElementById('po'), W = document.getElementById('pw'), I = document.getElementById('pi'), H = document.getElementById('ph'); SS.forEach((s, i) => { const pn = document.createElement('span'); pn.className = 'page-num'; pn.textContent = i + 1; s.appendChild(pn) }); let cur = 0, on = false, ht = null, animItems = [], animIdx = 0; function show(n, revealAll) { if (n < 0) n = 0; if (n >= SS.length) n = SS.length - 1; cur = n; W.innerHTML = ''; const cl = SS[cur].cloneNode(true); cl.style.boxShadow = 'none'; W.appendChild(cl); scale(); animItems = Array.from(cl.querySelectorAll('[data-click-reveal]')); if (revealAll) { animItems.forEach(it => it.classList.add('visible')); animIdx = animItems.length } else { animItems.forEach(it => it.classList.remove('visible')); animIdx = 0 } updateIndicator() } function updateIndicator() { const t = animItems.length; I.textContent = t > 0 && animIdx < t ? `${cur + 1} / ${SS.length}  ·  步骤 ${animIdx}/${t}` : `${cur + 1} / ${SS.length}` } function forward() { if (animIdx < animItems.length) { animItems[animIdx].classList.add('visible'); animIdx++; updateIndicator() } else if (cur < SS.length - 1) show(cur + 1, false) } function backward() { if (animIdx > 0) { animIdx--; animItems[animIdx].classList.remove('visible'); updateIndicator() } else if (cur > 0) show(cur - 1, true) } function scale() { const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720); W.style.transform = `scale(${s})` } window.startPresentation = function (si) { cur = si || 0; on = true; O.classList.add('active'); document.body.style.overflow = 'hidden'; show(cur, false); H.classList.add('show'); clearTimeout(ht); ht = setTimeout(() => H.classList.remove('show'), 2500); if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => { }) }; function stop() { on = false; O.classList.remove('active'); document.body.style.overflow = ''; H.classList.remove('show'); if (document.fullscreenElement) document.exitFullscreen().catch(() => { }); SS[cur].scrollIntoView({ behavior: 'smooth', block: 'center' }) } document.addEventListener('keydown', function (e) { if (!on && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); startPresentation(0); return } if (!on) return; switch (e.key) { case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': e.preventDefault(); forward(); break; case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); backward(); break; case 'Home': e.preventDefault(); show(0, false); break; case 'End': e.preventDefault(); show(SS.length - 1, true); break; case 'Escape': e.preventDefault(); stop(); break } }); O.addEventListener('click', function () { forward() }); O.addEventListener('contextmenu', function (e) { e.preventDefault(); backward() }); window.addEventListener('resize', function () { if (on) scale() }); document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && on) stop() }); const obs = new IntersectionObserver(entries => { if (on) return; entries.forEach(en => { if (en.isIntersecting) { en.target.querySelectorAll('[data-click-reveal]').forEach((it, i) => setTimeout(() => it.classList.add('visible'), 200 + i * 200)) } }) }, { threshold: 0.3 }); SS.forEach(s => obs.observe(s)) })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>软件工程及体系结构 · 第11周</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --navy: #1B2A4A;
+            --navy-light: #2C3E6B;
+            --accent: #3B82F6;
+            --accent-dark: #2563EB;
+            --accent-light: #DBEAFE;
+            --orange: #F59E0B;
+            --orange-light: #FEF3C7;
+            --red: #EF4444;
+            --red-light: #FEE2E2;
+            --green: #10B981;
+            --green-light: #D1FAE5;
+            --purple: #8B5CF6;
+            --bg: #FFF;
+            --bg-alt: #F8FAFC;
+            --text: #1E293B;
+            --text2: #475569;
+            --border: #E2E8F0;
+            --font: 'Inter', 'Noto Sans SC', -apple-system, sans-serif
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            background: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            padding: 24px;
+            font-family: var(--font);
+            font-size: 22px
+        }
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
+            display: flex;
+            flex-direction: column
+        }
+
+        .page-num {
+            position: absolute;
+            bottom: 12px;
+            right: 20px;
+            font-size: 16px;
+            color: rgba(0, 0, 0, .25);
+            font-weight: 600;
+            z-index: 5
+        }
+
+        .slide.cover .page-num,
+        .slide.section .page-num {
+            color: rgba(255, 255, 255, .3)
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--navy), var(--accent));
+            z-index: 10
+        }
+
+        .slide.cover {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light), #1e3a6e);
+            color: #fff;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px
+        }
+
+        .slide.cover::before {
+            display: none
+        }
+
+        .cover .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, .15);
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px
+        }
+
+        .cover h1 {
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1.15
+        }
+
+        .cover .sub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 18px;
+            opacity: .85
+        }
+
+        .cover .meta {
+            position: absolute;
+            bottom: 36px;
+            font-size: 20px;
+            opacity: .5;
+            line-height: 1.6
+        }
+
+        .cover .decor {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, .08);
+            right: -80px;
+            top: -80px
+        }
+
+        .cover .decor2 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, .06);
+            left: -60px;
+            bottom: -60px
+        }
+
+        .slide.section {
+            background: var(--navy);
+            color: #fff;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 80px
+        }
+
+        .slide.section::before {
+            display: none
+        }
+
+        .section .num {
+            font-size: 160px;
+            font-weight: 900;
+            opacity: .1;
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%)
+        }
+
+        .section h2 {
+            font-size: 60px;
+            font-weight: 700
+        }
+
+        .section .ssub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 14px;
+            opacity: .7;
+            border-left: 4px solid var(--accent);
+            padding-left: 18px
+        }
+
+        .slide.content {
+            padding: 40px 60px 32px
+        }
+
+        .hdr {
+            margin-bottom: 16px
+        }
+
+        .hdr h2 {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.2
+        }
+
+        .hdr .sub {
+            font-size: 20px;
+            color: var(--text2);
+            margin-top: 6px
+        }
+
+        .hdr .bar {
+            width: 56px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 3px;
+            margin-top: 10px
+        }
+
+        .bl {
+            list-style: none
+        }
+
+        .bl li {
+            font-size: 21px;
+            color: var(--text);
+            padding: 6px 0 6px 28px;
+            position: relative;
+            line-height: 1.5
+        }
+
+        .bl li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 13px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent)
+        }
+
+        .bl li strong {
+            color: var(--navy)
+        }
+
+        .cr {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+            align-content: center
+        }
+
+        .cd {
+            flex: 1;
+            min-width: 170px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px
+        }
+
+        .cd .ci {
+            font-size: 30px;
+            margin-bottom: 8px
+        }
+
+        .cd .ct {
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 5px
+        }
+
+        .cd .cx {
+            font-size: 19px;
+            color: var(--text2);
+            line-height: 1.5
+        }
+
+        .cd.a {
+            border-top: 4px solid var(--accent)
+        }
+
+        .cd.o {
+            border-top: 4px solid var(--orange)
+        }
+
+        .cd.r {
+            border-top: 4px solid var(--red)
+        }
+
+        .cd.g {
+            border-top: 4px solid var(--green)
+        }
+
+        .cd.p {
+            border-top: 4px solid var(--purple)
+        }
+
+        .tc {
+            display: flex;
+            gap: 32px;
+            flex: 1;
+            margin-top: 16px;
+            align-items: flex-start
+        }
+
+        .tc .c {
+            flex: 1
+        }
+
+        .qt {
+            background: var(--bg-alt);
+            border-left: 5px solid var(--accent);
+            padding: 18px 24px;
+            border-radius: 0 12px 12px 0;
+            margin: 14px 0;
+            font-size: 21px;
+            line-height: 1.6;
+            color: var(--text);
+            font-style: italic
+        }
+
+        .fb {
+            text-align: center;
+            padding: 24px;
+            margin: 14px 0;
+            background: var(--navy);
+            border-radius: 12px;
+            color: #fff
+        }
+
+        .slide [data-click-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .5s ease, transform .5s ease
+        }
+
+        .slide [data-click-reveal].visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .slide [data-click-reveal="fade"] {
+            transform: none
+        }
+
+        .slide [data-click-reveal="left"] {
+            transform: translateX(-30px)
+        }
+
+        .slide [data-click-reveal="right"] {
+            transform: translateX(30px)
+        }
+
+        .po {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: none
+        }
+
+        .po.active {
+            display: flex
+        }
+
+        .po .pw {
+            width: 1280px;
+            height: 720px;
+            transform-origin: center center
+        }
+
+        .pi {
+            position: fixed;
+            bottom: 20px;
+            right: 32px;
+            z-index: 10000;
+            color: rgba(255, 255, 255, .4);
+            font-family: var(--font);
+            font-size: 20px;
+            font-weight: 500
+        }
+
+        .ph {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            background: rgba(0, 0, 0, .85);
+            color: #fff;
+            padding: 36px 56px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 22px;
+            line-height: 2.2;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .4s
+        }
+
+        .ph.show {
+            opacity: 1
+        }
+
+        .ph kbd {
+            background: rgba(255, 255, 255, .15);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, .25);
+            font-family: monospace
+        }
+
+        .pb {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 100;
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 22px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+            transition: transform .2s, background .2s
+        }
+
+        .pb:hover {
+            background: var(--accent);
+            transform: translateY(-2px)
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- COVER -->
+    <div class="slide cover">
+        <div class="decor"></div>
+        <div class="decor2"></div>
+        <div class="badge">Software Engineering · Week 11</div>
+        <h1>软件工程及体系结构</h1>
+        <div class="sub">高级进阶与最佳实践：故障处理、复盘与团队应用</div>
+        <div class="meta">电子信息工程专业硕士 | 3 学时<br>主讲人 | 何庭钦 | 271880026@qq.com</div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="slide section"><span class="num">01</span>
+        <h2>第一讲</h2>
+        <div class="ssub">遇到线上故障，你和高手的差距在哪里？</div>
+    </div>
+
+    <!-- 1.1 新手 vs 高手 (1) -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>面对复杂故障：无从下手 vs 体系化分析</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd r" style="flex:1">
+                <div class="ct">🥵 新手的困境</div>
+                <div class="cx">内存飙升、CPU 居高不下<br>看界面没报错、看日志无异常<br>立刻懵掉，不知道从何处着手排查</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade" style="flex:1">
+                <div class="ct">😎 高手的方法论</div>
+                <div class="cx">按照固定步骤有条不紊：<br>① 评估影响范围<br>② 试图重现问题<br>③ 临时止损与终极方案<br>④ 风险评估与持续优化复盘</div>
+            </div>
+        </div>
+        <div class="fb" data-click-reveal="fade" style="margin-top:14px">
+            <p style="font-size:21px">本质区别：是否拥有系统化解决工程问题的能力框架</p>
+        </div>
+    </div>
+
+    <!-- 1.2 优先级 (2) -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>优先级抉择：急于补丁 vs 恢复生产第一</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="cr" style="margin-top:0;flex-direction:column;gap:12px">
+                    <div class="cd r" style="min-width:auto">
+                        <div class="ct">新手：急于修 Bug</div>
+                        <div class="cx">发现 Bug 迫不及待改代码上线<br>未充分测试→引入更严重的新 Bug</div>
+                    </div>
+                    <div class="cd g" data-click-reveal="fade" style="min-width:auto">
+                        <div class="ct">高手：故障评级与止损</div>
+                        <div class="cx">首先判断业务影响面（如 P0 级）<br>优先采取手段**恢复生产**（回滚/重启）</div>
+                    </div>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="fb" style="height:100%;display:flex;flex-direction:column;justify-content:center">
+                    <p style="font-size:24px;line-height:1.6">面对核心业务瘫痪：<br><br><span
+                            style="color:var(--orange);font-weight:700">恢复生产是第一要务</span><br>修复 Bug
+                        是其次<br><br>同时切记保留现场<br>（日志截图、Dump 快照）</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.3 定位范围 (3) -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>定位排查：大海捞针 vs 逐步缩小范围</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd o">
+                <div class="ci">🔁</div>
+                <div class="ct">思路 1: 稳定重现</div>
+                <div class="cx">找到重现步骤，<br>将问题锁定在那几步<br>操作相关的有限代码中</div>
+            </div>
+            <div class="cd a" data-click-reveal="fade">
+                <div class="ci">📦</div>
+                <div class="ct">思路 2: 差异排查</div>
+                <div class="cx">若是最近部署后出现<br>对比本次与上次版本<br>代码微小差异即可定位</div>
+            </div>
+            <div class="cd p" data-click-reveal="fade">
+                <div class="ci">🔍</div>
+                <div class="ct">思路 3: 内存快照</div>
+                <div class="cx">Dump 内存或 CPU<br>直接定位哪个线程死锁<br>或哪个大对象耗尽资源</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ci">🗑️</div>
+                <div class="ct">思路 4: 排除法</div>
+                <div class="cx">请求链路涉及 5 个服务<br>对正常的服务逐一排除<br>最终孤立出病灶节点</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.4 大厂的流程 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>大厂如何处理线上故障？</h2>
+            <div class="sub">把高手的个人经验变为标准作业程序（SOP）</div>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd a" style="flex:1">
+                <div class="ci">1️⃣</div>
+                <div class="ct">故障评级</div>
+                <div class="cx">P0：大面积瘫痪，极其紧急<br>P5：体验类，可延后处理</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade" style="flex:1">
+                <div class="ci">2️⃣</div>
+                <div class="ct">预案止损</div>
+                <div class="cx">一键部署回滚<br>一键服务降级熔断</div>
+            </div>
+            <div class="cd p" data-click-reveal="fade" style="flex:1">
+                <div class="ci">3️⃣</div>
+                <div class="ct">诊断修复</div>
+                <div class="cx">定位 Bug 根因<br>开发修复补丁</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade" style="flex:1">
+                <div class="ci">4️⃣</div>
+                <div class="ct">复盘预防</div>
+                <div class="cx">记录全生命周期<br>出具《故障分析报告》并改进</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.5 大厂绝招 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>值得借鉴的进阶机制</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <ul class="bl">
+                    <li><strong>On-Call 轮岗与多级报警</strong><br>主备值班 24H 开机。15 分钟无响应自动向上极升级（开发→经理→CTO），确保最熟悉代码的人出面。</li>
+                    <li data-click-reveal="fade" style="margin-top:16px"><strong>混沌工程（Chaos
+                            Engineering）</strong><br>Netflix 的"混乱猴子"：工作日在生产环境随机杀死服务，主动测试容灾切换。</li>
+                    <li data-click-reveal="fade" style="margin-top:16px"><strong>全链路 Trace ID
+                            日志</strong><br>每个请求携带唯一编号贯穿 10 个微服务节点，出故障后一键串联整体上下文。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="slide section"><span class="num">02</span>
+        <h2>第二讲</h2>
+        <div class="ssub">日志管理——排查问题的"千里眼"</div>
+    </div>
+
+    <!-- 2.1 传统困境 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>为什么需要统一日志管理系统？</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="qt" style="font-style:normal;margin-bottom:20px;border-left-color:var(--orange)">
+                    <strong>灵魂拷问：</strong><br>API 异常是 20 个微服务中的哪一个引起的？系统上线后响应时间是变快了还是慢了？
+                </div>
+                <ul class="bl">
+                    <li>传统做法：连上服务器，大海捞针般使用 <code>cat</code>，<code>grep</code> 翻文本。</li>
+                    <li>现代架构困境：几百个微服务节点、容器随存随灭，根本不知道故障日志散落在哪个容器的磁盘上。</li>
+                </ul>
+            </div>
+            <div class="c" data-click-reveal="right" style="display:flex;align-items:center;justify-content:center"><img
+                    src="../../assets/b9b53220894009769f5bcb031b7c0cf8.png" alt="日志架构"
+                    style="max-height:400px;max-width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.2 日志管理的价值 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>日志管理系统的三大核心价值</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd a">
+                <div class="ci">🔍</div>
+                <div class="ct">集中检索</div>
+                <div class="cx">所有应用节点日志汇聚一处<br>支持类 SQL 复杂查询<br>秒级在大海中捞出那根针</div>
+            </div>
+            <div class="cd p" data-click-reveal="fade">
+                <div class="ci">📊</div>
+                <div class="ct">图表可视化</div>
+                <div class="cx">文本日志提炼为统计走势图<br>如：24小时内 API 请求平均耗时<br>用肉眼看透系统脉搏</div>
+            </div>
+            <div class="cd r" data-click-reveal="fade">
+                <div class="ci">🚨</div>
+                <div class="ct">自动化报警</div>
+                <div class="cx">设定智能规则：<br>"错误码500占比超 5%"<br>触发短信/企微自动告警通知</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.3 ELK 架构 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>业界标配：ELK 经典架构剖析</h2>
+            <div class="sub">Elasticsearch + Logstash + Kibana</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="cr" style="margin-top:0;flex-direction:column;gap:12px">
+                    <div class="cd a" style="min-width:auto;padding:14px 18px">
+                        <div class="ct">📦 L: Logstash (采集+解析)</div>
+                        <div class="cx">在各节点驻留，提取非结构化日志。过滤出时间戳、IP、应用名、状态码，转为**结构化数据**。</div>
+                    </div>
+                    <div class="cd o" data-click-reveal="fade" style="min-width:auto;padding:14px 18px">
+                        <div class="ct">🧠 E: Elasticsearch (搜索+存储)</div>
+                        <div class="cx">分布式全文搜索引擎引擎数据库，存储海量热点日志并提供百亿级记录下的毫秒查询支撑。</div>
+                    </div>
+                    <div class="cd p" data-click-reveal="fade" style="min-width:auto;padding:14px 18px">
+                        <div class="ct">🖥️ K: Kibana (可视化面板)</div>
+                        <div class="cx">为 ES 提供的图形化查询和 Dashboard 工具，制作酷炫的大屏报表与柱状分布图。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="slide section"><span class="num">03</span>
+        <h2>第三讲</h2>
+        <div class="ssub">项目复盘——把经验转化为能力</div>
+    </div>
+
+    <!-- 3.1 什么是复盘 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>什么是真正的项目复盘？</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <ul class="bl">
+                    <li><strong>源自围棋：</strong>对弈后重演下棋过程，寻找更好走法与漏算点。</li>
+                    <li><strong>软件工程中：</strong>项目上线后，分析讨论开发中的成败问题，总结套路，拔高全员战力。</li>
+                </ul>
+                <div class="fb" data-click-reveal="fade" style="margin-top:20px">
+                    <p style="font-size:22px">没有复盘的项目<br>团队仅仅是变老了，而不是变强了。<br>同样的坑下个项目一定会再踩一遍。</p>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="cd r" style="min-width:auto;height:100%">
+                    <div class="ct">⚠️ 常见的无效复盘</div>
+                    <ul class="bl" style="margin-top:12px">
+                        <li style="color:var(--text2)">只记流水账，说不清哪里没做好</li>
+                        <li style="color:var(--text2)">将失败全部甩锅给客观条件（"客户老改需求"）</li>
+                        <li style="color:var(--text2)">知道原因，但完全定不出改进和应对的抓手方案</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.2 联想复盘四步法 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>科学复盘的核心四步法（参考联想）</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd a">
+                <div class="ci">1️⃣</div>
+                <div class="ct">回顾项目目标</div>
+                <div class="cx">当初约定的 KPI/里程碑。<br>必须量化、客观。<br>如"3个月上线内测，Bug 低于上期"。</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ci">2️⃣</div>
+                <div class="ct">评估项目结果</div>
+                <div class="cx">目标 vs 实际产出。<br>列出"好的差异"和"坏的差异"。<br>（此阶段克制争吵，只列事实）</div>
+            </div>
+            <div class="cd p" data-click-reveal="fade">
+                <div class="ci">3️⃣</div>
+                <div class="ct">分析底层原因</div>
+                <div class="cx">对事不对人。<br>深究好/坏差异为何发生。<br>比如延期是因为架构缺乏前瞻性。</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ci">4️⃣</div>
+                <div class="ct">总结规律落实行动</div>
+                <div class="cx">好的发扬，坏的提出应对规则<br>形成强制的 Action Item<br>在下个版本坚决杜绝。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="slide section"><span class="num">04</span>
+        <h2>第四讲</h2>
+        <div class="ssub">最佳实践——小团队如何应用软件工程？</div>
+    </div>
+
+    <!-- 4.1 核心痛点 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>小团队开发体制下的"三座大山"</h2>
+            <div class="sub">3-5 人的初创极客阵型之痛</div>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd r">
+                <div class="ci">💰</div>
+                <div class="ct">极度成本敏感</div>
+                <div class="cx">薪水无全行业竞争力，难招成熟高 p。<br>不愿采买商业级基础设施工具。<br>赶时间就是省工资，排期逼命。</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ci">🤹</div>
+                <div class="ct">人少活多结构差</div>
+                <div class="cx">从 SQL 写到 Vue 是基操。<br>缺乏测试专家、产品经理保驾护航。<br>断崖式靠 1 个老牛带 3 个小白。</div>
+            </div>
+            <div class="cd p" data-click-reveal="fade">
+                <div class="ci">🌪️</div>
+                <div class="ct">无视流程野蛮生长</div>
+                <div class="cx">没有架构文档拿起键盘就是干。<br>老板拍脑门加需求，随时插队。<br>线上裸奔补丁修到崩溃。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4.2 团队基底建设 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>团队建设如何破局？</h2>
+            <div class="sub">软件工程落实到最后，是"人"去执行。</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <ul class="bl">
+                    <li><strong>招潜力生 + 师徒帮带</strong><br>买不起熟手就招有快速学习潜力的应届生，指定 Mentor（导师）。</li>
+                    <li data-click-reveal="fade" style="margin-top:14px"><strong>Code Review
+                            托底代码下限</strong><br>越是新人多，越要依靠严格的代码审查确保质量不崩溃，在互相 Review 中学习。</li>
+                    <li data-click-reveal="fade" style="margin-top:14px"><strong>技术大牛的角色调整</strong><br>大牛不能只顾自己闷头写核心，50%
+                        精力必须分作架构护城层建设以及传帮带。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4.3 流程基底建设 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>流程化破局：从小而美开始起步</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd g">
+                <div class="ci">🔄</div>
+                <div class="ct">短周期敏捷迭代</div>
+                <div class="cx">固定 2-4 周版本交付周期。<br>周期内**绝对拒绝外力插队需求**。<br>吸收变数但保证开发节奏稳定。</div>
+            </div>
+            <div class="cd a" data-click-reveal="fade">
+                <div class="ci">☁️</div>
+                <div class="ct">源码托管为轴+云端 CI</div>
+                <div class="cx">拥抱白嫖：GitHub / Gitee<br>借用其成熟的工作流与持续集成流水线，避免自建基础运维的时间荒废。</div>
+            </div>
+            <div class="cd p" data-click-reveal="fade">
+                <div class="ci">🛡️</div>
+                <div class="ct">建立外部对接防火墙</div>
+                <div class="cx">告别口传心授式接镖模式。<br>搭建需求工单池（Backlog）。<br>想改？可以排队入池开大会评估。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="slide section"><span class="num">05</span>
+        <h2>第五讲</h2>
+        <div class="ssub">为什么程序员的业余项目大多都死了？</div>
+    </div>
+
+    <!-- 5.1 三大绝症 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>Side Project 死亡的"三大绝症"</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr" style="flex:1;align-items:stretch">
+            <div class="cd r" style="flex:1">
+                <div class="ct">1. 想法无边，时间碎片</div>
+                <div class="cx">想凭一票直接干个改变办公生态的 Web Excel。<br>每天带娃下班只剩1小时。<br>长周期不出阶段成果，激情耗死。</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade" style="flex:1">
+                <div class="ct">2. 卷酷炫技术栈，忘交付</div>
+                <div class="cx">"难得自由，不用 GraphQL 怎么行？全站响应式 WebSocket 先糊上"<br>变成技术练习场实验田<br>永远无法封版发版。</div>
+            </div>
+            <div class="cd p" data-click-reveal="fade" style="flex:1">
+                <div class="ct">3. 缺产品触觉与获客渠道</div>
+                <div class="cx">纯极客自嗨逻辑，非用户真实痛点。<br>发出来根本没有自然流量。<br>闭门造车导致零用户使用而放弃。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5.2 软件工程视角的解药 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>软件工程视角的破局之道</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <ul class="bl">
+                    <li><strong>MVP 瘦身法（金三角理论）</strong><br>业余项目的资金与时间已锁死。必须挥刀砍去海量外围范围，做 MVP（最小可行产品）。用 30% 最核心功能先获取真实反馈。
+                    </li>
+                    <li data-click-reveal="fade" style="margin-top:16px"><strong>公开设定 Dead Line
+                            兜底产出</strong><br>必须具备正规项目约束，发朋友圈或入群立据承诺某日必须出测试包，借围观压力挤出生产力。</li>
+                    <li data-click-reveal="fade" style="margin-top:16px">
+                        <strong>组建微型黑客特战队</strong><br>跨界抱团：前端+产品设计老油条+搞增量的运营，三者各司其职方能在商业模式中突围。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 课后任务 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>📋 课后研讨任务</h2>
+            <div class="sub">综合演练：线上故障与团队诊疗室</div>
+            <div class="bar"></div>
+        </div>
+        <div class="qt" style="font-style:normal"><strong>场景一：</strong>周五晚 8 点，公司核心售卖产品抛出
+            <code>TimeoutError</code>，部分用户下单失败崩溃卡死。</div>
+        <div class="cr" data-click-reveal="fade">
+            <div class="cd a" style="flex:1">
+                <div class="ct">思考实验 1</div>
+                <div class="cx">请分别扮演"小菜鸟"和"宗师"两类视角，写下你在此情状下的实战反应剧情区别。</div>
+            </div>
+            <div class="cd o" style="flex:1">
+                <div class="ct">思考实验 2</div>
+                <div class="cx">假如你是微服架构师，请给出解决此次故障的完整 4 步标准 SOP 序列要求；事后再列一例使用"混沌猴子"加固此项脆弱的预案。</div>
+            </div>
+        </div>
+        <div class="qt" data-click-reveal="fade"
+            style="font-style:normal;margin-top:16px;border-left-color:var(--purple)"><strong>场景二濒危小团队整风运动：</strong>空降 4
+            个人极度混乱作坊，只有 1 堆混搭的 SVN 源码库，老板天天插队下指导棋开发常态加班。你是 CTO，要在首月提出 3 条铁律，请写下并陈述理论依据。</div>
+    </div>
+
+    <!-- END -->
+    <div class="slide cover">
+        <div class="decor"></div>
+        <div class="decor2"></div>
+        <h1 style="font-size:56px">Thanks</h1>
+        <div class="sub">高级进阶与最佳实践</div>
+        <div class="meta">何庭钦 | 271880026@qq.com</div>
+    </div>
+
+    <button class="pb" onclick="startPresentation(0)">▶ 演示模式</button>
+    <div class="po" id="po">
+        <div class="pw" id="pw"></div>
+    </div>
+    <div class="pi" id="pi"></div>
+    <div class="ph" id="ph"><kbd>→</kbd> <kbd>Space</kbd> 下一步 &nbsp; <kbd>←</kbd> 上一步<br><kbd>Home</kbd> 第一页 &nbsp;
+        <kbd>End</kbd> 最后一页<br><kbd>Esc</kbd> 退出 &nbsp; <kbd>F</kbd> 进入演示</div>
+    <script>
+        (function () { const SS = document.querySelectorAll('.slide'), O = document.getElementById('po'), W = document.getElementById('pw'), I = document.getElementById('pi'), H = document.getElementById('ph'); SS.forEach((s, i) => { const pn = document.createElement('span'); pn.className = 'page-num'; pn.textContent = i + 1; s.appendChild(pn) }); let cur = 0, on = false, ht = null, animItems = [], animIdx = 0; function show(n, revealAll) { if (n < 0) n = 0; if (n >= SS.length) n = SS.length - 1; cur = n; W.innerHTML = ''; const cl = SS[cur].cloneNode(true); cl.style.boxShadow = 'none'; W.appendChild(cl); scale(); animItems = Array.from(cl.querySelectorAll('[data-click-reveal]')); if (revealAll) { animItems.forEach(it => it.classList.add('visible')); animIdx = animItems.length } else { animItems.forEach(it => it.classList.remove('visible')); animIdx = 0 } updateIndicator() } function updateIndicator() { const t = animItems.length; I.textContent = t > 0 && animIdx < t ? `${cur + 1} / ${SS.length}  ·  步骤 ${animIdx}/${t}` : `${cur + 1} / ${SS.length}` } function forward() { if (animIdx < animItems.length) { animItems[animIdx].classList.add('visible'); animIdx++; updateIndicator() } else if (cur < SS.length - 1) show(cur + 1, false) } function backward() { if (animIdx > 0) { animIdx--; animItems[animIdx].classList.remove('visible'); updateIndicator() } else if (cur > 0) show(cur - 1, true) } function scale() { const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720); W.style.transform = `scale(${s})` } window.startPresentation = function (si) { cur = si || 0; on = true; O.classList.add('active'); document.body.style.overflow = 'hidden'; show(cur, false); H.classList.add('show'); clearTimeout(ht); ht = setTimeout(() => H.classList.remove('show'), 2500); if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => { }) }; function stop() { on = false; O.classList.remove('active'); document.body.style.overflow = ''; H.classList.remove('show'); if (document.fullscreenElement) document.exitFullscreen().catch(() => { }); SS[cur].scrollIntoView({ behavior: 'smooth', block: 'center' }) } document.addEventListener('keydown', function (e) { if (!on && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); startPresentation(0); return } if (!on) return; switch (e.key) { case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': e.preventDefault(); forward(); break; case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); backward(); break; case 'Home': e.preventDefault(); show(0, false); break; case 'End': e.preventDefault(); show(SS.length - 1, true); break; case 'Escape': e.preventDefault(); stop(); break } }); O.addEventListener('click', function () { forward() }); O.addEventListener('contextmenu', function (e) { e.preventDefault(); backward() }); window.addEventListener('resize', function () { if (on) scale() }); document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && on) stop() }); const obs = new IntersectionObserver(entries => { if (on) return; entries.forEach(en => { if (en.isIntersecting) { en.target.querySelectorAll('[data-click-reveal]').forEach((it, i) => setTimeout(() => it.classList.add('visible'), 200 + i * 200)) } }) }, { threshold: 0.3 }); SS.forEach(s => obs.observe(s)) })();
+    </script>
+</body>
+
+</html>

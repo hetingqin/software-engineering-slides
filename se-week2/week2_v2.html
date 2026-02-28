@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>软件工程及体系结构 · 第2周</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --navy: #1B2A4A;
+            --navy-light: #2C3E6B;
+            --accent: #3B82F6;
+            --accent-dark: #2563EB;
+            --accent-light: #DBEAFE;
+            --orange: #F59E0B;
+            --orange-light: #FEF3C7;
+            --red: #EF4444;
+            --red-light: #FEE2E2;
+            --green: #10B981;
+            --green-light: #D1FAE5;
+            --bg: #FFF;
+            --bg-alt: #F8FAFC;
+            --text: #1E293B;
+            --text2: #475569;
+            --border: #E2E8F0;
+            --font: 'Inter', 'Noto Sans SC', -apple-system, sans-serif
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            background: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            padding: 24px;
+            font-family: var(--font);
+            font-size: 22px
+        }
+
+
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
+            display: flex;
+            flex-direction: column
+        }
+
+        .page-num {
+            position: absolute;
+            bottom: 12px;
+            right: 20px;
+            font-size: 16px;
+            color: rgba(0, 0, 0, .25);
+            font-weight: 600;
+            z-index: 5
+        }
+
+        .slide.cover .page-num,
+        .slide.section .page-num {
+            color: rgba(255, 255, 255, .3)
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--navy), var(--accent));
+            z-index: 10
+        }
+
+        .slide.cover {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light), #1e3a6e);
+            color: #fff;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px
+        }
+
+        .slide.cover::before {
+            display: none
+        }
+
+        .cover .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, .15);
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px
+        }
+
+        .cover h1 {
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1.15
+        }
+
+        .cover .sub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 18px;
+            opacity: .85
+        }
+
+        .cover .meta {
+            position: absolute;
+            bottom: 36px;
+            font-size: 20px;
+            opacity: .5;
+            line-height: 1.6
+        }
+
+        .cover .decor {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, .08);
+            right: -80px;
+            top: -80px
+        }
+
+        .cover .decor2 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, .06);
+            left: -60px;
+            bottom: -60px
+        }
+
+        .slide.section {
+            background: var(--navy);
+            color: #fff;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 80px
+        }
+
+        .slide.section::before {
+            display: none
+        }
+
+        .section .num {
+            font-size: 160px;
+            font-weight: 900;
+            opacity: .1;
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%)
+        }
+
+        .section h2 {
+            font-size: 60px;
+            font-weight: 700
+        }
+
+        .section .ssub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 14px;
+            opacity: .7;
+            border-left: 4px solid var(--accent);
+            padding-left: 18px
+        }
+
+        .slide.content {
+            padding: 40px 60px 32px
+        }
+
+        .hdr {
+            margin-bottom: 16px
+        }
+
+        .hdr h2 {
+            font-size: 40px;
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.2
+        }
+
+        .hdr .sub {
+            font-size: 20px;
+            color: var(--text2);
+            margin-top: 6px
+        }
+
+        .hdr .bar {
+            width: 56px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 3px;
+            margin-top: 10px
+        }
+
+        .bl {
+            list-style: none
+        }
+
+        .bl li {
+            font-size: 22px;
+            color: var(--text);
+            padding: 7px 0 7px 28px;
+            position: relative;
+            line-height: 1.5
+        }
+
+        .bl li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent)
+        }
+
+        .bl li strong {
+            color: var(--navy)
+        }
+
+        .cr {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 16px
+        }
+
+        .cd {
+            flex: 1;
+            min-width: 180px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px
+        }
+
+        .cd .ci {
+            font-size: 32px;
+            margin-bottom: 10px
+        }
+
+        .cd .ct {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 6px
+        }
+
+        .cd .cx {
+            font-size: 20px;
+            color: var(--text2);
+            line-height: 1.5
+        }
+
+        .cd.a {
+            border-top: 4px solid var(--accent)
+        }
+
+        .cd.o {
+            border-top: 4px solid var(--orange)
+        }
+
+        .cd.r {
+            border-top: 4px solid var(--red)
+        }
+
+        .cd.g {
+            border-top: 4px solid var(--green)
+        }
+
+        .tc {
+            display: flex;
+            gap: 36px;
+            flex: 1;
+            margin-top: 20px;
+            align-items: flex-start
+        }
+
+        .tc .c {
+            flex: 1
+        }
+
+        .qt {
+            background: var(--bg-alt);
+            border-left: 5px solid var(--accent);
+            padding: 20px 28px;
+            border-radius: 0 12px 12px 0;
+            margin: 16px 0;
+            font-size: 22px;
+            line-height: 1.6;
+            color: var(--text);
+            font-style: italic
+        }
+
+        .fb {
+            text-align: center;
+            padding: 28px;
+            margin: 16px 0;
+            background: var(--navy);
+            border-radius: 12px;
+            color: #fff
+        }
+
+        .slide [data-click-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .5s ease, transform .5s ease
+        }
+
+        .slide [data-click-reveal].visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .slide [data-click-reveal="fade"] {
+            transform: none
+        }
+
+        .slide [data-click-reveal="left"] {
+            transform: translateX(-30px)
+        }
+
+        .slide [data-click-reveal="right"] {
+            transform: translateX(30px)
+        }
+
+        .po {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: none
+        }
+
+        .po.active {
+            display: flex
+        }
+
+        .po .pw {
+            width: 1280px;
+            height: 720px;
+            transform-origin: center center
+        }
+
+        .pi {
+            position: fixed;
+            bottom: 20px;
+            right: 32px;
+            z-index: 10000;
+            color: rgba(255, 255, 255, .4);
+            font-family: var(--font);
+            font-size: 20px;
+            font-weight: 500
+        }
+
+        .ph {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            background: rgba(0, 0, 0, .85);
+            color: #fff;
+            padding: 36px 56px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 22px;
+            line-height: 2.2;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .4s
+        }
+
+        .ph.show {
+            opacity: 1
+        }
+
+        .ph kbd {
+            background: rgba(255, 255, 255, .15);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, .25);
+            font-family: monospace
+        }
+
+        .pb {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 100;
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 22px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+            transition: transform .2s, background .2s
+        }
+
+        .pb:hover {
+            background: var(--accent);
+            transform: translateY(-2px)
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ==================== COVER ==================== -->
+    <div class="slide cover">
+        <div class="decor"></div>
+        <div class="decor2"></div>
+        <div class="badge">Software Engineering · Week 2</div>
+        <h1>软件工程及体系结构</h1>
+        <div class="sub">传统软件过程模型：从瀑布模型到多元选择</div>
+        <div class="meta">电子信息工程专业硕士 | 3 学时<br>主讲人 | 何庭钦 | 271880026@qq.com</div>
+    </div>
+
+    <!-- ==================== SECTION 1 ==================== -->
+    <div class="slide section">
+        <span class="num">01</span>
+        <h2>第一讲</h2>
+        <div class="ssub">现代软件工程的起源——瀑布模型</div>
+    </div>
+
+    <!-- 1.1 边写边改 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>蛮荒时代的"边写边改"（Code and Fix）</h2>
+            <div class="sub">软件发展初期：接到任务就写代码，发现问题就改</div>
+            <div class="bar"></div>
+        </div>
+        <p style="font-size:22px;line-height:1.6;margin-bottom:16px">对于简单的小程序，这种方式还凑合能用。但面对商业级的复杂项目，问题就集中爆发了——</p>
+        <div class="cr">
+            <div class="cd r">
+                <div class="ci">⏳</div>
+                <div class="ct">进度不可控</div>
+                <div class="cx">没有任何计划，项目什么时候能做完完全是个黑盒</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ci">👥</div>
+                <div class="ct">无法分工协作</div>
+                <div class="cx">多人一起写代码时，不知道谁负责什么，代码经常被互相覆盖</div>
+            </div>
+            <div class="cd a" data-click-reveal="fade">
+                <div class="ci">🔄</div>
+                <div class="ct">需求理解偏差</div>
+                <div class="cx">没做需求分析，做出来的功能和客户想要的南辕北辙，大量返工</div>
+            </div>
+            <div class="cd" data-click-reveal="fade" style="border-top:4px solid var(--navy)">
+                <div class="ci">🐛</div>
+                <div class="ct">质量无法保障</div>
+                <div class="cx">没有系统测试，一上线就 Bug 满天飞</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.2 瀑布模型诞生 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>瀑布模型的诞生（1970）</h2>
+            <div class="sub">Winston Royce 借鉴建筑工程思想提出</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <img src="../../assets/043ec1b87258d3b414b4fa2c5572f20f.jpg" alt="瀑布模型图示"
+                    style="width:100%;border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.15)">
+            </div>
+            <div class="c" data-click-reveal="right">
+                <p style="font-size:22px;line-height:1.7;margin-bottom:16px">核心思路：把整个开发过程划分为若干阶段，<strong
+                        style="color:var(--accent)">像瀑布一样从上往下</strong>，完成一个阶段才能进入下一个。</p>
+                <div class="qt" style="margin:0;font-style:normal">
+                    从 1970 年代到 2000 年前后，瀑布模型一直是最主流的开发模型。<br><br>
+                    也正是从瀑布模型开始，<strong>"软件生命周期"</strong>这个概念被正式确立。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.2 瀑布六阶段 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>瀑布模型的六个阶段</h2>
+            <div class="bar"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" data-click-reveal="fade">
+            <div class="cd a">
+                <div class="ct">1. 问题定义与规划</div>
+                <div class="cx">明确要做什么，评估是否可行，产出需求文档和可行性报告</div>
+            </div>
+            <div class="cd a">
+                <div class="ct">2. 需求分析</div>
+                <div class="cx">和客户反复确认，把所有需求细化为明确的功能描述</div>
+            </div>
+            <div class="cd a">
+                <div class="ct">3. 软件设计</div>
+                <div class="cx">架构设计、数据库设计、接口设计，产出设计文档</div>
+            </div>
+            <div class="cd a">
+                <div class="ct">4. 程序编码</div>
+                <div class="cx">按照设计文档进行编码实现</div>
+            </div>
+            <div class="cd a">
+                <div class="ct">5. 软件测试</div>
+                <div class="cx">对照需求文档进行系统测试，发现并修复缺陷</div>
+            </div>
+            <div class="cd a">
+                <div class="ct">6. 运行维护</div>
+                <div class="cx">软件上线投入使用，持续修复问题和增加功能</div>
+            </div>
+        </div>
+        <div class="qt" style="margin-top:20px;font-style:normal" data-click-reveal="fade">
+            <strong>为什么今天还要学瀑布模型？</strong> 因为不管采用什么开发方式，<strong
+                style="color:var(--accent-dark)">需求分析、系统设计、编码实现、测试验证</strong>这四项活动是任何项目都绕不开的，它们都起源于瀑布模型。
+        </div>
+    </div>
+
+    <!-- 1.3 实战案例 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>实战案例：一个瀑布项目是怎么跑偏的</h2>
+            <div class="sub">老板要求 4 个月开发一个"游戏社交网站"</div>
+            <div class="bar"></div>
+        </div>
+        <p style="font-size:20px;margin-bottom:10px"><strong>初始计划：</strong>需求 2 周 + 设计 4 周 + 编码 6 周 + 测试 4 周 = 16 周</p>
+        <div class="cr">
+            <div class="cd" style="border-left:5px solid var(--green);flex:1">
+                <div class="ct" style="font-size:20px">需求阶段</div>
+                <div class="cx">计划 2 周 → 实际 <strong style="color:var(--red)">3 周</strong><br>和老板反复确认需求，拖了一周</div>
+            </div>
+            <div class="cd" style="border-left:5px solid var(--orange);flex:1" data-click-reveal="fade">
+                <div class="ct" style="font-size:20px">设计阶段</div>
+                <div class="cx">计划 4 周 → 实际 <strong style="color:var(--red)">5 周</strong><br>老板突然要加"网页游戏对接"，架构推倒重来</div>
+            </div>
+            <div class="cd" style="border-left:5px solid var(--accent);flex:1" data-click-reveal="fade">
+                <div class="ct" style="font-size:20px">编码阶段</div>
+                <div class="cx">计划 5 周 → 实际 <strong style="color:var(--red)">6 周</strong><br>模块间互相依赖，完成了还得等别人</div>
+            </div>
+            <div class="cd" style="border-left:5px solid var(--red);flex:1" data-click-reveal="fade">
+                <div class="ct" style="font-size:20px">测试阶段</div>
+                <div class="cx">仅剩 <strong style="color:var(--red)">2 周</strong>，Bug 太多<br>最终整体延期 <strong
+                        style="color:var(--red)">4 周</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.4 优缺点 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>瀑布模型的优缺点</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc" style="flex:1;align-items:stretch">
+            <div class="c" style="display:flex;flex-direction:column;gap:14px">
+                <div class="cd g" style="flex:1">
+                    <div class="ci">✅</div>
+                    <div class="ct" style="color:var(--green);font-size:22px">优点</div>
+                    <ul class="bl" style="font-size:19px">
+                        <li style="font-size:19px">过程清晰有序，每阶段有明确任务和交付物</li>
+                        <li style="font-size:19px">职责分工明确：产品、架构、开发、测试各司其职</li>
+                        <li style="font-size:19px">重视文档和评审，质量有保障</li>
+                    </ul>
+                </div>
+                <div class="cd r" style="flex:1" data-click-reveal="fade">
+                    <div class="ci">❌</div>
+                    <div class="ct" style="color:var(--red);font-size:22px">缺点</div>
+                    <ul class="bl" style="font-size:19px">
+                        <li style="font-size:19px"><strong style="color:var(--red)">最大问题：无法响应需求变更</strong>，越到后期代价越大</li>
+                        <li style="font-size:19px">客户中间阶段看不到成果</li>
+                        <li style="font-size:19px">前期延误逐级挤压后面时间</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right" style="display:flex;align-items:center;justify-content:center">
+                <img src="../../assets/881b21fa452df38da1604f5a6b55d65c.jpg" alt="瀑布模型优缺点总结"
+                    style="max-height:520px;max-width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 2 ==================== -->
+    <div class="slide section">
+        <span class="num">02</span>
+        <h2>第二讲</h2>
+        <div class="ssub">瀑布模型的变种——解决周期太长的问题</div>
+    </div>
+
+    <!-- 2.0 根源 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>问题的根源：周期太长</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="fb" style="padding:36px;margin-top:20px;height:auto;flex:0">
+            <p style="font-size:28px;line-height:1.7">瀑布模型的很多问题，根源都出在<strong style="color:#60A5FA">周期太长</strong>上：</p>
+        </div>
+        <div class="cr" style="margin-top:24px">
+            <div class="cd" style="text-align:center">
+                <div class="ci">🔄</div>
+                <div class="ct">难以响应变更</div>
+                <div class="cx">周期长，中间无法调整方向</div>
+            </div>
+            <div class="cd" style="text-align:center" data-click-reveal="fade">
+                <div class="ci">👀</div>
+                <div class="ct">客户看不到成果</div>
+                <div class="cx">几个月后才能看到实物</div>
+            </div>
+            <div class="cd" style="text-align:center" data-click-reveal="fade">
+                <div class="ci">⚠️</div>
+                <div class="ct">风险不好控制</div>
+                <div class="cx">做完才发现方向错了</div>
+            </div>
+        </div>
+        <p style="font-size:26px;font-weight:700;color:var(--navy);text-align:center;margin-top:32px"
+            data-click-reveal="fade">解决思路：把周期缩短！</p>
+    </div>
+
+    <!-- 2.1 快速原型 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>快速原型模型：先做个"草稿"给客户看</h2>
+            <div class="sub">解决的问题：客户自己都不清楚想要什么</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <p style="font-size:21px;line-height:1.7;margin-bottom:16px">
+                    用原型工具（Axure、墨刀）快速搭出界面原型，没有真正的后台逻辑，但客户可以点击操作、感受产品形态。
+                </p>
+                <div
+                    style="background:#fefce8;border:2px solid #fde047;padding:20px;border-radius:12px;color:#854d0e;margin-bottom:16px">
+                    <strong>🏠 盖房子的比喻：</strong><br>
+                    客户说不清想要什么房子 → 先搭个彩钢板临时房让客户住着体验 → 确定需求后再盖真房子
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="cd g" style="margin-bottom:12px">
+                    <div class="ct">抛弃策略</div>
+                    <div class="cx">原型只用来确认需求，确认后扔掉，正式开发重新写。适合质量要求高的项目。</div>
+                </div>
+                <div class="cd o">
+                    <div class="ct">附加策略</div>
+                    <div class="cx">在原型基础上不断改进，最终演化为正式产品。适合快速上线、质量要求不高的项目。</div>
+                </div>
+                <p style="font-size:20px;color:var(--text2);margin-top:12px;line-height:1.5">
+                    <strong>优点：</strong>快速响应反馈<br><strong>代价：</strong>往往以牺牲代码质量为代价
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.2 增量模型 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>增量模型：按模块分批交付</h2>
+            <div class="sub">不一次性交付完整系统，而是先做最核心的模块上线</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc" style="align-items:center">
+            <div class="c">
+                <img src="../../assets/20d7896e4a52e8043defff6eedb9869b.jpg" alt="增量模型"
+                    style="width:100%;border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.12)">
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div
+                    style="background:#fefce8;border:2px solid #fde047;padding:18px;border-radius:12px;color:#854d0e;margin-bottom:16px">
+                    <strong>🏠 盖房子的比喻：</strong><br>
+                    先盖厨房和卫生间（最刚需），住进去再说，以后再盖客厅和书房。
+                </div>
+                <ul class="bl" style="font-size:20px">
+                    <li style="font-size:20px"><strong>关键要求：</strong>系统必须能合理模块化，模块间耦合度足够低</li>
+                    <li style="font-size:20px"><strong>适用场景：</strong>需求明确、可模块化、客户希望尽快看到部分功能</li>
+                    <li style="font-size:20px"><strong>对架构师要求高：</strong>需要很强的系统拆分能力</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.3 迭代模型 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>迭代模型：每次交付一个"更完善的版本"</h2>
+            <div class="sub">不是按模块拆分，而是按时间拆分（通常 2-4 周一个迭代）</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc" style="align-items:center">
+            <div class="c">
+                <img src="../../assets/97a05f1bba8344f5d9e8b8734a025e70.png" alt="迭代模型"
+                    style="width:100%;border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.12)">
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div
+                    style="background:#fefce8;border:2px solid #fde047;padding:18px;border-radius:12px;color:#854d0e;margin-bottom:16px">
+                    <strong>🏠 盖房子的比喻：</strong><br>
+                    先盖茅草屋（最基本需求）→ 改建小木屋（更舒适）→ 最终盖成别墅（满足所有需求）
+                </div>
+                <ul class="bl" style="font-size:20px">
+                    <li style="font-size:20px"><strong>优点：</strong>客户见证从简陋到完善的过程，满意度高</li>
+                    <li style="font-size:20px"><strong>难点：</strong>如何规划每次迭代的内容——多了做不完，少了不饱和</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.4 增量 vs 迭代 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>增量 vs 迭代：核心区别</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc" style="flex:1;align-items:stretch">
+            <div class="c" style="display:flex;flex-direction:column;gap:14px">
+                <div class="cd a" style="flex:1">
+                    <div class="ct" style="font-size:24px;margin-bottom:8px">🧩 增量模型</div>
+                    <p style="font-size:20px;color:var(--text);line-height:1.6">按<strong>功能模块横向拆分</strong></p>
+                    <p style="font-size:19px;color:var(--text2);line-height:1.5;margin-top:6px">先做完模块 A，再做模块
+                        B<br>每次交付一个完整的新模块</p>
+                </div>
+                <div class="cd o" style="flex:1" data-click-reveal="fade">
+                    <div class="ct" style="font-size:24px;margin-bottom:8px">🏚️→🏰 迭代模型</div>
+                    <p style="font-size:20px;color:var(--text);line-height:1.6">按<strong>时间纵向演进</strong></p>
+                    <p style="font-size:19px;color:var(--text2);line-height:1.5;margin-top:6px">每次都覆盖全部功能<br>但每次都更完善一些
+                    </p>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right" style="display:flex;align-items:center;justify-content:center">
+                <img src="../../assets/9abe6230baeb7a92a95b65dd7c383d10.jpg" alt="迭代开发时间线"
+                    style="max-height:520px;max-width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 3 ==================== -->
+    <div class="slide section">
+        <span class="num">03</span>
+        <h2>第三讲</h2>
+        <div class="ssub">面对不同项目，选择什么模型？</div>
+    </div>
+
+    <!-- 3.1 V模型 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>场景一：外包项目，每阶段都要甲方验收</h2>
+            <div class="sub">推荐模型：V 模型</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc" style="align-items:center">
+            <div class="c">
+                <img src="../../assets/c015252d6ae984b667499ee5b8c76ab1.jpg" alt="V模型"
+                    style="width:100%;border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.12)">
+            </div>
+            <div class="c" data-click-reveal="right">
+                <p style="font-size:22px;line-height:1.7;margin-bottom:16px">V 模型本质上还是瀑布，但特别强调：<strong
+                        style="color:var(--accent)">每个开发阶段都有对应的测试验收</strong>。</p>
+                <ul class="bl" style="font-size:20px">
+                    <li style="font-size:20px">需求分析 ↔ 验收测试</li>
+                    <li style="font-size:20px">系统设计 ↔ 系统测试</li>
+                    <li style="font-size:20px">详细设计 ↔ 集成测试</li>
+                    <li style="font-size:20px">编码 ↔ 单元测试</li>
+                </ul>
+                <div class="qt" style="font-style:normal;margin-top:16px;font-size:20px">
+                    <strong>适用于：</strong>对质量和安全要求极高的项目（国防、医疗、金融）
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.2 螺旋模型 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>场景二：项目风险高，客户可能随时中止</h2>
+            <div class="sub">推荐模型：螺旋模型</div>
+            <div class="bar"></div>
+        </div>
+        <div class="tc" style="align-items:center">
+            <div class="c">
+                <img src="../../assets/5c1f2444754f3ce5ce68e0a790da2bcc.png" alt="螺旋模型"
+                    style="width:100%;border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.12)">
+            </div>
+            <div class="c" data-click-reveal="right">
+                <p style="font-size:22px;line-height:1.7;margin-bottom:16px">螺旋模型在迭代基础上，特别加入了<strong
+                        style="color:var(--accent)">风险评估</strong>环节。</p>
+                <p style="font-size:21px;line-height:1.7;color:var(--text)">
+                    每完成一个迭代都要停下来做风险分析：<br>项目还值得继续做吗？<br>如果风险太大，就及时止损退出。
+                </p>
+                <div class="qt" style="font-style:normal;margin-top:16px;font-size:20px">
+                    <strong>适用于：</strong>风险高、投资大、客户信任度低的项目
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.3 增量场景 + RUP -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>更多场景选择</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="cd a" style="height:100%">
+                    <div class="ci">🚀</div>
+                    <div class="ct" style="font-size:22px">场景三：山寨竞品，快速上线</div>
+                    <div class="cx" style="font-size:20px;margin-top:8px">
+                        <strong>推荐：增量模型</strong><br><br>
+                        需求现成（照着竞品抄），按模块拆分，核心功能先上线抢占市场，其他模块后续补充。<br><br>多个模块可以并行开发。
+                    </div>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="cd o" style="height:100%">
+                    <div class="ci">🏢</div>
+                    <div class="ct" style="font-size:22px">场景四：大项目，客户说不清要什么</div>
+                    <div class="cx" style="font-size:20px;margin-top:8px">
+                        <strong>推荐：RUP（统一软件开发过程）</strong><br><br>
+                        四个阶段：<br>
+                        1. 初始 → 确定边界和风险<br>
+                        2. 细化 → 用原型确认需求<br>
+                        3. 构造 → 迭代开发交付<br>
+                        4. 交付 → 测试和部署上线
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.4 RUP 图示 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>RUP：统一软件开发过程</h2>
+            <div class="sub">适用于复杂度高、需求不明确、预算充足的大型项目</div>
+            <div class="bar"></div>
+        </div>
+        <div style="text-align:center;margin:20px 0">
+            <img src="../../assets/b0091341a7fa31cd26d8a02e7d63e2fc.png" alt="RUP模型"
+                style="max-height:360px;border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.12)">
+        </div>
+        <div class="qt" style="font-style:normal" data-click-reveal="fade">
+            <strong>场景五：产品已上线，需要持续更新：</strong>用<strong style="color:var(--accent-dark)">迭代模型 /
+                敏捷开发</strong>。固定周期，选择适合的需求和 Bug 修复任务，按时发布新版本。敏捷开发（Scrum、XP、看板）将在下一周详细讲解。
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 4 ==================== -->
+    <div class="slide section">
+        <span class="num">04</span>
+        <h2>课后研讨</h2>
+        <div class="ssub">为不同项目选择开发模型</div>
+    </div>
+
+    <!-- 4 研讨任务 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>场景分析练习</h2>
+            <div class="sub">假设你同时接了三个项目，分别选择合适的开发模型</div>
+            <div class="bar"></div>
+        </div>
+        <div class="cr">
+            <div class="cd" style="border-top:4px solid var(--red)">
+                <div class="ct">🔬 项目 A</div>
+                <div class="cx" style="font-size:19px">帮学校实验室开发基因测序数据管理系统。要求极高的准确性和安全性，每个阶段都需要导师审核验收。</div>
+            </div>
+            <div class="cd" style="border-top:4px solid var(--orange)" data-click-reveal="fade">
+                <div class="ct">📱 项目 B</div>
+                <div class="cx" style="font-size:19px">帮同学做"校园二手交易"小程序。她说得很模糊，"能买能卖就行"，说不清要什么功能，但很着急上线。</div>
+            </div>
+            <div class="cd" style="border-top:4px solid var(--green)" data-click-reveal="fade">
+                <div class="ct">💰 项目 C</div>
+                <div class="cx" style="font-size:19px">企业老板投 100 万做"AI 写作助手"，分四期拨款，每期 25 万。某一期看不到进展就不再拨款。</div>
+            </div>
+        </div>
+        <div style="background:#fefce8;border:2px solid #fde047;padding:18px;border-radius:12px;color:#854d0e;margin-top:16px"
+            data-click-reveal="fade">
+            <strong>💡 思考要点：</strong>核心风险是什么？需求确定程度如何？客户对交付节奏的期望？哪种模型最匹配该项目挑战？
+        </div>
+    </div>
+
+    <!-- Presentation UI -->
+    <button class="pb" onclick="startPresentation(0)">▶ 开始播放</button>
+    <div class="po" id="po">
+        <div class="pw" id="pw"></div>
+    </div>
+    <div class="pi" id="pi"></div>
+    <div class="ph" id="ph">
+        <kbd>→</kbd> <kbd>Space</kbd> 下一步 &nbsp; <kbd>←</kbd> 上一步<br>
+        <kbd>Home</kbd> 第一页 &nbsp; <kbd>End</kbd> 最后一页<br>
+        <kbd>Esc</kbd> 退出 &nbsp; <kbd>F</kbd> 进入演示
+    </div>
+
+    <script>
+        (function () {
+            const SS = document.querySelectorAll('.slide'), O = document.getElementById('po'), W = document.getElementById('pw'), I = document.getElementById('pi'), H = document.getElementById('ph');
+            SS.forEach((s, i) => { const pn = document.createElement('span'); pn.className = 'page-num'; pn.textContent = i + 1; s.appendChild(pn) });
+            let cur = 0, on = false, ht = null, animItems = [], animIdx = 0;
+            function show(n, revealAll) {
+                if (n < 0) n = 0; if (n >= SS.length) n = SS.length - 1; cur = n;
+                W.innerHTML = ''; const cl = SS[cur].cloneNode(true); cl.style.boxShadow = 'none'; W.appendChild(cl);
+                scale();
+                animItems = Array.from(cl.querySelectorAll('[data-click-reveal]'));
+                if (revealAll) { animItems.forEach(it => it.classList.add('visible')); animIdx = animItems.length }
+                else { animItems.forEach(it => it.classList.remove('visible')); animIdx = 0 }
+                updateIndicator();
+            }
+            function updateIndicator() {
+                const t = animItems.length;
+                I.textContent = t > 0 && animIdx < t ? `${cur + 1} / ${SS.length}  ·  步骤 ${animIdx}/${t}` : `${cur + 1} / ${SS.length}`;
+            }
+            function forward() {
+                if (animIdx < animItems.length) { animItems[animIdx].classList.add('visible'); animIdx++; updateIndicator() }
+                else if (cur < SS.length - 1) show(cur + 1, false);
+            }
+            function backward() {
+                if (animIdx > 0) { animIdx--; animItems[animIdx].classList.remove('visible'); updateIndicator() }
+                else if (cur > 0) show(cur - 1, true);
+            }
+            function scale() { const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720); W.style.transform = `scale(${s})` }
+            window.startPresentation = function (si) {
+                cur = si || 0; on = true; O.classList.add('active'); document.body.style.overflow = 'hidden';
+                show(cur, false); H.classList.add('show'); clearTimeout(ht); ht = setTimeout(() => H.classList.remove('show'), 2500);
+                if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => { });
+            };
+            function stop() {
+                on = false; O.classList.remove('active'); document.body.style.overflow = ''; H.classList.remove('show');
+                if (document.fullscreenElement) document.exitFullscreen().catch(() => { });
+                SS[cur].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            document.addEventListener('keydown', function (e) {
+                if (!on && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); startPresentation(0); return }
+                if (!on) return;
+                switch (e.key) {
+                    case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': e.preventDefault(); forward(); break;
+                    case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); backward(); break;
+                    case 'Home': e.preventDefault(); show(0, false); break;
+                    case 'End': e.preventDefault(); show(SS.length - 1, true); break;
+                    case 'Escape': e.preventDefault(); stop(); break;
+                }
+            });
+            O.addEventListener('click', function () { forward() });
+            O.addEventListener('contextmenu', function (e) { e.preventDefault(); backward() });
+            window.addEventListener('resize', function () { if (on) scale() });
+            document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && on) stop() });
+            const obs = new IntersectionObserver(entries => {
+                if (on) return;
+                entries.forEach(en => {
+                    if (en.isIntersecting) {
+                        en.target.querySelectorAll('[data-click-reveal]').forEach((it, i) => setTimeout(() => it.classList.add('visible'), 200 + i * 200));
+                    }
+                });
+            }, { threshold: 0.3 });
+            SS.forEach(s => obs.observe(s));
+        })();
+    </script>
+</body>
+
+</html>
