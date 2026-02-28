@@ -8,6 +8,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
         rel="stylesheet">
+    <!-- 引入 marked 以便渲染讲义 Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
             --navy: #0f172a;
@@ -33,6 +35,7 @@
             background-color: var(--bg);
             color: var(--text);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .header {
@@ -42,6 +45,7 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .header::before {
@@ -78,8 +82,10 @@
             padding: 0 20px;
             position: relative;
             z-index: 2;
+            min-height: 50vh;
         }
 
+        /* 主页网格 */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -98,6 +104,20 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .card.locked {
+            opacity: 0.6;
+            background: #f1f5f9;
+            cursor: not-allowed;
+            border-color: #e2e8f0;
+        }
+
+        .card.locked:hover {
+            transform: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
         .card::before {
@@ -113,12 +133,12 @@
             transition: transform 0.3s ease;
         }
 
-        .card:hover {
+        .card:not(.locked):hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
-        .card:hover::before {
+        .card:not(.locked):hover::before {
             transform: scaleX(1);
         }
 
@@ -129,6 +149,27 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-badge {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+            font-weight: 600;
+        }
+
+        .card.locked .status-badge {
+            background: #e2e8f0;
+            color: #64748b;
+        }
+
+        .card.locked .card-week {
+            color: #64748b;
         }
 
         .card-title {
@@ -137,6 +178,10 @@
             color: var(--navy);
             margin-bottom: 16px;
             flex-grow: 1;
+        }
+
+        .card.locked .card-title {
+            color: #475569;
         }
 
         .card-footer {
@@ -156,12 +201,215 @@
             transition: transform 0.3s ease;
         }
 
-        .card:hover .card-footer {
+        .card:not(.locked):hover .card-footer {
             color: var(--accent);
         }
 
-        .card:hover .card-footer svg {
+        .card:not(.locked):hover .card-footer svg {
             transform: translateX(4px);
+        }
+
+        /* 详情页 */
+        #detail-view {
+            display: none;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .detail-header {
+            padding: 32px 40px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8fafc;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .back-btn svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+            fill: currentColor;
+        }
+
+        .detail-title {
+            flex: 1;
+            text-align: center;
+            color: var(--navy);
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+            background: var(--white);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 20px 0;
+            border: none;
+            background: transparent;
+            color: var(--text2);
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            font-family: inherit;
+            transition: color 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--navy);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .tab-content-panel {
+            padding: 40px;
+            display: none;
+            min-height: 400px;
+        }
+
+        .tab-content-panel.active {
+            display: block;
+        }
+
+        /* 讲义样式渲染 (Markdown) */
+        .md-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .md-content h1,
+        .md-content h2,
+        .md-content h3 {
+            color: var(--navy);
+            margin: 32px 0 16px;
+            font-weight: 700;
+        }
+
+        .md-content h1 {
+            font-size: 32px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        .md-content h2 {
+            font-size: 24px;
+        }
+
+        .md-content p {
+            margin-bottom: 16px;
+        }
+
+        .md-content ul,
+        .md-content ol {
+            margin: 0 0 16px 24px;
+        }
+
+        .md-content li {
+            margin-bottom: 8px;
+        }
+
+        .md-content strong {
+            color: var(--navy);
+        }
+
+        .md-content pre {
+            background: var(--navy);
+            color: #fff;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        .md-content code {
+            font-family: monospace;
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #dc2626;
+        }
+
+        .md-content pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .md-content blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 16px;
+            color: var(--text2);
+            margin-bottom: 16px;
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 大按钮行动呼吁 */
+        .cta-box {
+            text-align: center;
+            padding: 60px 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            padding: 16px 36px;
+            font-size: 20px;
+            font-weight: 700;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(59, 130, 246, 0.4);
         }
 
         .footer {
@@ -171,85 +419,25 @@
             font-size: 14px;
         }
 
-        /* Titles for Weeks */
-        .w1 .card-title::after {
-            content: "软件工程概述 \A 与现代架构";
-            white-space: pre-wrap;
+        /* Loading spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 40px auto;
         }
 
-        .w2 .card-title::after {
-            content: "软件过程模型 \A 与生命周期";
-            white-space: pre-wrap;
-        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
 
-        .w3 .card-title::after {
-            content: "敏捷开发 \A 与质量管理";
-            white-space: pre-wrap;
-        }
-
-        .w4 .card-title::after {
-            content: "需求工程基础 \A 与获取技术";
-            white-space: pre-wrap;
-        }
-
-        .w5 .card-title::after {
-            content: "系统分析 \A 模型与规格设计";
-            white-space: pre-wrap;
-        }
-
-        .w6 .card-title::after {
-            content: "软件架构概述 \A 与经典风格";
-            white-space: pre-wrap;
-        }
-
-        .w7 .card-title::after {
-            content: "现代应用架构 \A （微服务与云原生）";
-            white-space: pre-wrap;
-        }
-
-        .w8 .card-title::after {
-            content: "面向对象 \A 设计原则（SOLID）";
-            white-space: pre-wrap;
-        }
-
-        .w9 .card-title::after {
-            content: "测试策略 \A 与单元测试";
-            white-space: pre-wrap;
-        }
-
-        .w10 .card-title::after {
-            content: "高阶测试 \A 与持续交付(CI/CD)";
-            white-space: pre-wrap;
-        }
-
-        .w11 .card-title::after {
-            content: "软件维护 \A 与重构基础";
-            white-space: pre-wrap;
-        }
-
-        .w12 .card-title::after {
-            content: "演进式架构 \A 与代码重构实战";
-            white-space: pre-wrap;
-        }
-
-        .w13 .card-title::after {
-            content: "AI赋能 \A 的现代软件工程";
-            white-space: pre-wrap;
-        }
-
-        .w14 .card-title::after {
-            content: "工程伦理 \A 与数据隐私规范";
-            white-space: pre-wrap;
-        }
-
-        .w15 .card-title::after {
-            content: "期末综合实践 \A 冲刺与辅导";
-            white-space: pre-wrap;
-        }
-
-        .w16 .card-title::after {
-            content: "项目答辩 \A 与课程总结复盘";
-            white-space: pre-wrap;
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         @media (max-width: 768px) {
@@ -268,46 +456,235 @@
             .container {
                 margin-top: -20px;
             }
+
+            .detail-header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .detail-title {
+                order: -1;
+            }
+
+            .tab-btn {
+                font-size: 16px;
+                padding: 16px 0;
+            }
+
+            .tab-content-panel {
+                padding: 24px 20px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <header class="header">
+    <header class="header" id="main-header">
         <h1>软件工程与架构</h1>
         <p>电子信息工程专业硕士课程 · 在线互动幻灯片合集</p>
     </header>
 
     <main class="container">
-        <div class="grid">
-            <!-- 幻灯片卡片将由 JavaScript 自动生成 -->
+        <!-- 主页视图 -->
+        <div id="home-view" class="grid">
+            <!-- 加载占位 -->
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                <div class="spinner"></div>
+                <p style="color:var(--text2)">正在同步课程进度...</p>
+            </div>
+        </div>
+
+        <!-- 详情页视图 -->
+        <div id="detail-view">
+            <div class="detail-header">
+                <button class="back-btn" onclick="goBack()">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    返回列表
+                </button>
+                <div class="detail-title" id="d-title">Week X</div>
+                <div style="width: 100px;"></div><!-- 占位符保持居中 -->
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab(0)">课程介绍与讲义</button>
+                <button class="tab-btn" onclick="switchTab(1)">幻灯片演示(PPT)</button>
+                <button class="tab-btn" onclick="switchTab(2)">参考资料</button>
+            </div>
+
+            <!-- Tab 0: 讲义 -->
+            <div class="tab-content-panel active" id="tab-0">
+                <div id="md-container" class="md-content">
+                    <div class="spinner"></div>
+                    <p style="text-align:center;color:var(--text2)">加载讲义中...</p>
+                </div>
+            </div>
+
+            <!-- Tab 1: PPT -->
+            <div class="tab-content-panel" id="tab-1">
+                <div class="cta-box">
+                    <h3 style="font-size: 28px; color: var(--navy); margin-bottom: 16px;">本周全屏互动幻灯片</h3>
+                    <p style="font-size: 18px; color: var(--text2); margin-bottom: 32px;">包含精良的图文排版设计、动画以及沉浸式演示黑板模式。</p>
+                    <a href="#" id="ppt-link" target="_blank" class="cta-btn">
+                        ▶ 点击进入演示模式
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tab 2: 参考资料 -->
+            <div class="tab-content-panel" id="tab-2">
+                <div class="md-content">
+                    <h3>课后延伸</h3>
+                    <p>在本周的课程结束后，推荐同学们通过以下资源深入学习：</p>
+                    <ul>
+                        <li><a href="#" style="color:var(--accent)">教学大纲与扩展书目列表</a> (前往 GitHub 根目录下载)</li>
+                        <li>建议复习课程提供的<strong>课堂实践指导手册</strong>以备课后作业。</li>
+                        <li>如有问题可随时在内部教学交流群/讨论区内发起提问。</li>
+                    </ul>
+                    <blockquote style="margin-top: 30px;">
+                        <strong>提示：</strong> 本页面资料链接将随课程进度持续更新，请定期刷新关注。
+                    </blockquote>
+                </div>
+            </div>
         </div>
     </main>
 
     <footer class="footer">
-        <p>&copy; 软件工程与架构 - 课程在线资源站</p>
+        <p>&copy; 软件工程与架构 - 课程在线资源站 | 页面自动检测更新机制</p>
     </footer>
 
     <script>
-        const grid = document.querySelector('.grid');
-        const totalWeeks = 16;
+        const titles = [
+            "软件工程概述与现代架构", "软件过程模型与生命周期", "敏捷开发与质量管理", "需求工程基础与获取技术",
+            "系统分析模型与规格设计", "软件架构概述与经典风格", "现代应用架构（微服务与云原生）", "面向对象设计原则（SOLID）",
+            "测试策略与单元测试", "高阶测试与持续交付(CI/CD)", "软件维护与重构基础", "演进式架构与代码重构实战",
+            "AI赋能的现代软件工程", "工程伦理与数据隐私规范", "期末综合实践冲刺与辅导", "项目答辩与课程总结复盘"
+        ];
 
-        let html = '';
-        for (let i = 1; i <= totalWeeks; i++) {
-            // 这里将动态加载链接，确保与生成的 html 文件对应，例如 week1_v2.html
-            html += `
-                <a href="se-week${i}/week${i}_v2.html" class="card w${i}">
-                    <div class="card-week">Week ${String(i).padStart(2, '0')}</div>
-                    <div class="card-title"></div>
-                    <div class="card-footer">
-                        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        在线播放演示
+        const totalWeeks = 16;
+        const homeView = document.getElementById('home-view');
+        const detailView = document.getElementById('detail-view');
+
+        // 用于缓存数据
+        const weekStatus = [];
+
+        async function init() {
+            homeView.innerHTML = '';
+
+            // 批量检测 URL 会不会导致卡顿，所以我们发出并行请求！
+            // 利用 GitHub 静态页特性：文件存在返回 200，不存在返回 404 (Fetch HEAD 即可，不拉全量数据)
+            const checks = [];
+            for (let i = 1; i <= totalWeeks; i++) {
+                // 如果是 week9 的特殊格式，可以单独判断。由于我们之前生成的是 week9_v2.html ，正常规律应该是 week${i}_v2.html
+                // 但为安全起见，我们检测 source_v2.md 是否存在也行。
+                // 探测对应 week${i}_v2.html 
+                const url = `se-week${i}/week${i}_v2.html`;
+                checks.push(
+                    fetch(url, { method: 'HEAD', cache: 'no-store' })
+                        .then(res => res.ok)
+                        .catch(() => false)
+                );
+            }
+
+            // 等待所有的探测完毕
+            const results = await Promise.all(checks);
+
+            // 渲染网格
+            for (let i = 1; i <= totalWeeks; i++) {
+                const isAvailable = results[i - 1];
+                weekStatus[i] = { available: isAvailable, title: titles[i - 1] };
+
+                const card = document.createElement('div');
+                card.className = `card ${isAvailable ? '' : 'locked'}`;
+
+                // 点击事件：如果是可用的，进入详情
+                if (isAvailable) {
+                    card.onclick = () => openDetail(i);
+                }
+
+                card.innerHTML = `
+                    <div class="card-week">
+                        <span>Week ${String(i).padStart(2, '0')}</span>
+                        <span class="status-badge">${isAvailable ? '已发布' : '未发布'}</span>
                     </div>
-                </a>
-            `;
+                    <div class="card-title">${titles[i - 1]}</div>
+                    <div class="card-footer">
+                        ${isAvailable
+                        ? `<svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> 点击查看课程内容`
+                        : `<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"/><path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> 敬请期待上传`
+                    }
+                    </div>
+                `;
+                homeView.appendChild(card);
+            }
         }
-        grid.innerHTML = html;
+
+        function openDetail(weekIndex) {
+            // 切换试图
+            homeView.style.display = 'none';
+            detailView.style.display = 'block';
+            window.scrollTo(0, 0);
+
+            // 更新头部信息
+            document.getElementById('d-title').textContent = `Week ${String(weekIndex).padStart(2, '0')} - ${titles[weekIndex - 1]}`;
+
+            // 更新 PPT 链接
+            document.getElementById('ppt-link').href = `se-week${weekIndex}/week${weekIndex}_v2.html`;
+
+            // 重置 Tab
+            switchTab(0);
+
+            const mdContainer = document.getElementById('md-container');
+            mdContainer.innerHTML = '<div class="spinner"></div><p style="text-align:center;color:var(--text2)">加载讲义全文中...</p>';
+
+            // 抓取对应的讲义 Markdown
+            // 我们约定抓取 source_v2.md
+            fetch(`se-week${weekIndex}/source_v2.md`)
+                .then(res => {
+                    if (!res.ok) throw new Error('讲义文件还没准备好');
+                    return res.text();
+                })
+                .then(text => {
+                    // 使用 marked.js 渲染 Markdown
+                    mdContainer.innerHTML = marked.parse(text);
+                })
+                .catch(err => {
+                    mdContainer.innerHTML = `
+                        <div style="text-align:center; padding: 40px;">
+                            <h3 style="color:var(--navy); margin-bottom: 12px;">讲义内容暂不可用</h3>
+                            <p style="color:var(--text2)">${err.message}。但您可以直接进入幻灯片演示版块观看。</p>
+                        </div>
+                    `;
+                });
+        }
+
+        function goBack() {
+            homeView.style.display = 'grid';
+            detailView.style.display = 'none';
+        }
+
+        function switchTab(index) {
+            // Tab 按钮变色
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach((btn, i) => {
+                if (i === index) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+
+            // 面板展示
+            const panels = document.querySelectorAll('.tab-content-panel');
+            panels.forEach((panel, i) => {
+                if (i === index) panel.classList.add('active');
+                else panel.classList.remove('active');
+            });
+        }
+
+        // 启动检测
+        init();
     </script>
 </body>
 
