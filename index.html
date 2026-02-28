@@ -608,6 +608,8 @@
                     return res.text();
                 })
                 .then(text => {
+                    // 修正讲义源码中的相对图片路径以适配首页当前的渲染层级
+                    text = text.replace(/\]\(\.\.\/assets\//g, '](./assets/');
                     mdContainer.innerHTML = marked.parse(text);
                 })
                 .catch(err => {
