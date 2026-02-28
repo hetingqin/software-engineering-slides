@@ -582,7 +582,7 @@
                 // 如果�?week9 的特殊格式，可以单独判断。由于我们之前生成的�?week9_v2.html ，正常规律应该是 week${i}_v2.html
                 // 但为安全起见，我们检�?source_v2.md 是否存在也行�?
                 // 探测对应 week${i}_v2.html 
-                const url = `se-week${i}/week${i}_v2.html`;
+                const url = `./se-week${i}/week${i}_v2.html`;
                 checks.push(
                     fetch(url, { method: 'HEAD', cache: 'no-store' })
                         .then(res => res.ok)
@@ -633,7 +633,7 @@
             document.getElementById('d-title').textContent = `Week ${String(weekIndex).padStart(2, '0')} - ${titles[weekIndex - 1]}`;
 
             // 更新 PPT 链接
-            document.getElementById('ppt-link').href = `se-week${weekIndex}/week${weekIndex}_v2.html`;
+            document.getElementById('ppt-link').href = `./se-week${weekIndex}/week${weekIndex}_v2.html`;
 
             // 重置 Tab
             switchTab(0);
@@ -643,7 +643,7 @@
 
             // 抓取对应的讲�?Markdown
             // 我们约定抓取 source_v2.md
-            fetch(`se-week${weekIndex}/source_v2.md`)
+            fetch(`./se-week${weekIndex}/source_v2.md`)
                 .then(res => {
                     if (!res.ok) throw new Error('讲义文件还没准备�?);
                     return res.text();
