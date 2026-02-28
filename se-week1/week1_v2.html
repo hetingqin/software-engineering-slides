@@ -2,1217 +2,1153 @@
 <html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8">
-  <title>软件工程及体系结构 · 第1次</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+    <meta charset="UTF-8">
+    <title>软件工程及体系结构 · 第1周</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
 
-    :root {
-      --navy: #1B2A4A;
-      --navy-light: #2C3E6B;
-      --accent: #3B82F6;
-      --accent-dark: #2563EB;
-      --accent-light: #DBEAFE;
-      --orange: #F59E0B;
-      --orange-light: #FEF3C7;
-      --red: #EF4444;
-      --red-light: #FEE2E2;
-      --green: #10B981;
-      --green-light: #D1FAE5;
-      --bg: #FFF;
-      --bg-alt: #F8FAFC;
-      --text: #1E293B;
-      --text2: #475569;
-      --border: #E2E8F0;
-      --fs: 22px;
-      --font: 'Inter', 'Noto Sans SC', -apple-system, sans-serif
-    }
+        :root {
+            --navy: #1B2A4A;
+            --navy-light: #2C3E6B;
+            --accent: #3B82F6;
+            --accent-dark: #2563EB;
+            --accent-light: #DBEAFE;
+            --orange: #F59E0B;
+            --orange-light: #FEF3C7;
+            --red: #EF4444;
+            --red-light: #FEE2E2;
+            --green: #10B981;
+            --green-light: #D1FAE5;
+            --bg: #FFF;
+            --bg-alt: #F8FAFC;
+            --text: #1E293B;
+            --text2: #475569;
+            --border: #E2E8F0;
+            --font: 'Inter', 'Noto Sans SC', -apple-system, sans-serif
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
 
-    body {
-      background: #94a3b8;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-      padding: 24px;
-      font-family: var(--font);
-      font-size: var(--fs)
-    }
+        body {
+            background: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            padding: 24px;
+            font-family: var(--font);
+            font-size: 22px
+        }
 
-    .slide {
-      width: 1280px;
-      height: 720px;
-      background: var(--bg);
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
-      display: flex;
-      flex-direction: column
-    }
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
+            display: flex;
+            flex-direction: column
+        }
 
-    .slide::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, var(--navy), var(--accent));
-      z-index: 10
-    }
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--navy), var(--accent));
+            z-index: 10
+        }
 
-    .slide.cover {
-      background: linear-gradient(135deg, var(--navy), var(--navy-light), #1e3a6e);
-      color: #fff;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 60px
-    }
+        /* Cover */
+        .slide.cover {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light), #1e3a6e);
+            color: #fff;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px
+        }
 
-    .slide.cover::before {
-      display: none
-    }
+        .slide.cover::before {
+            display: none
+        }
 
-    .cover .badge {
-      display: inline-block;
-      background: rgba(255, 255, 255, .15);
-      border: 1px solid rgba(255, 255, 255, .25);
-      border-radius: 20px;
-      padding: 8px 24px;
-      font-size: 22px;
-      font-weight: 500;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 20px
-    }
+        .cover .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, .15);
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px
+        }
 
-    .cover h1 {
-      font-size: 68px;
-      font-weight: 900;
-      line-height: 1.15
-    }
+        .cover h1 {
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1.15
+        }
 
-    .cover .sub {
-      font-size: 28px;
-      font-weight: 300;
-      margin-top: 18px;
-      opacity: .85
-    }
+        .cover .sub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 18px;
+            opacity: .85
+        }
 
-    .cover .meta {
-      position: absolute;
-      bottom: 36px;
-      font-size: 22px;
-      opacity: .5
-    }
+        .cover .meta {
+            position: absolute;
+            bottom: 36px;
+            font-size: 20px;
+            opacity: .5;
+            line-height: 1.6
+        }
 
-    .cover .decor {
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      background: rgba(59, 130, 246, .08);
-      right: -80px;
-      top: -80px
-    }
+        .cover .decor {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, .08);
+            right: -80px;
+            top: -80px
+        }
 
-    .cover .decor2 {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: rgba(59, 130, 246, .06);
-      left: -60px;
-      bottom: -60px
-    }
+        .cover .decor2 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, .06);
+            left: -60px;
+            bottom: -60px
+        }
 
-    .slide.section {
-      background: var(--navy);
-      color: #fff;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 60px 80px
-    }
+        /* Section */
+        .slide.section {
+            background: var(--navy);
+            color: #fff;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 80px
+        }
 
-    .slide.section::before {
-      display: none
-    }
+        .slide.section::before {
+            display: none
+        }
 
-    .section .num {
-      font-size: 160px;
-      font-weight: 900;
-      opacity: .1;
-      position: absolute;
-      right: 60px;
-      top: 50%;
-      transform: translateY(-50%)
-    }
+        .section .num {
+            font-size: 160px;
+            font-weight: 900;
+            opacity: .1;
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%)
+        }
 
-    .section h2 {
-      font-size: 64px;
-      font-weight: 700
-    }
+        .section h2 {
+            font-size: 60px;
+            font-weight: 700
+        }
 
-    .section .ssub {
-      font-size: 28px;
-      font-weight: 300;
-      margin-top: 14px;
-      opacity: .7;
-      border-left: 4px solid var(--accent);
-      padding-left: 18px
-    }
+        .section .ssub {
+            font-size: 26px;
+            font-weight: 300;
+            margin-top: 14px;
+            opacity: .7;
+            border-left: 4px solid var(--accent);
+            padding-left: 18px
+        }
 
-    .slide.content {
-      padding: 40px 60px 32px
-    }
+        /* Content */
+        .slide.content {
+            padding: 40px 60px 32px
+        }
 
-    .hdr {
-      margin-bottom: 16px
-    }
+        .hdr {
+            margin-bottom: 16px
+        }
 
-    .hdr h2 {
-      font-size: 42px;
-      font-weight: 800;
-      color: var(--navy);
-      line-height: 1.2
-    }
+        .hdr h2 {
+            font-size: 40px;
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.2
+        }
 
-    .hdr .sub {
-      font-size: 22px;
-      color: var(--text2);
-      margin-top: 6px
-    }
+        .hdr .sub {
+            font-size: 20px;
+            color: var(--text2);
+            margin-top: 6px
+        }
 
-    .hdr .bar {
-      width: 56px;
-      height: 5px;
-      background: var(--accent);
-      border-radius: 3px;
-      margin-top: 10px
-    }
+        .hdr .bar {
+            width: 56px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 3px;
+            margin-top: 10px
+        }
 
-    .bl {
-      list-style: none
-    }
+        /* Lists */
+        .bl {
+            list-style: none
+        }
 
-    .bl li {
-      font-size: 24px;
-      color: var(--text);
-      padding: 8px 0 8px 32px;
-      position: relative;
-      line-height: 1.5;
-      margin-bottom: 6px
-    }
+        .bl li {
+            font-size: 22px;
+            color: var(--text);
+            padding: 7px 0 7px 28px;
+            position: relative;
+            line-height: 1.5
+        }
 
-    .bl li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 16px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent)
-    }
+        .bl li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent)
+        }
 
-    .bl li strong {
-      color: var(--navy)
-    }
+        .bl li strong {
+            color: var(--navy)
+        }
 
-    .bl li em {
-      color: var(--accent-dark);
-      font-style: normal;
-      font-weight: 700
-    }
+        /* Cards */
+        .cr {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 16px
+        }
 
-    .cr {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 20px
-    }
+        .cd {
+            flex: 1;
+            min-width: 180px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px
+        }
 
-    .cd {
-      flex: 1;
-      min-width: 180px;
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px
-    }
+        .cd .ci {
+            font-size: 32px;
+            margin-bottom: 10px
+        }
 
-    .cd .ci {
-      font-size: 36px;
-      margin-bottom: 12px
-    }
+        .cd .ct {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 6px
+        }
 
-    .cd .ct {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 8px
-    }
+        .cd .cx {
+            font-size: 20px;
+            color: var(--text2);
+            line-height: 1.5
+        }
 
-    .cd .cx {
-      font-size: 22px;
-      color: var(--text2);
-      line-height: 1.5
-    }
+        .cd.a {
+            border-top: 4px solid var(--accent)
+        }
 
-    .cd.a {
-      border-top: 4px solid var(--accent)
-    }
+        .cd.o {
+            border-top: 4px solid var(--orange)
+        }
 
-    .cd.o {
-      border-top: 4px solid var(--orange)
-    }
+        .cd.r {
+            border-top: 4px solid var(--red)
+        }
 
-    .cd.r {
-      border-top: 4px solid var(--red)
-    }
+        .cd.g {
+            border-top: 4px solid var(--green)
+        }
 
-    .cd.g {
-      border-top: 4px solid var(--green)
-    }
+        /* Two columns */
+        .tc {
+            display: flex;
+            gap: 36px;
+            flex: 1;
+            margin-top: 20px;
+            align-items: flex-start
+        }
 
-    .qt {
-      background: var(--bg-alt);
-      border-left: 5px solid var(--accent);
-      padding: 24px 32px;
-      border-radius: 0 12px 12px 0;
-      margin: 24px 0;
-      font-size: 24px;
-      line-height: 1.6;
-      color: var(--text);
-      font-style: italic
-    }
+        .tc .c {
+            flex: 1
+        }
 
-    .fb {
-      text-align: center;
-      padding: 32px;
-      margin: 24px 0;
-      background: var(--navy);
-      border-radius: 12px;
-      color: #fff
-    }
+        /* Quote */
+        .qt {
+            background: var(--bg-alt);
+            border-left: 5px solid var(--accent);
+            padding: 20px 28px;
+            border-radius: 0 12px 12px 0;
+            margin: 16px 0;
+            font-size: 22px;
+            line-height: 1.6;
+            color: var(--text);
+            font-style: italic
+        }
 
-    .tc {
-      display: flex;
-      gap: 40px;
-      flex: 1;
-      margin-top: 24px;
-      align-items: flex-start
-    }
+        /* Feature box */
+        .fb {
+            text-align: center;
+            padding: 28px;
+            margin: 16px 0;
+            background: var(--navy);
+            border-radius: 12px;
+            color: #fff
+        }
 
-    .tc .c {
-      flex: 1
-    }
+        /* Image side */
+        .img-side {
+            display: flex;
+            gap: 32px;
+            flex: 1;
+            align-items: center;
+            min-height: 0;
+            margin-top: 20px
+        }
 
-    .img-box {
-      text-align: center;
-      margin-top: 16px
-    }
+        .img-side img {
+            max-width: 50%;
+            max-height: 460px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12)
+        }
 
-    .img-box img {
-      max-width: 100%;
-      max-height: 400px;
-      border-radius: 10px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-      object-fit: contain
-    }
+        .img-side .desc {
+            flex: 1;
+            overflow-y: auto
+        }
 
-    .img-side {
-      display: flex;
-      gap: 32px;
-      flex: 1;
-      align-items: center;
-      min-height: 0;
-      margin-top: 24px
-    }
+        /* Timeline */
+        .tl {
+            display: flex;
+            gap: 0;
+            margin-top: 20px;
+            position: relative
+        }
 
-    .img-side img {
-      max-width: 50%;
-      max-height: 460px;
-      object-fit: contain;
-      border-radius: 8px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12)
-    }
+        .tl::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--border)
+        }
 
-    .img-side .desc {
-      flex: 1;
-      overflow-y: auto
-    }
+        .tl-item {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            padding: 0 8px
+        }
 
-    /* 交互控制的基础设定 - 点击展现动画 */
-    .slide [data-click-reveal] {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
+        .tl-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            margin: 18px auto 14px;
+            position: relative;
+            z-index: 1
+        }
 
-    .slide [data-click-reveal].visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+        .tl-label {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 6px
+        }
 
-    .slide [data-click-reveal="fade"] {
-      transform: none;
-    }
+        .tl-text {
+            font-size: 16px;
+            color: var(--text2);
+            line-height: 1.4
+        }
 
-    .slide [data-click-reveal="left"] {
-      transform: translateX(-40px);
-    }
+        /* Click reveal animation */
+        .slide [data-click-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .5s ease, transform .5s ease
+        }
 
-    .slide [data-click-reveal="right"] {
-      transform: translateX(40px);
-    }
+        .slide [data-click-reveal].visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
 
-    .po {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #000;
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-      cursor: none
-    }
+        .slide [data-click-reveal="fade"] {
+            transform: none
+        }
 
-    .po.active {
-      display: flex
-    }
+        .slide [data-click-reveal="left"] {
+            transform: translateX(-30px)
+        }
 
-    .po .pw {
-      width: 1280px;
-      height: 720px;
-      transform-origin: center center
-    }
+        .slide [data-click-reveal="right"] {
+            transform: translateX(30px)
+        }
 
-    .pi {
-      position: fixed;
-      bottom: 20px;
-      right: 32px;
-      z-index: 10000;
-      color: rgba(255, 255, 255, .4);
-      font-family: var(--font);
-      font-size: 22px;
-      font-weight: 500
-    }
+        /* Presentation overlay */
+        .po {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: none
+        }
 
-    .ph {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10001;
-      background: rgba(0, 0, 0, .85);
-      color: #fff;
-      padding: 36px 56px;
-      border-radius: 20px;
-      text-align: center;
-      font-size: 24px;
-      line-height: 2.2;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity .4s
-    }
+        .po.active {
+            display: flex
+        }
 
-    .ph.show {
-      opacity: 1
-    }
+        .po .pw {
+            width: 1280px;
+            height: 720px;
+            transform-origin: center center
+        }
 
-    .ph kbd {
-      background: rgba(255, 255, 255, .15);
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-weight: 600;
-      border: 1px solid rgba(255, 255, 255, .25);
-      font-family: monospace
-    }
+        .pi {
+            position: fixed;
+            bottom: 20px;
+            right: 32px;
+            z-index: 10000;
+            color: rgba(255, 255, 255, .4);
+            font-family: var(--font);
+            font-size: 20px;
+            font-weight: 500
+        }
 
-    .pb {
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      z-index: 100;
-      background: var(--navy);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 14px 28px;
-      font-size: 24px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: var(--font);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
-      transition: transform 0.2s, background 0.2s
-    }
+        .ph {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            background: rgba(0, 0, 0, .85);
+            color: #fff;
+            padding: 36px 56px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 22px;
+            line-height: 2.2;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .4s
+        }
 
-    .pb:hover {
-      background: var(--accent);
-      transform: translateY(-2px)
-    }
-  </style>
+        .ph.show {
+            opacity: 1
+        }
+
+        .ph kbd {
+            background: rgba(255, 255, 255, .15);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, .25);
+            font-family: monospace
+        }
+
+        .pb {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 100;
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 22px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+            transition: transform .2s, background .2s
+        }
+
+        .pb:hover {
+            background: var(--accent);
+            transform: translateY(-2px)
+        }
+    </style>
 </head>
 
 <body>
 
-  <!-- COVER -->
-  <div class="slide cover">
-    <div class="decor"></div>
-    <div class="decor2"></div>
-    <div class="badge">Software Engineering &amp; Architecture</div>
-    <h1>基础理论与工程思维</h1>
-    <div class="sub">从零走向系统化构建</div>
-    <div class="meta" style="line-height:1.6">
-      电子信息工程专业硕士 | 3 学时<br>
-      主讲人 | 何庭钦 | 271880026@qq.com
+    <!-- ==================== COVER ==================== -->
+    <div class="slide cover">
+        <div class="decor"></div>
+        <div class="decor2"></div>
+        <div class="badge">Software Engineering &amp; Architecture</div>
+        <h1>软件工程及体系结构</h1>
+        <div class="sub">基础理论与工程思维：从零走向系统化构建</div>
+        <div class="meta">电子信息工程专业硕士 | 3 学时<br>主讲人 | 何庭钦 | 271880026@qq.com</div>
     </div>
-  </div>
 
-  <!-- 前置 1: 三维框架 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>前置导航：软件工程的“三维教学框架”</h2>
-      <div class="bar"></div>
-    </div>
-    <p style="font-size:24px;color:var(--text);margin-bottom:20px">
-      本课程并非单纯的概念讲授，而是通过以下三大维度，系统化构建软件工程领域的知识体系，目标是将大家从单一代码编写者提升为具备全局视角的系统工程师：</p>
-
-    <div class="tc">
-      <div class="c">
-        <div class="cd a" style="height:100%;margin-bottom:16px">
-          <div class="ci">🌌</div>
-          <div class="ct">道（理论与规律）</div>
-          <div class="cx">探讨软件开发的核心思想与底层逻辑。我们将深入思考：为何在项目初期必须进行极其严谨的需求分析？需求变更是不可避免的吗？驱动一套复杂系统持续演进的动力是什么？</div>
+    <!-- ==================== 前置：道术器 ==================== -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>课程框架：道、术、器</h2>
+            <div class="sub">从"写代码"到"做工程"的思维转变</div>
+            <div class="bar"></div>
         </div>
-      </div>
-      <div class="c" data-click-reveal="fade">
-        <div class="cd o" style="height:100%;margin-bottom:16px">
-          <div class="ci">⚔️</div>
-          <div class="ct">术（方法与实践）</div>
-          <div class="cx">学习工业界主流方法论。如何通过标准架构规范落地需求分析？面对变更风暴时如何建立变更控制委员会（CCB）？如何使用生命周期模型管控质量？</div>
+        <p style="font-size:22px;color:var(--text);margin-bottom:16px">本课程通过三个维度来系统构建软件工程的知识体系：</p>
+        <div class="cr">
+            <div class="cd a">
+                <div class="ci">🌌</div>
+                <div class="ct">道（理论与规律）</div>
+                <div class="cx">探讨软件开发背后的核心思想。例如：为什么必须做需求分析？需求变更的深层原因是什么？"高内聚、低耦合"到底意味着什么？</div>
+            </div>
+            <div class="cd o" data-click-reveal="fade">
+                <div class="ci">⚔️</div>
+                <div class="ct">术（方法与实践）</div>
+                <div class="cx">学习业界主流方法论。如何落地需求分析流程？如何建立变更控制委员会（CCB）？如何选择适合项目的生命周期模型？</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ci">🛠️</div>
+                <div class="ct">器（工具与平台）</div>
+                <div class="cx">掌握现代开发工具链：项目管理（Jira）、版本控制（Git）、持续集成与持续交付（CI/CD）自动化流水线。</div>
+            </div>
         </div>
-      </div>
-      <div class="c" data-click-reveal="fade">
-        <div class="cd g" style="height:100%;margin-bottom:16px">
-          <div class="ci">🛠️</div>
-          <div class="ct">器（工具与平台）</div>
-          <div class="cx">掌握现代化开发辅助工具链。涵盖项目宏观管理工具（Jira、Confluence）、现代化分布式版本控制（Git、Gerrit），及持续集成与持续交付自动化构建流水线。</div>
+    </div>
+
+    <!-- ==================== 前置：16周规划 1/2 ==================== -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>16 周课程全景规划（1/2）</h2>
+            <div class="sub">紧密贴合软件全生命周期（SDLC）</div>
+            <div class="bar"></div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 前置 2: 全景规划 1 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>16周课程阶段全景规划 (1/2)</h2>
-      <div class="sub">紧密贴合工业界标准的软件全生命周期（SDLC）</div>
-      <div class="bar"></div>
-    </div>
-
-    <div class="tc">
-      <div class="c">
-        <div class="cd a" style="height:100%">
-          <div class="ci">🏗️</div>
-          <div class="ct">模块一：基础理论拔高与思维重塑</div>
-          <div class="cx" style="margin-bottom:12px;font-style:italic;color:var(--text2)">第 1 - 3 周</div>
-          <div class="cx">建立正确的工程思维，回顾并分析主流软件开发模型（如瀑布模型、演化模型）的演进史，深入理解敏捷开发在应对不确定需求时的核心价值。</div>
+        <div class="tc">
+            <div class="c">
+                <div class="cd a" style="height:100%">
+                    <div class="ci">🏗️</div>
+                    <div class="ct">模块一：基础理论与思维重塑</div>
+                    <div class="cx" style="font-style:italic;color:var(--text2);margin-bottom:8px">第 1 - 3 周</div>
+                    <div class="cx">建立工程化思维，回顾瀑布、演化、迭代等开发模型的演进历史，理解敏捷开发在不确定性需求下的核心价值。</div>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="cd o" style="height:100%">
+                    <div class="ci">⚔️</div>
+                    <div class="ct">模块二：全生命周期演练</div>
+                    <div class="cx" style="font-style:italic;color:var(--text2);margin-bottom:8px">第 4 - 11 周（核心实战）
+                    </div>
+                    <ul class="bl" style="font-size:19px">
+                        <li style="font-size:19px;padding:3px 0 3px 20px">项目启动与可行性分析</li>
+                        <li style="font-size:19px;padding:3px 0 3px 20px">需求获取与功能边界界定</li>
+                        <li style="font-size:19px;padding:3px 0 3px 20px">架构设计与模块拆分</li>
+                        <li style="font-size:19px;padding:3px 0 3px 20px">Code Review 下的协作编程</li>
+                        <li style="font-size:19px;padding:3px 0 3px 20px">自动化测试与质量门禁</li>
+                        <li style="font-size:19px;padding:3px 0 3px 20px">部署策略与灰度发布</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
+    </div>
 
-      <div class="c" data-click-reveal="right">
-        <div class="cd o" style="height:100%">
-          <div class="ci">⚔️</div>
-          <div class="ct">模块二：项目开发全生命周期演练</div>
-          <div class="cx" style="margin-bottom:12px;font-style:italic;color:var(--text2)">第 4 - 11 周</div>
-          <ul class="bl" style="font-size:20px;margin-top:12px">
-            <li style="font-size:20px;padding:4px 0 4px 20px;line-height:1.4">项目启动与可行性分析</li>
-            <li style="font-size:20px;padding:4px 0 4px 20px;line-height:1.4">需求获取与规格说明边界</li>
-            <li style="font-size:20px;padding:4px 0 4px 20px;line-height:1.4">高可用、高并发系统架构拆解设计</li>
-            <li style="font-size:20px;padding:4px 0 4px 20px;line-height:1.4">代码审查（Code Review）编程实践</li>
-            <li style="font-size:20px;padding:4px 0 4px 20px;line-height:1.4">自动化持续集成防线与部署上线策略</li>
-          </ul>
+    <!-- ==================== 前置：16周规划 2/2 ==================== -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>16 周课程全景规划（2/2）</h2>
+            <div class="bar"></div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 前置 3: 全景规划 2 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>16周课程阶段全景规划 (2/2)</h2>
-      <div class="bar"></div>
-    </div>
-
-    <div class="tc">
-      <div class="c">
-        <div class="cd r" style="height:100%">
-          <div class="ci">🔬</div>
-          <div class="ct">模块三：案例拆解与前沿科技探讨</div>
-          <div class="cx" style="margin-bottom:12px;font-style:italic;color:var(--text2)">第 12 - 15 周</div>
-          <div class="cx">行业深度案例：剖析真实的大型软件项目失败事件，反思管理体系的缺失。<br><br>同时，我们将探讨大语言模型等 AI 技术如何重塑软件开发的新范式。</div>
+        <div class="tc">
+            <div class="c">
+                <div class="cd r" style="height:100%">
+                    <div class="ci">🔬</div>
+                    <div class="ct">模块三：案例分析与前沿探讨</div>
+                    <div class="cx" style="font-style:italic;color:var(--text2);margin-bottom:8px">第 12 - 15 周</div>
+                    <div class="cx">深度剖析真实的大型软件项目失败案例，反思管理和技术层面的缺失。<br><br>同时探讨大语言模型等 AI 技术如何改变软件开发的方式。</div>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="right">
+                <div class="cd g" style="height:100%">
+                    <div class="ci">🎓</div>
+                    <div class="ct">模块四：综合项目实战答辩</div>
+                    <div class="cx" style="font-style:italic;color:var(--text2);margin-bottom:8px">第 16 周</div>
+                    <div class="cx">各团队演示自研项目成果，进行技术架构答辩。<br><br>接受从需求溯源到代码细节的全方位质询。</div>
+                </div>
+            </div>
         </div>
-      </div>
+    </div>
 
-      <div class="c" data-click-reveal="right">
-        <div class="cd g" style="height:100%">
-          <div class="ci">🎓</div>
-          <div class="ct">模块四：综合项目实战答辩</div>
-          <div class="cx" style="margin-bottom:12px;font-style:italic;color:var(--text2)">第 16 周</div>
-          <div class="cx">各项目团队进行自研项目的成果系统演示与技术架构论辩。<br><br>在此期间，全体须应对极其严格的质询，从业务需求溯源直至底层代码抽查。</div>
+    <!-- ==================== 前置：考核 + 书单 ==================== -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>考核体系与推荐书目</h2>
+            <div class="bar"></div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 前置 4: 考核与书单 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>课程考核体系与推荐参考书目</h2>
-      <div class="bar"></div>
-    </div>
-
-    <div class="tc">
-      <div class="c">
-        <div style="background:var(--navy);color:#fff;padding:24px;border-radius:12px">
-          <h3 style="font-size:26px;margin-bottom:16px">🏆 考核与评价</h3>
-          <ul class="bl" style="color:#fff">
-            <li style="color:#e2e8f0"><strong style="color:#fff">平时战绩 (20%)：</strong>技术选型论战参与度与报告。</li>
-            <li style="color:#e2e8f0"><strong style="color:#fff">项目实战 (30%)：</strong>三次死板里程碑（立项+架构+试运行）。</li>
-            <li style="color:#e2e8f0"><strong style="color:#fff">期末决战 (50%)：</strong>场景驱动，不背概念论述真实事故。</li>
-          </ul>
+        <div class="tc">
+            <div class="c">
+                <div style="background:var(--navy);color:#fff;padding:24px;border-radius:12px">
+                    <h3 style="font-size:24px;margin-bottom:14px">🏆 考核方式</h3>
+                    <ul class="bl" style="color:#fff">
+                        <li style="color:#e2e8f0"><strong style="color:#fff">平时成绩（20%）：</strong>课堂讨论参与度、研究报告质量</li>
+                        <li style="color:#e2e8f0"><strong style="color:#fff">协同项目（30%）：</strong>三个里程碑：立项评审 → 架构评审 → 验收评审
+                        </li>
+                        <li style="color:#e2e8f0"><strong style="color:#fff">期末考核（50%）：</strong>场景驱动的开放性分析论述</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="fade">
+                <div style="background:var(--bg-alt);border:1px solid var(--border);padding:24px;border-radius:12px">
+                    <h3 style="font-size:24px;margin-bottom:14px;color:var(--navy)">📚 推荐书目</h3>
+                    <ul class="bl" style="font-size:20px">
+                        <li style="font-size:20px"><strong>《软件工程》（Pressman）</strong>：经典教材，覆盖全生命周期</li>
+                        <li style="font-size:20px"><strong>《构建之法》（邹欣）</strong>：企业一线实战经验总结</li>
+                        <li style="font-size:20px"><strong>《人月神话》（Brooks）</strong>：项目管理的里程碑著作</li>
+                        <li style="font-size:20px"><strong>《架构整洁之道》（Martin）</strong>：系统复杂度控制原则</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
+    </div>
 
-      <div class="c" data-click-reveal="fade">
-        <div style="background:var(--bg-alt);border:1px solid var(--border);padding:24px;border-radius:12px">
-          <h3 style="font-size:26px;margin-bottom:16px;color:var(--navy)">📚 经典常青书单</h3>
-          <ul class="bl" style="font-size:22px">
-            <li style="font-size:22px"><strong>《软件工程》(Pressman)</strong>：覆盖生命周期脉络。</li>
-            <li style="font-size:22px"><strong>《构建之法》(邹欣)</strong>：中国企业一线实战精粹。</li>
-            <li style="font-size:22px"><strong>《人月神话》(Brooks)</strong>：加人不能提速的进度管理真理。</li>
-            <li style="font-size:22px"><strong>《架构整洁之道》(Uncle Bob)</strong>：避免代码腐败陷入混乱。</li>
-          </ul>
+    <!-- ==================== SECTION 1 ==================== -->
+    <div class="slide section">
+        <span class="num">01</span>
+        <h2>第一讲</h2>
+        <div class="ssub">为什么你需要学好软件工程？</div>
+    </div>
+
+    <!-- 1.1 五大问题 上 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>没有工程思维，会遇到哪些问题？（1/2）</h2>
+            <div class="sub">开发者在中大型项目中常见的典型困境</div>
+            <div class="bar"></div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 1 -->
-  <div class="slide section">
-    <span class="num">01</span>
-    <h2>第一讲</h2>
-    <div class="ssub">为什么你需要具备系统化的软件工程能力？</div>
-  </div>
-
-  <!-- 第一讲: 痛症一二 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>非系统化开发面临的五大痛流 (1/2)</h2>
-      <div class="sub">陷入编码漩涡前的管理黑洞</div>
-      <div class="bar"></div>
-    </div>
-
-    <div class="tc">
-      <div class="c">
-        <div class="cd r" style="height:100%;background:#fef2f2;border-color:#fca5a5">
-          <div class="ct" style="color:var(--red)">1. 缺乏系统化前期规划</div>
-          <div class="cx" style="color:#7f1d1d">
-            在未梳理核心需求与进行底层架构设计的状况下，过早陷入底层编码阶段。<br><br>这常常导致后续逻辑循环死锁或模块重度耦合，引发高昂代价的全盘重构。</div>
+        <div class="tc">
+            <div class="c">
+                <div class="cd r" style="height:100%;background:#fef2f2;border-color:#fca5a5">
+                    <div class="ct" style="color:var(--red)">1. 上手就写代码，没有规划</div>
+                    <div class="cx" style="color:#7f1d1d">还没弄清核心需求和整体架构，就急着开始编码。<br><br>结果写到后面发现逻辑走不通、模块紧密耦合，不得不推倒重来。
+                    </div>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="fade">
+                <div class="cd o" style="height:100%;background:#fffbeb;border-color:#fde68a">
+                    <div class="ct" style="color:var(--orange)">2. 面对复杂系统无从下手</div>
+                    <div class="cx" style="color:#92400e">面对高并发、分布式场景（如电商交易系统），缺乏成熟的分析方法，很难将庞大系统拆解成可独立开发和测试的模块。</div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="c" data-click-reveal="fade">
-        <div class="cd o" style="height:100%;background:#fffbeb;border-color:#fde68a">
-          <div class="ct" style="color:var(--orange)">2. 体系化架构分解能力匮乏</div>
-          <div class="cx" style="color:#92400e">一旦面对并发或大型分布式逻辑场景（如电商交易中枢系统），由于缺乏成熟方法指导，极大概率无法梳理与拆解复杂关联服务。</div>
+    </div>
+
+    <!-- 1.1 五大问题 下 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>没有工程思维，会遇到哪些问题？（2/2）</h2>
+            <div class="bar"></div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 第一讲: 痛症三四五 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>非系统化开发面临的五大痛流 (2/2)</h2>
-      <div class="bar"></div>
-    </div>
-
-    <div class="cr" style="margin-top:10px">
-      <div class="cd a">
-        <div class="ct">3. 需求变更流程失控</div>
-        <div class="cx">项目推进中频频遭遇逻辑倒置与推倒重来，未确立审批变更及基线确认等护城河程序，导致项目的范围遭到随意拓展甚至失控。</div>
-      </div>
-      <div class="cd g" data-click-reveal="fade">
-        <div class="ct">4. 资源统筹度量不彰</div>
-        <div class="cx">未建立数据化模型指导工作规模与耗时估算，无法精准量化研发排期安排，导致交付期来临时难以兑现对外承诺。</div>
-      </div>
-      <div class="cd r" data-click-reveal="fade">
-        <div class="ct">5. 协同开发集成灾难</div>
-        <div class="cx">多兵种并行编写同特性链路时，因缺乏分支纪律与持续集成防守机制，在归并时引发重大代码踩踏外溢。</div>
-      </div>
+        <div class="cr">
+            <div class="cd a">
+                <div class="ct">3. 需求变更失控</div>
+                <div class="cx">项目做到一半需求不断变化，没有变更审批和基线管理流程，项目范围被无限扩大。</div>
+            </div>
+            <div class="cd g" data-click-reveal="fade">
+                <div class="ct">4. 排期靠拍脑袋</div>
+                <div class="cx">没有科学的估算方法（功能点分析、类比估算等），凭感觉给出排期，到 deadline 才发现做不完。</div>
+            </div>
+            <div class="cd r" data-click-reveal="fade">
+                <div class="ct">5. 多人协作一团乱</div>
+                <div class="cx">没有分支策略和持续集成机制，代码合并时冲突频发，甚至出现互相覆盖的情况。</div>
+            </div>
+        </div>
+        <div class="qt" style="margin-top:24px;font-style:normal" data-click-reveal="fade">
+            <strong>归纳：</strong>软件工程就是要建立一套科学的管理框架，把充满不确定性的编码行为，转变为<strong
+                style="color:var(--accent-dark)">可预测、可追溯、可度量</strong>的工程化流程。
+        </div>
     </div>
 
-    <div class="fb"
-      style="background:#f1f5f9;color:var(--navy);border-left:6px solid var(--accent);text-align:left;padding:20px;margin-top:32px"
-      data-click-reveal="up">
-      <strong>核心转折点：</strong>软件工程旨在建设一套科学而严密的管理框架体系，努力将富有高风险、强不确定性的纯手工编码行为，转向基于可预测、可追溯、可度量的工业化生产流程之中。
-    </div>
-  </div>
-
-  <!-- 第一讲: 不变基石 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>技术浪潮中，到底什么是不变的？</h2>
-      <div class="bar"></div>
-    </div>
-
-    <div class="qt" style="margin-top:0">亚马逊创始人 Jeff
-      Bezos：“与其担忧明天有哪些技术热点，不如问未来十年，究竞什么东西不会被变化撼动，并把重金押注在十年后依旧起决定作用的底层坚木之上。”</div>
-
-    <p style="font-size:24px;line-height:1.6;margin:24px 0">尽管工具迭代迅猛、智能生成引擎横空出世，但欲维护一套重度商业价值的核心系统，三大根基永存：</p>
-
-    <ul class="bl" style="font-size:26px;font-weight:700">
-      <li data-click-reveal="left">1. 数据结构与计算模型底层逻辑结构</li>
-      <li data-click-reveal="left">2. 抽象架构设计理念与安全解耦原则</li>
-      <li data-click-reveal="left" style="color:var(--accent-dark)">3. 软件工程体系观——庞大规模人员协作管理能力</li>
-    </ul>
-  </div>
-
-  <!-- 第一讲: 绕不开的关卡 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>不论何时开发，这四大关卡永不消散</h2>
-      <div class="bar"></div>
-    </div>
-
-    <div class="tc">
-      <div class="c">
-        <ul class="bl" style="font-size:24px;line-height:1.8">
-          <li>接应战略要求 &#8594; <strong style="color:var(--accent)">业务流梳理与系统需求定义</strong></li>
-          <li>支撑高并发压力 &#8594; <strong style="color:var(--accent)">部署健壮强悍的总体架构图</strong></li>
-          <li>防投产大雪崩 &#8594; <strong style="color:var(--accent)">布局配置自动化探测与测试防线</strong></li>
-          <li>千百兵力齐下 &#8594; <strong style="color:var(--accent)">严格的版本树管理与流水线构建</strong></li>
+    <!-- 1.2 不变的东西 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>技术在变，什么东西不会变？</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="qt" style="margin-top:0">Jeff Bezos："人们经常问我，未来 10 年什么会被改变？从来没有人问我，未来 10 年，什么不会变？"</div>
+        <p style="font-size:22px;line-height:1.6;margin:20px 0">技术栈在快速更迭：从 jQuery 到 React，从单体到微服务，从手写测试到 AI
+            辅助编程。但有三样东西始终不变：</p>
+        <ul class="bl" style="font-size:24px;font-weight:600">
+            <li data-click-reveal="left">1. 数据结构与算法 —— 编程的底层逻辑基础</li>
+            <li data-click-reveal="left">2. 设计模式与架构思想 —— 构建可维护系统的方法论</li>
+            <li data-click-reveal="left" style="color:var(--accent-dark)">3. 软件工程 —— 大规模团队协作的管理科学</li>
         </ul>
-        <p style="font-size:24px;color:var(--text2);margin-top:24px;line-height:1.6">
-          工具或语言只是武器。这四大生死关卡则是永远的军事地形。
-        </p>
-      </div>
+    </div>
 
-      <div class="c" data-click-reveal="fade">
+    <!-- 1.2 四大关卡 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>不管用什么技术，这四件事绕不开</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <ul class="bl" style="font-size:22px;line-height:1.8">
+                    <li>要开发功能 &#8594; 先做<strong style="color:var(--accent)">需求分析</strong>，搞清楚用户要什么</li>
+                    <li>要应对复杂度 &#8594; 先做<strong style="color:var(--accent)">架构设计</strong>，把大问题拆成小问题</li>
+                    <li>要保证质量 &#8594; 要建<strong style="color:var(--accent)">自动化测试</strong>，防止上线后出大问题</li>
+                    <li>要多人协作 &#8594; 要有<strong style="color:var(--accent)">版本管理和 CI</strong>，保证代码能合在一起</li>
+                </ul>
+            </div>
+            <div class="c" data-click-reveal="fade">
+                <div class="fb"
+                    style="height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;line-height:1.6;margin:0">
+                    <p>掌握了这些底层能力，<br>无论技术风向怎么变，<br>你都能<strong style="color:#60A5FA">快速适应</strong>。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 2 ==================== -->
+    <div class="slide section">
+        <span class="num">02</span>
+        <h2>第二讲</h2>
+        <div class="ssub">软件工程的历史起源与发展</div>
+    </div>
+
+    <!-- 2.1 OS/360 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>软件危机：经济代价 — OS/360 项目</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <img src="../../assets/57222a73010237e5ab069351b535df52.jpg" alt="坍塌隐喻"
+                    style="width:100%;border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,0.15);max-height:420px;object-fit:cover">
+            </div>
+            <div class="c" data-click-reveal="right">
+                <h3 style="font-size:26px;color:var(--navy);margin-bottom:14px">OS/360：IBM 的惨痛教训</h3>
+                <p style="font-size:21px;line-height:1.7;color:var(--text)">
+                    上世纪 60 年代，IBM 的 OS/360 是当时规模最大的软件工程之一。为了赶进度，管理层大量增加编程人员。<br><br>
+                    但人多了之后，沟通成本急剧上升，模块之间接口混乱，最终项目严重超期并造成了巨额资金浪费。
+                </p>
+                <div
+                    style="background:#fef3c7;border-left:5px solid #d97706;padding:14px;margin-top:20px;font-size:20px;color:#92400e;border-radius:0 8px 8px 0">
+                    <strong>《人月神话》由此诞生：</strong>"向已经延期的项目增加人手，只会使其更加延期。"
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.1 Therac-25 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>软件危机：生命代价 — Therac-25 事故</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <div class="cd r" style="height:100%;border-top-width:6px">
+                    <div class="ci">☢️</div>
+                    <div class="ct" style="color:var(--red);font-size:26px;margin-bottom:12px">Therac-25 放射治疗事故</div>
+                    <div class="cx" style="font-size:21px;line-height:1.7">
+                        Therac-25 是一台癌症放射治疗设备。由于软件存在隐蔽的竞态条件（Race
+                        Condition）缺陷，加上取消了独立的硬件安全互锁机制，导致设备在特定操作下释放了远超安全剂量百倍的辐射。<br><br>
+                        多名患者因此死亡或重伤，成为软件工程史上最沉痛的安全教训之一。
+                    </div>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="fade">
+                <div
+                    style="background:var(--navy);color:#fff;padding:36px 28px;border-radius:12px;height:100%;display:flex;flex-direction:column;justify-content:center">
+                    <h3 style="font-size:28px;margin-bottom:20px;color:#cbd5e1">核心教训</h3>
+                    <p style="font-size:24px;line-height:1.7">
+                        软件开发不能再依赖个人英雄主义和<br>手工作坊式的做法。<br><br>
+                        必须引入<strong style="color:var(--accent)">系统化的工程方法</strong>和<br><strong
+                            style="color:var(--accent)">严格的质量控制</strong>。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.2 NATO -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>破局：1968 年 NATO 会议</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="img-side">
+            <div class="desc" style="flex:1.2;padding-right:16px">
+                <p style="font-size:22px;line-height:1.7;margin-bottom:20px">
+                    1968 年，在德国加米施召开的 NATO 科学会议上，<strong
+                        style="font-size:32px;color:var(--navy);display:block;margin:14px 0">"软件工程"</strong>这个概念被首次正式提出。
+                </p>
+                <div class="qt" data-click-reveal="fade" style="margin-top:0">
+                    <strong style="color:var(--navy)">核心思想：</strong><br>应当像传统工程领域一样，将系统化的方法、严格的质量控制和规范的流程引入到软件开发中来。
+                </div>
+            </div>
+            <img src="../../assets/3b66yy913ee9d30676f9b81145b65a3f.jpg" alt="NATO 会议" style="flex:0.8;max-width:40%">
+        </div>
+    </div>
+
+    <!-- 2.3 演进时间线 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>半个世纪的演进</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="cr">
+            <div class="cd" style="border-top:4px solid var(--navy)">
+                <div class="ct" style="color:var(--navy)">1970s：瀑布模型</div>
+                <div class="cx">将开发划分为需求、设计、编码、测试等严格阶段，奠定了过程管理的基础。</div>
+            </div>
+            <div class="cd" style="border-top:4px solid var(--accent)" data-click-reveal="fade">
+                <div class="ct" style="color:var(--navy)">1980s：螺旋模型</div>
+                <div class="cx">引入风险分析和原型迭代，弥补瀑布模型对需求不确定性应对不足的问题。</div>
+            </div>
+        </div>
+        <div class="cr" style="margin-top:16px">
+            <div class="cd" style="border-top:4px solid var(--orange)" data-click-reveal="fade">
+                <div class="ct" style="color:var(--navy)">2000s：敏捷开发</div>
+                <div class="cx">Scrum、XP 等方法论兴起，强调小步快跑、快速迭代、拥抱变化。</div>
+            </div>
+            <div class="cd" style="border-top:4px solid var(--green)" data-click-reveal="fade">
+                <div class="ct" style="color:var(--navy)">当下：AI 辅助开发</div>
+                <div class="cx">大语言模型介入代码编写、测试生成等环节，工程师角色向架构设计与 AI 协作转变。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.4 IEEE 定义 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>IEEE 对软件工程的标准定义</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="qt" style="padding:28px 36px;margin-bottom:24px">
+            <p style="font-size:24px;line-height:1.7;font-weight:600">
+                "将系统化的、规范化的、可度量的方法应用于软件的开发、运行和维护，即将工程化方法应用于软件；以及对上述方法的研究。"
+            </p>
+        </div>
+        <h3 style="font-size:26px;text-align:center;margin-bottom:16px" data-click-reveal="fade">项目管理的"铁三角"</h3>
+        <div class="cr" data-click-reveal="fade">
+            <div class="cd a" style="text-align:center">
+                <div class="ct" style="margin:0;font-size:24px">⏱️ 进度：按时交付</div>
+            </div>
+            <div class="cd o" style="text-align:center">
+                <div class="ct" style="margin:0;font-size:24px">💰 成本：控制预算</div>
+            </div>
+            <div class="cd g" style="text-align:center">
+                <div class="ct" style="margin:0;font-size:24px">🛡️ 质量：满足需求</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.4 Pressman 三大支柱 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>Pressman 框架：过程 + 方法 + 工具</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="tc">
+            <div class="c">
+                <img src="../../assets/9926b79ecc91a4e664933c587f630199.jpg" alt="三维图示"
+                    style="max-height:440px;width:100%;object-fit:contain">
+            </div>
+            <div class="c" data-click-reveal="right"
+                style="display:flex;flex-direction:column;justify-content:center;gap:16px">
+                <div
+                    style="background:var(--bg-alt);padding:20px;border-left:5px solid var(--navy);border-radius:0 12px 12px 0">
+                    <h3 style="font-size:22px;margin-bottom:6px">过程（Process）</h3>
+                    <p style="font-size:19px;color:var(--text2);line-height:1.5">定义开发活动的顺序和规则。回答"先做什么、后做什么、准入和准出条件是什么"。
+                    </p>
+                </div>
+                <div
+                    style="background:var(--bg-alt);padding:20px;border-left:5px solid var(--accent);border-radius:0 12px 12px 0">
+                    <h3 style="font-size:22px;margin-bottom:6px">方法（Method）</h3>
+                    <p style="font-size:19px;color:var(--text2);line-height:1.5">提供具体的技术手段：需求建模、架构设计、测试用例编写等。</p>
+                </div>
+                <div
+                    style="background:var(--bg-alt);padding:20px;border-left:5px solid var(--green);border-radius:0 12px 12px 0">
+                    <h3 style="font-size:22px;margin-bottom:6px">工具（Tool）</h3>
+                    <p style="font-size:19px;color:var(--text2);line-height:1.5">用自动化手段辅助。如
+                        Jira（看板）、Gerrit（代码审查）、Jenkins（持续集成）等。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 3 ==================== -->
+    <div class="slide section">
+        <span class="num">03</span>
+        <h2>第三讲</h2>
+        <div class="ssub">从写代码到做工程——建立全局视角</div>
+    </div>
+
+    <!-- 3.1 一切皆项目 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>一切皆项目（Everything is a Project）</h2>
+            <div class="bar"></div>
+        </div>
+        <p style="font-size:22px;line-height:1.6;margin-bottom:16px">
+            软件工程思维的第一步转变：学会把要做的事情当作一个"项目"来对待。不仅大型系统需要项目管理，小到组织一次技术分享，都应该按项目思路推进。</p>
+        <p style="font-size:22px;font-weight:600;color:var(--navy);margin-bottom:12px">一个规范的项目，通常遵循六个阶段：</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" data-click-reveal="fade">
+            <div class="cd">
+                <div class="ct">1. Vision（愿景定义）</div>
+                <div class="cx">搞清楚要解决什么问题，明确目标和边界</div>
+            </div>
+            <div class="cd">
+                <div class="ct">2. Concept（概念验证）</div>
+                <div class="cx">提出可能的方案，初步论证和对比</div>
+            </div>
+            <div class="cd">
+                <div class="ct">3. Plan（制定计划）</div>
+                <div class="cx">估算工作量，安排时间表，分配资源</div>
+            </div>
+            <div class="cd">
+                <div class="ct">4. Design（系统设计）</div>
+                <div class="cx">输出架构图、接口定义、数据模型</div>
+            </div>
+            <div class="cd">
+                <div class="ct">5. Implement（开发实施）</div>
+                <div class="cx">按设计进行编码、联调和模块集成</div>
+            </div>
+            <div class="cd">
+                <div class="ct">6. Release（测试交付）</div>
+                <div class="cx">执行测试、修复缺陷，完成上线部署</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.2 30分钟实验 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>课堂实验：30 分钟限时挑战</h2>
+            <div class="bar"></div>
+        </div>
+        <p style="font-size:22px;margin-bottom:14px">临时组建团队，要求在 30 分钟内完成一款面向老年人的智能手机概念设计及产品宣讲方案。</p>
+        <div class="tc">
+            <div class="c">
+                <div class="cd r" style="height:100%">
+                    <div class="ct" style="color:var(--red);font-size:24px;margin-bottom:12px">❌ 没有过程管理的团队</div>
+                    <ul class="bl" style="font-size:19px">
+                        <li style="font-size:19px">各说各话，有人讨论颜色，有人纠结圆角弧度</li>
+                        <li style="font-size:19px">没人主导，没人控制时间分配</li>
+                        <li style="font-size:19px">30 分钟结束，连一张完整草图都拿不出来</li>
+                    </ul>
+                    <div style="font-size:20px;color:var(--red);font-weight:700;margin-top:16px;text-align:center">
+                        结果：全盘失败</div>
+                </div>
+            </div>
+            <div class="c" data-click-reveal="left">
+                <div class="cd g" style="height:100%">
+                    <div class="ct" style="color:var(--green);font-size:24px;margin-bottom:12px">✅ 有过程意识的团队</div>
+                    <ul class="bl" style="font-size:19px">
+                        <li style="font-size:19px"><strong>前 5 分钟：</strong>收集痛点，投票聚焦核心场景</li>
+                        <li style="font-size:19px"><strong>5-10 分钟：</strong>敲定方向，冻结变更，不再反复</li>
+                        <li style="font-size:19px"><strong>10-25 分钟：</strong>分工——文案组 + 原型草图组</li>
+                        <li style="font-size:19px"><strong>最后 5 分钟：</strong>汇总成果，内部预演</li>
+                    </ul>
+                    <div style="font-size:20px;color:var(--green);font-weight:700;margin-top:16px;text-align:center">
+                        结果：按时高质量交付</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.3 孤岛思维 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>警惕"只见树木、不见森林"</h2>
+            <div class="sub">孤岛思维（Silo Mentality）是项目推进的隐形杀手</div>
+            <div class="bar"></div>
+        </div>
+        <p style="font-size:22px;margin-bottom:16px">每个角色都有自己的"本职视角"，这很正常。但如果固化为唯一视角，就会成为项目障碍：</p>
+        <div class="cr">
+            <div class="cd" style="border-left:5px solid var(--red)">
+                <div class="ct">测试团队</div>
+                <div class="cx">追求覆盖率极致，每个边界条件都要修复，哪怕项目已严重延期。</div>
+            </div>
+            <div class="cd" style="border-left:5px solid var(--orange)" data-click-reveal="fade">
+                <div class="ct">开发团队</div>
+                <div class="cx">热衷造轮子，追求"技术美感"，不愿用成熟方案，客观上拉长了开发周期。</div>
+            </div>
+            <div class="cd" style="border-left:5px solid var(--accent)" data-click-reveal="fade">
+                <div class="ct">业务方</div>
+                <div class="cx">不了解技术复杂度，后期不断加需求，每次"小改动"可能都是架构大手术。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.3 大局观 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>具备大局观的工程负责人怎么做？</h2>
+            <div class="bar"></div>
+        </div>
         <div class="fb"
-          style="height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;line-height:1.6;background:var(--navy-light);margin:0;box-shadow:0 8px 24px rgba(0,0,0,0.1)">
-          <p>只有深谙历经千锤百炼的管理体系与约束规律，<br><br>你的队伍才能超越散装状态的拼凑代码，完成<strong style="color:#60A5FA">真正的工程造物！</strong></p>
+            style="background:var(--navy);padding:36px;text-align:left;flex:1;display:flex;flex-direction:column;justify-content:center">
+            <p style="font-size:24px;color:#fff;line-height:1.7;margin-bottom:20px">
+                关键在于跳出自己的角色视角，站到"项目铁三角"（进度、成本、质量）的高度去做权衡：
+            </p>
+            <ul class="bl" style="color:#e2e8f0;font-size:22px" data-click-reveal="fade">
+                <li style="color:#e2e8f0;margin-bottom:14px"><strong
+                        style="color:var(--accent-light)">敢于砍需求：</strong>当进度亮红灯时，果断砍掉非核心功能，保住最关键的交付物，先上线再迭代。</li>
+                <li style="color:#e2e8f0"><strong
+                        style="color:var(--accent-light)">用数据说话：</strong>面对不合理的需求追加，拿出量化的工作量评估和进度影响分析，让决策者基于数据做判断。</li>
+            </ul>
+            <div class="qt"
+                style="margin-top:24px;background:rgba(255,255,255,.1);border-left-color:var(--accent);color:#e2e8f0;font-style:normal"
+                data-click-reveal="fade">
+                <strong>核心价值：</strong>在有限资源下做出理性取舍，把力量集中在最关键的事情上，确保核心功能按时、保质地交付。
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 2 -->
-  <div class="slide section">
-    <span class="num">02</span>
-    <h2>第二讲</h2>
-    <div class="ssub">软件工程的历史起源与演进图腾</div>
-  </div>
-
-  <!-- 第二讲: 危机 1 OS/360 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>软件危机的经济链条大爆炸：OS/360 项目</h2>
-      <div class="sub">违背规律的代价远胜土木坍塌</div>
-      <div class="bar"></div>
     </div>
 
-    <div class="tc">
-      <div class="c">
-        <img src="../assets/57222a73010237e5ab069351b535df52.jpg" alt="坍塌隐喻"
-          style="width:100%;border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,0.15);max-height:400px;object-fit:cover">
-      </div>
+    <!-- ==================== SECTION 4 ==================== -->
+    <div class="slide section">
+        <span class="num">04</span>
+        <h2>课后研讨</h2>
+        <div class="ssub">用工程思维规划一次宿舍网络改造</div>
+    </div>
 
-      <div class="c" data-click-reveal="right">
-        <h3 style="font-size:28px;color:var(--navy);margin-bottom:16px">OS/360：软件史上的重度教训</h3>
-        <p style="font-size:24px;line-height:1.7;color:var(--text)">
-          上世纪60年代中期，巨无霸操作系统工程 OS/360 意图加速竣工，集中增加了成百上千名编程人员介入联合运转。<br><br>
-          由于**缺乏科学管理模型承载、模块之间全凭默契碰撞**，导致产生高达数千人年的惊人时间开销。工程最终极度逾期失效，造就数以亿计的不必要资金沉没。
+    <!-- 4 研讨任务 -->
+    <div class="slide content">
+        <div class="hdr">
+            <h2>实操练习：用六阶段法规划网络改造</h2>
+            <div class="bar"></div>
+        </div>
+        <p style="font-size:21px;margin-bottom:16px">
+            把你宿舍（或办公室）的网络改造当做一个"项目"来管理。不再想到哪做到哪，而是按照六个阶段来规划：
         </p>
-        <div
-          style="background:#fef3c7;border-left:5px solid #d97706;padding:16px;margin-top:24px;font-size:22px;color:#92400e">
-          **《人月神话》由此孕育：** 规模复杂的工程中，“向已经延缓的项目增加人手只会使其更慢”。
+        <div class="tc">
+            <div class="c">
+                <ul class="bl" style="font-size:20px">
+                    <li style="font-size:20px;padding:5px 0 5px 24px"><strong>Vision</strong> — 当前网络的主要痛点是什么？要达到什么效果？
+                    </li>
+                    <li style="font-size:20px;padding:5px 0 5px 24px"><strong>Concept</strong> — Mesh 组网 vs AC+AP
+                        方案，各有什么优劣？</li>
+                    <li style="font-size:20px;padding:5px 0 5px 24px"><strong>Plan</strong> — 需要花多少钱？分几步完成？</li>
+                    <li style="font-size:20px;padding:5px 0 5px 24px"><strong>Design</strong> — 路由器放哪里？网线怎么走？</li>
+                    <li style="font-size:20px;padding:5px 0 5px 24px"><strong>Implement</strong> — 采购设备、布线、配置网络</li>
+                    <li style="font-size:20px;padding:5px 0 5px 24px"><strong>Release</strong> — 实测网速和覆盖，确认达到目标</li>
+                </ul>
+            </div>
+            <div class="c" data-click-reveal="fade">
+                <div style="background:#fefce8;border:2px solid #fde047;padding:24px;border-radius:12px;color:#854d0e">
+                    <h3 style="font-size:24px;color:#713f12;margin-bottom:14px">💡 练习目标</h3>
+                    <p style="font-size:21px;line-height:1.6">
+                        通过这个简单练习，感受<strong>"先规划、后执行"</strong>与<strong>"边做边改"</strong>之间的区别。<br><br>
+                        你会发现，哪怕是一个很小的项目，有没有做前期规划，执行效率和结果质量都会有明显差异。
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 第二讲: 危机 2 Therac-25 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>软件危机的生命安全挑战：Therac-25</h2>
-      <div class="bar"></div>
     </div>
 
-    <div class="tc">
-      <div class="c">
-        <div class="cd r" style="height:100%;border-top-width:6px">
-          <div class="ci">☢️</div>
-          <div class="ct" style="color:var(--red);font-size:28px;margin-bottom:16px">Therac-25 夺命医疗设备事故</div>
-          <div class="cx" style="font-size:22px;line-height:1.8">
-            广泛应用于医学临床的 Therac-25 高能放疗设备，其底层控制程序隐含了极其隐蔽的多重时序同步缺陷。<br><br>
-            由于**设计定型阶段对独立硬件安全锁的轻率取缔与系统级测试防线的缺失**，致使其向病人释放了远超安全数值百倍的致命放射线输出。<br><br>
-            该事件对多位病患造成不可逆的危及，残酷地展示了底层软件工程缺陷外溢时的直接致命摧毁力。
-          </div>
-        </div>
-      </div>
-
-      <div class="c" data-click-reveal="fade">
-        <div
-          style="background:var(--navy);color:#fff;padding:40px 32px;border-radius:12px;height:100%;display:flex;flex-direction:column;justify-content:center">
-          <h3 style="font-size:32px;margin-bottom:24px;color:#cbd5e1">危机的启示：</h3>
-          <p style="font-size:26px;line-height:1.8">
-            面临爆炸式增加的庞大逻辑量级，绝不允许工程持续维系依赖个人才艺及运气的高风险手工作坊式作业状态。<br><br>
-            必须彻底抛弃单纯的“写代码”思维，转而以<strong style="color:var(--accent)">绝对的工业约束性</strong>打造护城墙。
-          </p>
-        </div>
-      </div>
+    <!-- Presentation UI -->
+    <button class="pb" onclick="startPresentation(0)">▶ 开始播放</button>
+    <div class="po" id="po">
+        <div class="pw" id="pw"></div>
     </div>
-  </div>
-
-  <!-- 第二讲: NATO 诞生 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>破局而生：1968 年 NATO 科学会议与理念曙光</h2>
-      <div class="bar"></div>
+    <div class="pi" id="pi"></div>
+    <div class="ph" id="ph">
+        <kbd>→</kbd> <kbd>Space</kbd> 下一步 &nbsp; <kbd>←</kbd> 上一步<br>
+        <kbd>Home</kbd> 第一页 &nbsp; <kbd>End</kbd> 最后一页<br>
+        <kbd>Esc</kbd> 退出 &nbsp; <kbd>F</kbd> 进入演示
     </div>
 
-    <div class="img-side">
-      <div class="desc" style="flex:1.2;padding-right:20px">
-        <p style="font-size:24px;line-height:1.7;margin-bottom:24px">
-          1968年深秋于德国加米施召开的北约（NATO）科学会议，第一次确立并诞生了极为核心的理念词汇：<br>
-          <strong style="font-size:36px;color:var(--navy);display:block;margin:16px 0">“软件工程”（Software
-            Engineering）</strong>
-        </p>
-
-        <div class="qt" data-click-reveal="fade" style="margin-top:0">
-          <strong
-            style="color:var(--navy)">宏大旗帜的目的：</strong><br>应当引入大型现代工业机制一般环环相扣的防错设计、定量化抽检规程及流水作业机制，进而将深陷泥淖的代码集群拯救出来。
-        </div>
-      </div>
-      <img src="../assets/3b66yy913ee9d30676f9b81145b65a3f.jpg" alt="NATO 会议图腾" style="flex:0.8;max-width:40%">
-    </div>
-  </div>
-
-  <!-- 第二讲: 演进阶段 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>主导半个世纪以来的演化进程线</h2>
-      <div class="bar"></div>
-    </div>
-
-    <div class="cr">
-      <div class="cd bg-alt" style="height:auto">
-        <div class="ct" style="color:var(--navy)">70年代：瀑布起步</div>
-        <div class="cx">建立体系化的规划、设计、开发、测试严格断层隔离防线，构筑最早的文档与纪律约束准则。</div>
-      </div>
-      <div class="cd bg-alt" style="height:auto" data-click-reveal="fade">
-        <div class="ct" style="color:var(--navy)">80年代：演化与风险分析</div>
-        <div class="cx">针对前期探测的盲区，提出诸如螺旋模型等多重原型盘旋校验手段，有针对性地压制潜随缺陷。</div>
-      </div>
-    </div>
-    <div class="cr" style="margin-top:20px">
-      <div class="cd bg-alt" style="height:auto" data-click-reveal="fade">
-        <div class="ct" style="color:var(--navy)">千禧交替：敏捷风暴</div>
-        <div class="cx">Scrum 及 XP 模型介入。利用小规模、紧贴常态变动之极速冲刺周期，解决需求多变高度不妥协之困惑。</div>
-      </div>
-      <div class="cd bg-alt" style="height:auto" data-click-reveal="fade">
-        <div class="ct" style="color:var(--navy)">2025+AI纪元：深度融合</div>
-        <div class="cx">吸纳大模型基础设施作为底盘辅助基石，释放海量堆砌产能生成重担。使人员攀向强架构与业务制高点统御。</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 第二讲: IEEE 定义 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>基于 IEEE 标准化定义的本质解读</h2>
-      <div class="bar"></div>
-    </div>
-
-    <div class="qt" style="padding:32px 40px;margin-bottom:32px">
-      <p style="font-size:26px;line-height:1.7;font-weight:600">
-        “将系统化、标准化且带有极强严谨度量准则的工程架构观念实施于软件规划、落地生产与持续运维等全周期；并针对上述手段开展长久的研究升级。”
-      </p>
-    </div>
-
-    <h3 style="font-size:28px;text-align:center;margin-bottom:20px" data-click-reveal="up">工程管控维系的终极指标被锁死为：核心三大底线</h3>
-    <div class="cr" data-click-reveal="fade">
-      <div class="cd a" style="text-align:center">
-        <div class="ct" style="margin:0;font-size:26px">⏱️ 准时跨越进度交付红线</div>
-      </div>
-      <div class="cd o" style="text-align:center">
-        <div class="ct" style="margin:0;font-size:26px">💰 控制资金于总预算约束圈</div>
-      </div>
-      <div class="cd g" style="text-align:center">
-        <div class="ct" style="margin:0;font-size:26px">🛡️ 确切保障终端体验质量高度</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 第二讲: 三维法则 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>最核心骨干原则：著名的“工程三维法则”</h2>
-      <div class="sub">Pressman 体系大成</div>
-      <div class="bar"></div>
-    </div>
-
-    <div class="tc">
-      <div class="c">
-        <img src="../assets/9926b79ecc91a4e664933c587f630199.jpg" alt="三维图示"
-          style="max-height:450px;width:100%;object-fit:contain">
-      </div>
-
-      <div class="c" data-click-reveal="right"
-        style="display:flex;flex-direction:column;justify-content:center;gap:20px">
-        <div
-          style="background:var(--bg-alt);padding:24px;border-left:5px solid var(--navy);border-radius:0 12px 12px 0">
-          <h3 style="font-size:24px;margin-bottom:8px">1. 过程（Process）的牵制轴心</h3>
-          <p style="font-size:20px;color:var(--text2);line-height:1.5">理清各环境相斥与执行链系，回答“优先步骤起止为何，怎样铺设关卡防线门槛”以作组织运转法度。</p>
-        </div>
-        <div
-          style="background:var(--bg-alt);padding:24px;border-left:5px solid var(--accent);border-radius:0 12px 12px 0">
-          <h3 style="font-size:24px;margin-bottom:8px">2. 方法（Methodology）的解题武器</h3>
-          <p style="font-size:20px;color:var(--text2);line-height:1.5">最精细底层的实施兵法集。怎样提取边界流转数据，划分解重度耦合框架，和进行校验防御点撰写。</p>
-        </div>
-        <div
-          style="background:var(--bg-alt);padding:24px;border-left:5px solid var(--green);border-radius:0 12px 12px 0">
-          <h3 style="font-size:24px;margin-bottom:8px">3. 工具（Tools）装配车间重器</h3>
-          <p style="font-size:20px;color:var(--text2);line-height:1.5">以半或全自动化设施接管制代人工耗损盲漏。如进度协同大盘图集、质检阻断及连环装配集成中控系统。
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 3 -->
-  <div class="slide section">
-    <span class="num">03</span>
-    <h2>第三讲</h2>
-    <div class="ssub">系统化思维的进阶——构建深远的全局大盘意识</div>
-  </div>
-
-  <!-- 第三讲: 一切皆项目 1 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>拔高认知维度：一切皆项目</h2>
-      <div class="sub">Everything is a Project</div>
-      <div class="bar"></div>
-    </div>
-
-    <p style="font-size:24px;line-height:1.7;margin-bottom:20px">
-      在具备多跨度沟通梯队的中大型研发组织中，顶层技术人员与骨干工程师脱颖而出的核心原因在于：他们成功实现了从“局部功能实现者”向具备全生命周期视角的“全局工程管理者”的思维跨越。
-    </p>
-
-    <div class="tc" style="align-items:center">
-      <div class="c">
-        <img src="../assets/c45b734291f8a36d4c3d7ed87e384e4e.jpg" alt="工程流六步"
-          style="width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.1)">
-      </div>
-
-      <div class="c" data-click-reveal="fade">
-        <div class="fb"
-          style="background:var(--bg-alt);color:var(--navy);border:1px solid var(--border);padding:24px;margin:0;text-align:left">
-          <p style="font-size:24px;line-height:1.6">
-            在工程化视角下，所有复杂的客观需求均可被抽象为可统筹的“项目工程”。不仅是分布式微服务节点重构，小至日常管理事务，都应当依赖<strong
-              style="color:var(--accent)">严格的生命六阶防线</strong>：
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 第三讲: 一切皆项目 2 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>严密的生命六阶防线</h2>
-      <div class="bar"></div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" data-click-reveal="fade">
-      <div class="cd bg-alt">
-        <div class="ct">1. 痛点问题定义 (Vision)</div>
-        <div class="cx">意图定型，精准地探寻真实痛点研判业务的刚性边界。</div>
-      </div>
-      <div class="cd bg-alt">
-        <div class="ct">2. 可行性与概念演练 (Concept)</div>
-        <div class="cx">提出设想图景，在初期进行多方案论证对比与对抗定型。</div>
-      </div>
-      <div class="cd bg-alt">
-        <div class="ct">3. 资源排期与成本计划 (Plan)</div>
-        <div class="cx">确立里程碑，预估时间盒（Timeboxing）及测算总体资源消耗。</div>
-      </div>
-      <div class="cd bg-alt">
-        <div class="ct">4. 系统架构与抽象建模 (Design)</div>
-        <div class="cx">输出高低等承压蓝图、规范接口与数据结构基线锁定。</div>
-      </div>
-      <div class="cd bg-alt">
-        <div class="ct">5. 模块化编码与实施 (Implement)</div>
-        <div class="cx">基于底层边界，发动阵线并发实施模块物理封装与组装落地。</div>
-      </div>
-      <div class="cd bg-alt">
-        <div class="ct">6. 验证公测与交付 (Release)</div>
-        <div class="cx">执行验收矩阵、回归防卫，并最终平滑过渡投入工业运营。</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 第三讲: 30分钟大逃杀 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>限时资源约束下的过程推演较量</h2>
-      <div class="bar"></div>
-    </div>
-
-    <p style="font-size:24px;margin-bottom:16px">要求临时的团队在 30 分钟的严格时限内，共同规划并输出一款适老化智能设备的系统原型概念及商业宣讲方案。</p>
-
-    <div class="tc">
-      <div class="c">
-        <div class="cd r" style="height:100%">
-          <div class="ct" style="color:var(--red);font-size:26px;margin-bottom:16px">💥 缺乏过程控制的散乱团队</div>
-          <ul class="bl" style="font-size:20px;line-height:1.4">
-            <li style="font-size:20px">倒计时初段即迅速陷入对细枝末节（如外壳材质）的无序争论。</li>
-            <li style="font-size:20px">没有时间盒（Timeboxing）与基线（Baseline）概念，时间被无谓损耗。</li>
-            <li style="font-size:20px">时限耗尽时，连最核心的业务主干流程图都无法输出！</li>
-          </ul>
-          <div style="font-size:22px;color:var(--red);font-weight:700;margin-top:20px;text-align:center">
-            缺乏排期观念与过程控制导致的全盘溃败
-          </div>
-        </div>
-      </div>
-
-      <div class="c" data-click-reveal="left">
-        <div class="cd g" style="height:100%">
-          <div class="ct" style="color:var(--green);font-size:26px;margin-bottom:16px">🏆 具备严格方法论的系统化团队</div>
-          <ul class="bl" style="font-size:20px;line-height:1.4">
-            <li style="font-size:20px"><strong>界定期（前期）:</strong> 迅速收敛发散性想法，明确绝对痛点。</li>
-            <li style="font-size:20px"><strong>基线锁定（中前期）:</strong> 冻结变更，防范范围蔓延（Scope Creep）。</li>
-            <li style="font-size:20px"><strong>解耦并行（核心时段）:</strong> 职能拆分并行（文案与原型图双线异步推进）。</li>
-            <li style="font-size:20px"><strong>集成检视（收尾点）:</strong> 预留缓冲交叉校验与成果对齐。</li>
-          </ul>
-          <div style="font-size:22px;color:var(--green);font-weight:700;margin-top:20px;text-align:center">
-            资源持续受限的环境中，遵循SDLC是唯一法则！</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 第三讲: 交付深井障碍 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>跳脱“孤岛思维”导致的交付壁垒（Silo Mentality）</h2>
-      <div class="sub">为什么单一KPI视角的“深井”成了项目推进的元凶？</div>
-      <div class="bar"></div>
-    </div>
-
-    <p style="font-size:24px;margin-bottom:20px">职能矩阵横向扩张后，跨部门协同常因内向聚焦产生极大阻碍：</p>
-
-    <div class="cr">
-      <div class="cd" style="border-left:5px solid var(--text2)">
-        <div class="ct">测试专员的绝对化视阈</div>
-        <div class="cx">执着于极其边缘的边界条件完美覆盖，罔视商业窗口极限所带来的高昂时间成本。</div>
-      </div>
-      <div class="cd" style="border-left:5px solid var(--text2)" data-click-reveal="fade">
-        <div class="ct">技术团队的原教旨主义</div>
-        <div class="cx">为追求极致代码美感，排斥成熟开源组件，生硬造轮子从而拉长交付生命周期与后期负债。</div>
-      </div>
-      <div class="cd" style="border-left:5px solid var(--text2)" data-click-reveal="fade">
-        <div class="ct">需求方的无边界拓展</div>
-        <div class="cx">无视系统底层架构的数据承载物理极限，后期强行插入毁灭性需求变更（Scope Creep）。</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 第三讲: 破壁心法 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>卓越工程领袖的思维升阶指南</h2>
-      <div class="bar"></div>
-    </div>
-
-    <div class="fb"
-      style="background:var(--navy);padding:40px;text-align:left;height:100%;display:flex;flex-direction:column;justify-content:center">
-      <p style="font-size:26px;color:#fff;line-height:1.7;margin-bottom:24px">
-        必须摒弃仅基于自身职能立场的局部视角，将决策点提升至宏观的“项目铁三角（时间、成本、质量边界）”进行整体权衡：
-      </p>
-      <ul class="bl" style="color:#e2e8f0;font-size:24px" data-click-reveal="fade">
-        <li style="color:#e2e8f0;margin-bottom:16px"><strong
-            style="color:var(--accent-light)">保中枢弃枝末：</strong>当项目生存面临重大进度危机时，为了保障核心链路的安全下车，必须果断放弃冗余的高开销功能或激进的设计偏好！
-        </li>
-        <li style="color:#e2e8f0"><strong
-            style="color:var(--accent-light)">冰冷数据击碎感性直觉：</strong>面对引发连锁架构崩塌且无高性价比的伪需求，诉诸量化的资源测算模型与进度排期，坚决阻断。
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- SECTION 4 -->
-  <div class="slide section">
-    <span class="num">04</span>
-    <h2>结课研讨与实操试炼</h2>
-    <div class="ssub">第一周思维推导大统领沙盘演习</div>
-  </div>
-
-  <!-- 第四讲: 大防演沙盘 -->
-  <div class="slide content">
-    <div class="hdr">
-      <h2>复盘实操：宿舍网络基建深大重置部署防线规划</h2>
-      <div class="bar"></div>
-    </div>
-
-    <p style="font-size:22px;margin-bottom:20px">
-      拒绝无底线与直观感性的一路乱拆暴采灾难模式。<br>
-      试基于完整**六度重阶轴卡体系**编撰这份寝区微空间扩容及高清通讯数据并发重整大案册。
-    </p>
-
-    <div class="tc">
-      <div class="c" style="flex:1">
-        <ul class="bl" style="font-size:20px">
-          <li style="font-size:20px;padding-top:4px;padding-bottom:4px">1. <strong>[Vision]</strong> 意向防线界定理与破开诉求点位</li>
-          <li style="font-size:20px;padding-top:4px;padding-bottom:4px">2. <strong>[Concept]</strong> 两三重配置战线对撞与最终选锁闭合
-          </li>
-          <li style="font-size:20px;padding-top:4px;padding-bottom:4px">3. <strong>[Plan]</strong> 划分巨量资本耗去边界及精微收工分段图
-          </li>
-          <li style="font-size:20px;padding-top:4px;padding-bottom:4px">4. <strong>[Design]</strong> 投出布线走位与压负功流安全蓝图
-          </li>
-          <li style="font-size:20px;padding-top:4px;padding-bottom:4px">5. <strong>[Implement]</strong> 分切多点施工作为进行装载拆联实操
-          </li>
-          <li style="font-size:20px;padding-top:4px;padding-bottom:4px">6. <strong>[Release]</strong> 上电合统防震大效验并向室友宣告竣工
-          </li>
-        </ul>
-      </div>
-
-      <div class="c" style="flex:1.2" data-click-reveal="fade">
-        <div class="fb"
-          style="background:#fefce8;color:#854d0e;border:2px solid #fde047;text-align:left;padding:24px;margin:0">
-          <h3 style="font-size:26px;color:#713f12;margin-bottom:16px">感受高维主宰感</h3>
-          <p style="font-size:22px;line-height:1.6">
-            完成这番全息微缩控蓝本编写之后，在这层大防域统管模拟中脱化！摆脱琐碎无章陷坑；体验仿如运筹全场诸大军步步维营，安顿交付并确确安全落成的极境超然掌控畅享感！
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Presentation mode UI -->
-  <button class="pb" onclick="startPresentation(0)">▶ 开始播放</button>
-  <div class="po" id="po">
-    <div class="pw" id="pw"></div>
-  </div>
-  <div class="pi" id="pi"></div>
-  <div class="ph" id="ph">
-    <kbd>→</kbd> <kbd>Space</kbd> 下一步 &nbsp; <kbd>←</kbd> 上一步<br>
-    <kbd>Home</kbd> 第一页 &nbsp; <kbd>End</kbd> 最后一页<br>
-    <kbd>Esc</kbd> 退出 &nbsp; <kbd>F</kbd> 进入演示
-  </div>
-
-  <script>
-    (function () {
-      const SS = document.querySelectorAll('.slide'), O = document.getElementById('po'), W = document.getElementById('pw'), I = document.getElementById('pi'), H = document.getElementById('ph');
-      let cur = 0, on = false, ht = null, animItems = [], animIdx = 0;
-      function show(n, revealAll) {
-        if (n < 0) n = 0; if (n >= SS.length) n = SS.length - 1; cur = n;
-        W.innerHTML = ''; const cl = SS[cur].cloneNode(true); cl.style.boxShadow = 'none'; W.appendChild(cl);
-        scale();
-        // Use data-click-reveal to control step-by-step
-        animItems = Array.from(cl.querySelectorAll('[data-click-reveal]'));
-        if (revealAll) {
-          animItems.forEach(it => it.classList.add('visible'));
-          animIdx = animItems.length;
-        } else {
-          animItems.forEach(it => it.classList.remove('visible'));
-          animIdx = 0;
-        }
-        updateIndicator();
-      }
-      function updateIndicator() {
-        const total = animItems.length;
-        if (total > 0 && animIdx < total) {
-          I.textContent = `${cur + 1} / ${SS.length}  ·  步骤 ${animIdx}/${total}`;
-        } else {
-          I.textContent = `${cur + 1} / ${SS.length}`;
-        }
-      }
-      function forward() {
-        if (animIdx < animItems.length) {
-          animItems[animIdx].classList.add('visible');
-          animIdx++;
-          updateIndicator();
-        } else {
-          if (cur < SS.length - 1) show(cur + 1, false);
-        }
-      }
-      function backward() {
-        if (animIdx > 0) {
-          animIdx--;
-          animItems[animIdx].classList.remove('visible');
-          updateIndicator();
-        } else {
-          if (cur > 0) show(cur - 1, true);
-        }
-      }
-      function scale() {
-        const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
-        W.style.transform = `scale(${s})`;
-      }
-      window.startPresentation = function (si) {
-        cur = si || 0; on = true; O.classList.add('active'); document.body.style.overflow = 'hidden';
-        show(cur, false); H.classList.add('show'); clearTimeout(ht); ht = setTimeout(() => H.classList.remove('show'), 2500);
-        if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => { });
-      };
-      function stop() {
-        on = false; O.classList.remove('active'); document.body.style.overflow = ''; H.classList.remove('show');
-        if (document.fullscreenElement) document.exitFullscreen().catch(() => { });
-        SS[cur].scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      document.addEventListener('keydown', function (e) {
-        if (!on && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); startPresentation(0); return }
-        if (!on) return;
-        switch (e.key) {
-          case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': e.preventDefault(); forward(); break;
-          case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); backward(); break;
-          case 'Home': e.preventDefault(); show(0, false); break;
-          case 'End': e.preventDefault(); show(SS.length - 1, true); break;
-          case 'Escape': e.preventDefault(); stop(); break;
-        }
-      });
-      O.addEventListener('click', function (e) { if (e.target === O || W.contains(e.target) || W.querySelector('.pb') !== e.target) forward() });
-      O.addEventListener('contextmenu', function (e) { e.preventDefault(); backward() });
-      window.addEventListener('resize', function () { if (on) scale() });
-      document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && on) stop() });
-
-      // Expose normal mode automatic reveal logic
-      const obs = new IntersectionObserver((entries) => {
-        if (on) return; // Do not apply automatic fade on scroll if in presentation mode
-        entries.forEach(en => {
-          if (en.isIntersecting) {
-            const items = en.target.querySelectorAll('[data-click-reveal]');
-            items.forEach((it, i) => setTimeout(() => it.classList.add('visible'), 200 + i * 200));
-          }
-        });
-      }, { threshold: 0.3 });
-      SS.forEach(s => obs.observe(s));
-    })();
-  </script>
+    <script>
+        (function () {
+            const SS = document.querySelectorAll('.slide'), O = document.getElementById('po'), W = document.getElementById('pw'), I = document.getElementById('pi'), H = document.getElementById('ph');
+            let cur = 0, on = false, ht = null, animItems = [], animIdx = 0;
+            function show(n, revealAll) {
+                if (n < 0) n = 0; if (n >= SS.length) n = SS.length - 1; cur = n;
+                W.innerHTML = ''; const cl = SS[cur].cloneNode(true); cl.style.boxShadow = 'none'; W.appendChild(cl);
+                scale();
+                animItems = Array.from(cl.querySelectorAll('[data-click-reveal]'));
+                if (revealAll) { animItems.forEach(it => it.classList.add('visible')); animIdx = animItems.length }
+                else { animItems.forEach(it => it.classList.remove('visible')); animIdx = 0 }
+                updateIndicator();
+            }
+            function updateIndicator() {
+                const t = animItems.length;
+                I.textContent = t > 0 && animIdx < t ? `${cur + 1} / ${SS.length}  ·  步骤 ${animIdx}/${t}` : `${cur + 1} / ${SS.length}`;
+            }
+            function forward() {
+                if (animIdx < animItems.length) { animItems[animIdx].classList.add('visible'); animIdx++; updateIndicator() }
+                else if (cur < SS.length - 1) show(cur + 1, false);
+            }
+            function backward() {
+                if (animIdx > 0) { animIdx--; animItems[animIdx].classList.remove('visible'); updateIndicator() }
+                else if (cur > 0) show(cur - 1, true);
+            }
+            function scale() { const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720); W.style.transform = `scale(${s})` }
+            window.startPresentation = function (si) {
+                cur = si || 0; on = true; O.classList.add('active'); document.body.style.overflow = 'hidden';
+                show(cur, false); H.classList.add('show'); clearTimeout(ht); ht = setTimeout(() => H.classList.remove('show'), 2500);
+                if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => { });
+            };
+            function stop() {
+                on = false; O.classList.remove('active'); document.body.style.overflow = ''; H.classList.remove('show');
+                if (document.fullscreenElement) document.exitFullscreen().catch(() => { });
+                SS[cur].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            document.addEventListener('keydown', function (e) {
+                if (!on && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); startPresentation(0); return }
+                if (!on) return;
+                switch (e.key) {
+                    case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': e.preventDefault(); forward(); break;
+                    case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); backward(); break;
+                    case 'Home': e.preventDefault(); show(0, false); break;
+                    case 'End': e.preventDefault(); show(SS.length - 1, true); break;
+                    case 'Escape': e.preventDefault(); stop(); break;
+                }
+            });
+            O.addEventListener('click', function () { forward() });
+            O.addEventListener('contextmenu', function (e) { e.preventDefault(); backward() });
+            window.addEventListener('resize', function () { if (on) scale() });
+            document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && on) stop() });
+            // Scroll auto-reveal for browse mode
+            const obs = new IntersectionObserver(entries => {
+                if (on) return;
+                entries.forEach(en => {
+                    if (en.isIntersecting) {
+                        en.target.querySelectorAll('[data-click-reveal]').forEach((it, i) => setTimeout(() => it.classList.add('visible'), 200 + i * 200));
+                    }
+                });
+            }, { threshold: 0.3 });
+            SS.forEach(s => obs.observe(s));
+        })();
+    </script>
 </body>
 
 </html>
